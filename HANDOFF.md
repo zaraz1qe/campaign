@@ -1,140 +1,134 @@
-# HANDOFF — for the next scheduled session
+# HANDOFF — Rolling note from the previous session to the next
 
-> **Read order each session:** this file → `MEMORY.md` → `ROADMAP.md`.
-> Then run `python3 tools/check_content.py` and `python3 play.py` to see the
-> current state before changing anything.
-
----
-
-## Where we are right now
-
-The game (Jade Wind Chronicles, a text-based wuxia cultivation RPG) is running.
-The architecture is intentionally **data-driven**: nearly all content lives in
-JSON files under `content/<category>/`. The engine in `game/` is small and
-should rarely need editing — most of your work each session is adding JSON.
-
-### Current size (as of last session)
-```
-10 locations · 9 npcs · 5 enemies · 9 techniques · 13 items
-2 sects · 3 quests · 7 events · 8 realms · 5 lore
-```
-Run `python3 -c "from game import loader; print(loader.stats(loader.load_all()))"`
-to get a fresh count.
-
-### What works
-- REPL with: look, go (n/s/e/w/u/d aliases), map, talk, fight, cultivate,
-  breakthrough, learn, buy, use, take, read, lore, inventory, techniques,
-  status, quest, name, save, load, help, quit
-- Turn-based combat with attack / technique / item / flee
-- Cultivation: gain qi at locations (qi_density modifier), breakthrough with
-  small tribulation chance
-- Quests with visit/defeat/talk/collect step types, auto-progressed and
-  auto-rewarded when steps complete
-- Random ambient events on entering a location
-- Save/load to `saves/<slot>.json`
-- Content validator (`tools/check_content.py`) catches dangling references
-
-### What does NOT exist yet (intentional — to be added)
-- Equipment slots (weapons/armor are inventory-only)
-- Alchemy/forging crafting system
-- Companions, multi-enemy combat, day/night, achievements
-- Reputation effects on dialogue (rep is tracked but unused)
-- Any region beyond the Southern Wilds + Azure Cloud Range
-- Most sects, most NPCs, most quests — see `ROADMAP.md` "Next Up"
+> **This file is the conversation between sessions.** Every session reads it
+> first, and rewrites it last. Treat it as the previous-you leaving notes for
+> the next-you: what was just done, what surprised you, what you'd do next if
+> you had another hour, what you wish someone would clean up.
+>
+> It is intentionally short and opinionated. If it's getting long, prune the
+> stale parts — `ROADMAP.md` is for the long lists, this is for *what's hot
+> right now*.
 
 ---
 
-## What to do this session
+## Last session — 2026-04-21 — "Initial scaffold"
 
-Pick **one or two** items from `ROADMAP.md` "Next Up" — the highest-leverage
-ones are usually:
+### What I built
+- The whole engine and starter content, from an empty repo. See the initial
+  commit message for the full inventory.
+- `MEMORY.md` (project memory), `SCHEMAS.md` (JSON shapes), `ROADMAP.md`
+  (long backlog), `tools/check_content.py` (validator), and this file.
 
-1. **A new region** (~6–10 linked locations + ~3–6 NPCs + ~3–5 enemies +
-   2–4 events + 1–2 quests + 1–3 lore). One region per session is a
-   great unit of work — it feels substantial and the content all
-   reinforces itself.
-2. **A new sect** (1 sect file + HQ location + 3+ NPCs + 3–5 signature
-   techniques + 1 quest tied to them).
-3. **Polish/refine** an existing area: deepen NPC dialogue, add events,
-   fill in missing lore, add a side-quest.
-4. **A bug fix or engine improvement** from `ROADMAP.md` "Engine
-   Improvements" — but only if you can implement it cleanly without
-   breaking saves or content.
+### Current state
+- Game runs cleanly: `python3 play.py`. Smoke-tested navigation, combat,
+  cultivation, quests, save/load.
+- Validator passes: `python3 tools/check_content.py`.
+- Branch: `claude/lucid-heisenberg-Bs2QZ`. Pushed.
 
-When you're done, **always**:
-1. Run `python3 tools/check_content.py` — fix any errors.
-2. Run a scripted smoke-test of `play.py` with a few commands.
-3. Update `ROADMAP.md`: tick what you did, add anything new you noticed.
-4. Update the "Done Log" at the bottom of `ROADMAP.md` with date + summary.
-5. Commit with a clear message and push to `claude/lucid-heisenberg-Bs2QZ`.
+### What I'd do next if I had another hour
+1. **Polish the opening 30 seconds** — the very first `look` at Verdant
+   Bamboo Sea is the player's first impression. Could use a cinematic
+   intro screen (ASCII title art? a brief story crawl?) and a one-line
+   tutorial nudge ("try `talk wandering_monk_huilin` or `cultivate`").
+2. **One whole new region** — pick the *shape* before the names. The
+   Northern Frost Plains feels like the obvious next door (cold, hostile,
+   first taste of a hostile sect). I'd prefer a region with an actual
+   *arc* over a region that's just rooms.
+3. **A tiny ASCII map** rendered by the `map` command, not just a list
+   of exits — would make navigation feel less like a database.
+4. **Visible HP/qi bar in the prompt** — currently you only see HP in
+   combat and via `status`. A persistent `[HP 30/30  Qi 5/50]> ` prompt
+   would make the cultivation loop tangible.
 
----
+### Things I noticed but didn't fix
+- After defeating an enemy at a location, it's still listed there next
+  visit. I left this as "respawn" but it's a design call — encounters
+  feel weightless. Consider a cooldown, or marking some enemies
+  one-shot.
+- The `cultivate` command has no diminishing returns. You can spam it.
+  Maybe each cultivation should consume a "stamina" or have a
+  cooldown-by-actions.
+- Combat is a little dry — no crits, no status effects beyond stun (and
+  even that just skips one turn). `effect: poison/bleed` exist in the
+  schema but aren't actually applied by combat.py — see
+  `combat.py:_apply_pill` for where pills happen, but tech effects
+  besides "heal" and "stun" are silently ignored.
+- The first-visit_text mechanic is great but only one location uses it.
+- Reputation is tracked but never used.
 
-## Important conventions (don't break these)
-
-- **IDs**: lowercase, snake_case, unique within their category. Used as
-  primary keys; renaming an id will break saves and references.
-- **Files**: any number of JSON files per category — group however makes
-  sense (by region, by tier, by sect). Loader globs them all.
-- **A file may contain a single object OR a list of objects.** Both work.
-- **Cross-references must resolve.** Run the validator.
-- **Don't hardcode content names in `game/` code.** If you find yourself
-  writing `if npc_id == "elder_baixu"`, stop and reconsider — it should
-  be data-driven.
-- **Save format**: dataclass-of-Player serialized to JSON. Adding new
-  fields to `Player` requires they default to something sensible so
-  old saves still load (use `field(default=...)` or `field(default_factory=...)`).
-
----
-
-## Idea seeds, free for the taking
-
-If you're stuck for inspiration on a new region:
-
-- **Northern Frost Plains** — an ice-locked steppe ruled by the Frostfang
-  Tribe. Ice-cultivators who treat blood as currency. A buried Frozen
-  Mirror Palace beneath the ice. Mammoth-scale beasts. A captive ghost
-  trapped in an ice-mirror who teaches a forbidden art for help breaking
-  free.
-- **Eastern Sea of Cloud** — an archipelago above an actual sea of
-  permanent cloud. Sword-sailors who ride flying ships. The legend of
-  the Sea-Dragon, which surfaces once a century. Pirate-cultivators of
-  the Crimson Tide. A lighthouse run by a blind monk who sees in qi.
-- **Imperial Capital** — political intrigue, the Emperor's Hidden Guard
-  who hunt rogue cultivators, a tournament held every five years, an
-  underground market in stolen manuals. Reputation matters most here.
-- **Yellow Springs Underworld** — accessed only via a specific ritual or
-  a rare item. Ghost-cultivators, judges of the dead, the chance to
-  speak with someone you have lost. A whole realm of cultivation
-  available only to ghosts.
-- **Hundred-Thousand-Mountains** — a beast-tide region full of spirit
-  beasts at every realm tier. Ancient ruins of a fallen civilization.
-  A mountain that shifts location each visit (procedurally generated
-  variant — engine work required).
-- **Sky-Spire** — capstone vertical dungeon. One floor per realm tier.
-  Boss on each floor. Final floor is the Heaven Tribulation arena.
+### Don'ts (lessons learned)
+- Don't refactor for hypothetical future content. A bug-fix doesn't
+  need surrounding cleanup.
+- Don't add backwards-compat shims; this game has one branch and one
+  user — change things directly.
+- Don't write features the player won't notice this session.
 
 ---
 
-## A polish micro-checklist
+## Standing instructions for every session
 
-If you have spare context after the main work, sweep:
-
-- [ ] Every NPC has at least 3 dialogue lines.
-- [ ] Every region has at least one ambient event.
-- [ ] Every sect has at least one signature technique that's actually
-      learnable somewhere.
-- [ ] Every enemy has at least one drop (so combat feels rewarding).
-- [ ] Every realm transition has a unique-feeling reward (a unique
-      technique unlocked, a new location accessible).
-- [ ] No location is a dead-end with nothing in it (no NPCs, no
-      enemies, no events, no items).
+1. **Read first**: this file → `MEMORY.md` → `ROADMAP.md`. Glance at
+   recent commits with `git log --oneline -10`.
+2. **Verify the game still works**: `python3 tools/check_content.py`
+   and a scripted smoke-test of `python3 play.py`.
+3. **Pick something** — see "How to choose what to do" below. You have
+   full latitude.
+4. **Do it well, ship it**: validate, smoke-test, commit, push to
+   `claude/lucid-heisenberg-Bs2QZ`.
+5. **Update `ROADMAP.md`**: tick boxes, add new ideas, append a dated
+   entry to the "Done Log".
+6. **Rewrite this `HANDOFF.md`** with notes for the next session:
+   - what you actually built (briefly)
+   - the current state (anything broken? anything mid-flight?)
+   - what you'd do next if you had another hour
+   - things you noticed but didn't fix
+7. Commit the docs (can be the same commit as the work or a separate
+   one — your call).
 
 ---
 
-## Final reminder
+## How to choose what to do (think broadly)
 
-Don't refactor the engine just to refactor it. Don't add abstractions that
-aren't needed. The whole point is: **the game grows by accretion of JSON**.
-Every session should ideally end with the game being measurably bigger or
-more polished than it started.
+You don't have to add new content. The goal is *to make the game better*.
+That can mean any of:
+
+- **New content** — regions, sects, NPCs, quests, techniques, items,
+  enemies, lore. The path of least resistance; mostly JSON.
+- **Polish & feel** — better descriptions, atmospheric prose,
+  more dialogue, sound-cue text ("a bronze bell tolls"), the prose
+  equivalent of *juice*.
+- **Visual/UI improvements** — ASCII title screen, ASCII map,
+  health bars in the prompt, colored output (ANSI codes),
+  cleaner formatting, a `--no-color` flag.
+- **New mechanics** — equipment slots, alchemy/forging, companions,
+  multi-enemy combat, day/night, weather, status effects that actually
+  do something, crits, dodges.
+- **Systemic depth** — make reputation matter, give NPCs schedules,
+  make sects react to player choices, faction war state.
+- **Bug fixes & refactors** — but only ones the player will feel.
+- **Tooling** — a content generator, a "where am I stuck" auto-hint,
+  a graph visualization of the world map.
+- **Story arcs** — multi-quest narratives that give the game a spine.
+- **Endgame** — the realm ladder is empty above Qi Condensation in
+  practice; what does Nascent Soul *feel* like?
+
+Mix it up across sessions. A run of pure-content sessions makes a wide
+but shallow game; a run of pure-engine sessions makes a deep but empty
+one. Look at what the game needs *most* right now, not what's easiest.
+
+---
+
+## How big is "one session of work"?
+
+Aim for one **substantial** unit. Examples that would each be a good session:
+
+- A new region with ~6 locations and the NPCs/enemies/events to fill it
+- A new sect with HQ + 3 NPCs + 4 techniques + 1 quest
+- An ASCII title screen + a redesigned opening + tutorial nudges
+- An equipment system: schema + loader + engine + a few starter weapons
+- Wiring up status effects (poison, bleed, buff) end-to-end in combat
+- An ASCII map renderer for the `map` command
+- A second whole quest line for an existing sect
+
+Resist the urge to do five half-things. Better: one whole thing,
+shipped, validated, committed.
