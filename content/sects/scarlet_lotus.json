@@ -1,0 +1,10 @@
+{
+  "id": "scarlet_lotus_pavilion",
+  "name": "Scarlet Lotus Pavilion",
+  "alignment": "demonic",
+  "headquarters": null,
+  "description": "Beautiful and merciless, the Scarlet Lotus believe pain is the swiftest teacher. Their disciples wear robes the color of fresh blood.",
+  "signature_techniques": ["scarlet_lotus_palm"],
+  "elders": [],
+  "rivals": ["azure_cloud_sect"]
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "id": "mortal",
+    "order": 0,
+    "name": "Mortal",
+    "description": "An ordinary mortal — flesh, breath, and a flicker of qi unawakened.",
+    "qi_required": 50,
+    "hp_bonus": 0, "atk_bonus": 0, "def_bonus": 0
+  },
+  {
+    "id": "qi_condensation",
+    "order": 1,
+    "name": "Qi Condensation",
+    "description": "Qi gathers into the dantian, forming the first cloud of power.",
+    "qi_required": 120,
+    "hp_bonus": 20, "atk_bonus": 2, "def_bonus": 1
+  },
+  {
+    "id": "foundation_establishment",
+    "order": 2,
+    "name": "Foundation Establishment",
+    "description": "The dantian becomes a hardened lake. Meridians widen.",
+    "qi_required": 220,
+    "hp_bonus": 40, "atk_bonus": 4, "def_bonus": 2
+  },
+  {
+    "id": "core_formation",
+    "order": 3,
+    "name": "Core Formation",
+    "description": "A golden core coalesces, and the body becomes a vessel for legend.",
+    "qi_required": 360,
+    "hp_bonus": 60, "atk_bonus": 6, "def_bonus": 3
+  },
+  {
+    "id": "nascent_soul",
+    "order": 4,
+    "name": "Nascent Soul",
+    "description": "From the core, a small immortal infant blooms — your true self.",
+    "qi_required": 540,
+    "hp_bonus": 90, "atk_bonus": 9, "def_bonus": 5
+  },
+  {
+    "id": "soul_transformation",
+    "order": 5,
+    "name": "Soul Transformation",
+    "description": "The nascent soul matures, body and spirit reshaping each other.",
+    "qi_required": 760,
+    "hp_bonus": 120, "atk_bonus": 12, "def_bonus": 7
+  },
+  {
+    "id": "void_refinement",
+    "order": 6,
+    "name": "Void Refinement",
+    "description": "You step half-into the void between worlds, drinking starlight.",
+    "qi_required": 1040,
+    "hp_bonus": 160, "atk_bonus": 16, "def_bonus": 10
+  },
+  {
+    "id": "ascendant_immortal",
+    "order": 7,
+    "name": "Ascendant Immortal",
+    "description": "Heaven's gate opens. You are no longer wholly of this world.",
+    "qi_required": 9999,
+    "hp_bonus": 240, "atk_bonus": 24, "def_bonus": 15
+  }
+]

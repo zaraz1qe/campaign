@@ -1,0 +1,115 @@
+[
+  {
+    "id": "wandering_monk_huilin",
+    "name": "Wandering Monk Huilin",
+    "title": "Brother of the Silent Bell",
+    "description": "A bald monk with sun-darkened skin and an iron staff scarred by old battles.",
+    "dialogue": [
+      "All paths lead inward, friend. Even the path through bamboo.",
+      "I once climbed the Heaven-Reaching Spire. The wind there has a name; it would not give it to me.",
+      "If you ever face the Scarlet Lotus, remember: their fire feeds on your fear. Be empty, and you cannot burn."
+    ],
+    "teaches": ["empty_palm"],
+    "faction": "shaolin",
+    "disposition": "friendly"
+  },
+  {
+    "id": "old_hermit_yun",
+    "name": "Old Hermit Yun",
+    "title": "Tea-Master of the Bamboo",
+    "description": "An ancient man with a beard like silvered moss. He pours tea with both hands and seems to be listening to something just beyond your hearing.",
+    "dialogue": [
+      "Sit. The kettle is already certain you would come.",
+      "When the dantian is empty, fill it with breath. When it is full, fill it with stillness.",
+      "I traded my sword for this kettle, and have never regretted the bargain."
+    ],
+    "teaches": ["calming_breath"],
+    "gives_quest": "the_kettles_request",
+    "disposition": "friendly"
+  },
+  {
+    "id": "raftsman_qiu",
+    "name": "Raftsman Qiu",
+    "title": "Ferryman of the River of Swords",
+    "description": "A leathery old man with arms like willow branches. He smells of wet rope and pipe-smoke.",
+    "dialogue": [
+      "Cross? Yes, yes. One spirit stone, or one good story. Stories are dearer.",
+      "Sometimes a sword shines from below. I do not look. Once you look, you must remember why."
+    ],
+    "disposition": "neutral"
+  },
+  {
+    "id": "pillmaster_lu",
+    "name": "Pillmaster Lu",
+    "title": "Apothecary of the Crossing",
+    "description": "A round-faced alchemist whose hands are stained ten different shades of green and ochre.",
+    "dialogue": [
+      "Fresh pills! Fresh pills! Tested on three apprentices and one stubborn dog!",
+      "You look pale. Half-price on the qi-gathering pills today only. Today only, mind."
+    ],
+    "sells": ["spirit_gathering_pill", "minor_healing_pill", "iron_skin_pill"],
+    "disposition": "friendly"
+  },
+  {
+    "id": "cloth_merchant_mei",
+    "name": "Cloth Merchant Mei",
+    "title": "Silk Trader",
+    "description": "A bright-eyed young woman in many-colored sleeves. She bargains as if it were a swordfight.",
+    "dialogue": [
+      "Silk from beyond the sea! Cheaper than yesterday, dearer than tomorrow!",
+      "Heard the Black Banner cut a courier on the east road. Be careful out there."
+    ],
+    "sells": ["traveler_robe"],
+    "disposition": "friendly"
+  },
+  {
+    "id": "gatekeeper_disciple_chen",
+    "name": "Gatekeeper Chen",
+    "title": "Outer Disciple of the Azure Cloud",
+    "description": "A young man in azure robes, holding a polished broom as if it were a sword.",
+    "dialogue": [
+      "Welcome to the Azure Cloud, traveler. Mind the steps; they are slippery with cloud.",
+      "Elder Baixu sees few visitors, but he has been... expecting someone today."
+    ],
+    "disposition": "friendly"
+  },
+  {
+    "id": "disciple_meilin",
+    "name": "Disciple Meilin",
+    "title": "Inner Disciple, Sword Hall",
+    "description": "A tall woman with a thin sword at her belt and a quicker laugh than her elders would prefer.",
+    "dialogue": [
+      "If you have come to test the sword hall, do not embarrass me by losing too quickly.",
+      "Have you read the Sutra of Empty Sleeves? It is in the library. It explains a great deal — and almost nothing."
+    ],
+    "teaches": ["white_crane_sword"],
+    "disposition": "friendly"
+  },
+  {
+    "id": "librarian_zhao",
+    "name": "Librarian Zhao",
+    "title": "Keeper of the Azure Cloud Library",
+    "description": "A small, soft-voiced man whose spectacles never quite sit straight.",
+    "dialogue": [
+      "Quiet, please. The scrolls are sleeping.",
+      "Take this — a copy of the Sutra of Empty Sleeves. It found you; I am only the courier."
+    ],
+    "gives_quest": "study_the_sutra",
+    "disposition": "friendly"
+  },
+  {
+    "id": "elder_baixu",
+    "name": "Elder Baixu",
+    "title": "Sword-Elder of the Azure Cloud",
+    "description": "An old man in white robes whose eyes are the color of frosted river stones. His sword leans against his shoulder as if too tired to stand on its own.",
+    "dialogue": [
+      "So. You came. The bamboo whispered as much.",
+      "There is a thing I would ask of you, if you have the heart for it.",
+      "Climb the peak only when you are sure of your foundation, child. The mountain has a memory of those who stumbled."
+    ],
+    "teaches": ["azure_cloud_palm", "cloud_step"],
+    "gives_quest": "the_missing_disciple",
+    "faction": "azure_cloud_sect",
+    "disposition": "friendly"
+  }
+]

@@ -1,0 +1,36 @@
+[
+  {
+    "id": "the_kettles_request",
+    "name": "The Kettle's Request",
+    "giver": "old_hermit_yun",
+    "description": "Old Hermit Yun would like proof you have walked among the bamboo: a single Bamboo Viper fang.",
+    "steps": [
+      { "type": "defeat", "target": "bamboo_viper" },
+      { "type": "talk",   "target": "old_hermit_yun" }
+    ],
+    "reward": { "spirit_stones": 30, "items": ["minor_healing_pill"], "xp": 20 }
+  },
+  {
+    "id": "study_the_sutra",
+    "name": "Study the Sutra",
+    "giver": "librarian_zhao",
+    "description": "Read the Sutra of Empty Sleeves you were given, and return to Librarian Zhao.",
+    "steps": [
+      { "type": "visit", "target": "azure_cloud_library" },
+      { "type": "talk",  "target": "librarian_zhao" }
+    ],
+    "reward": { "spirit_stones": 50, "items": ["spirit_gathering_pill"], "xp": 25 }
+  },
+  {
+    "id": "the_missing_disciple",
+    "name": "The Missing Disciple",
+    "giver": "elder_baixu",
+    "description": "An inner disciple has not returned from the foothills. The frost wolves are hungry. Find any sign — and survive what hunts there.",
+    "steps": [
+      { "type": "visit",  "target": "azure_cloud_foothills" },
+      { "type": "defeat", "target": "frost_wolf" },
+      { "type": "talk",   "target": "elder_baixu" }
+    ],
+    "reward": { "spirit_stones": 120, "items": ["spirit_gathering_pill", "iron_skin_pill"], "xp": 60 }
+  }
+]

@@ -1,0 +1,71 @@
+[
+  {
+    "id": "bamboo_viper",
+    "name": "Bamboo Viper",
+    "description": "A green snake the length of your arm. Its bite is fast and miserable.",
+    "realm": "mortal",
+    "hp": 18, "atk": 5, "def": 1, "spd": 8,
+    "techniques": ["venom_strike"],
+    "drops": [
+      { "item": "viper_fang", "chance": 0.7 },
+      { "item": "minor_healing_pill", "chance": 0.1 }
+    ],
+    "xp": 12,
+    "tags": ["beast", "venomous"]
+  },
+  {
+    "id": "river_eel",
+    "name": "River Eel",
+    "description": "A black serpent of the river-bed. It rises only to feed.",
+    "realm": "mortal",
+    "hp": 26, "atk": 6, "def": 2, "spd": 6,
+    "techniques": [],
+    "drops": [
+      { "item": "eel_skin", "chance": 0.6 }
+    ],
+    "xp": 16,
+    "tags": ["beast", "river"]
+  },
+  {
+    "id": "bandit_scout",
+    "name": "Black Banner Scout",
+    "description": "A wiry man with a black scarf hiding his face. His knife is unevenly sharpened.",
+    "realm": "qi_condensation",
+    "hp": 32, "atk": 7, "def": 2, "spd": 7,
+    "techniques": [],
+    "drops": [
+      { "item": "spirit_stone_pouch", "chance": 0.6 },
+      { "item": "rusty_dao", "chance": 0.3 }
+    ],
+    "xp": 22,
+    "tags": ["human", "bandit"]
+  },
+  {
+    "id": "bandit_brawler",
+    "name": "Black Banner Brawler",
+    "description": "A burly bandit who fights with two short clubs and a smile of yellow teeth.",
+    "realm": "qi_condensation",
+    "hp": 50, "atk": 9, "def": 3, "spd": 5,
+    "techniques": ["wild_swing"],
+    "drops": [
+      { "item": "spirit_stone_pouch", "chance": 0.8 },
+      { "item": "iron_skin_pill", "chance": 0.2 }
+    ],
+    "xp": 30,
+    "tags": ["human", "bandit"]
+  },
+  {
+    "id": "frost_wolf",
+    "name": "Frost Wolf",
+    "description": "A great gray wolf whose breath frosts the leaves. Its eyes are pale as winter sun.",
+    "realm": "qi_condensation",
+    "hp": 60, "atk": 10, "def": 4, "spd": 8,
+    "techniques": ["icy_bite"],
+    "drops": [
+      { "item": "frost_pelt", "chance": 0.7 },
+      { "item": "wolf_fang", "chance": 0.5 }
+    ],
+    "xp": 40,
+    "tags": ["beast", "ice"]
+  }
+]

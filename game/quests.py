@@ -1,0 +1,92 @@
+"""Quest progression. Steps are checked against player state after relevant actions."""
+from __future__ import annotations
+from typing import Dict, Any, List
+
+from .state import Player
+
+
+def _step_satisfied(step: Dict[str, Any], player: Player) -> bool:
+    t = step.get("type")
+    target = step.get("target")
+    if t == "visit":
+        return target in player.visited
+    if t == "defeat":
+        return player.defeated.get(target, 0) >= int(step.get("count", 1))
+    if t == "talk":
+        return target in player.talked_to
+    if t == "collect":
+        return player.has_item(target, int(step.get("count", 1)))
+    return False
+
+
+def offer_quest(world: Dict[str, Dict[str, Any]], player: Player, quest_id: str) -> str:
+    if quest_id in player.completed_quests:
+        return "(You have already completed this task.)"
+    if quest_id in player.active_quests:
+        return "(You already accepted this task.)"
+    q = world["quests"].get(quest_id)
+    if not q:
+        return ""
+    player.active_quests[quest_id] = 0
+    return f"\n[QUEST ACCEPTED] {q['name']}\n  {q.get('description','')}"
+
+
+def progress_quests(world: Dict[str, Dict[str, Any]], player: Player) -> List[str]:
+    """Advance every active quest as far as it can. Return notification strings."""
+    notes: List[str] = []
+    for qid in list(player.active_quests):
+        q = world["quests"].get(qid)
+        if not q:
+            continue
+        steps = q.get("steps", [])
+        idx = player.active_quests[qid]
+        while idx < len(steps) and _step_satisfied(steps[idx], player):
+            idx += 1
+            if idx < len(steps):
+                nxt = steps[idx]
+                notes.append(f"[{q['name']}] step complete — next: "
+                             f"{nxt.get('type','?')} {nxt.get('target','')}")
+        player.active_quests[qid] = idx
+        if idx >= len(steps):
+            del player.active_quests[qid]
+            player.completed_quests.add(qid)
+            reward = q.get("reward", {})
+            ss = int(reward.get("spirit_stones", 0))
+            xp = int(reward.get("xp", 0))
+            items = reward.get("items", [])
+            player.spirit_stones += ss
+            player.xp += xp
+            for iid in items:
+                player.add_item(iid, 1)
+            r_parts = []
+            if ss: r_parts.append(f"{ss} spirit stones")
+            if xp: r_parts.append(f"{xp} XP")
+            if items:
+                names = [world["items"].get(i, {}).get("name", i) for i in items]
+                r_parts.append("items: " + ", ".join(names))
+            rwd = ", ".join(r_parts) or "(no reward)"
+            notes.append(f"[QUEST COMPLETE] {q['name']} — reward: {rwd}")
+    return notes
+
+
+def quest_status(world: Dict[str, Dict[str, Any]], player: Player) -> str:
+    if not player.active_quests and not player.completed_quests:
+        return "You have undertaken no tasks."
+    out = []
+    if player.active_quests:
+        out.append("Active quests:")
+        for qid, idx in player.active_quests.items():
+            q = world["quests"].get(qid, {})
+            steps = q.get("steps", [])
+            out.append(f"  - {q.get('name', qid)}")
+            out.append(f"      {q.get('description','')}")
+            if idx < len(steps):
+                step = steps[idx]
+                out.append(f"      Next: {step.get('type','?')} {step.get('target','')}")
+    if player.completed_quests:
+        out.append("")
+        out.append("Completed:")
+        for qid in sorted(player.completed_quests):
+            q = world["quests"].get(qid, {})
+            out.append(f"  - {q.get('name', qid)}")
+    return "\n".join(out)

@@ -1,0 +1,132 @@
+[
+  {
+    "id": "spirit_gathering_pill",
+    "name": "Spirit Gathering Pill",
+    "type": "pill",
+    "description": "A jade-green pill smelling of pine. Restores qi.",
+    "effect": "qi_gain",
+    "power": 25,
+    "value": 30,
+    "tags": ["consumable"]
+  },
+  {
+    "id": "minor_healing_pill",
+    "name": "Minor Healing Pill",
+    "type": "pill",
+    "description": "A bitter brown pill that knits small wounds.",
+    "effect": "hp_heal",
+    "power": 20,
+    "value": 25,
+    "tags": ["consumable"]
+  },
+  {
+    "id": "iron_skin_pill",
+    "name": "Iron Skin Pill",
+    "type": "pill",
+    "description": "A heavy, metallic pill that hardens the body. Permanent +1 ATK.",
+    "effect": "atk_buff",
+    "power": 1,
+    "value": 80,
+    "tags": ["consumable", "rare"]
+  },
+  {
+    "id": "viper_fang",
+    "name": "Bamboo Viper Fang",
+    "type": "material",
+    "description": "Curved, hollow, faintly green. Used by alchemists for venom-resist pills.",
+    "effect": null,
+    "power": 0,
+    "value": 6,
+    "tags": ["material"]
+  },
+  {
+    "id": "eel_skin",
+    "name": "River Eel Skin",
+    "type": "material",
+    "description": "A supple black hide. Tanners pay for it; armorers more so.",
+    "effect": null,
+    "power": 0,
+    "value": 8,
+    "tags": ["material"]
+  },
+  {
+    "id": "rusty_dao",
+    "name": "Rusty Dao Saber",
+    "type": "weapon",
+    "description": "A bandit's curved blade. More rust than steel.",
+    "effect": null,
+    "power": 1,
+    "value": 5,
+    "tags": ["weapon"]
+  },
+  {
+    "id": "spirit_stone_pouch",
+    "name": "Spirit Stone Pouch",
+    "type": "treasure",
+    "description": "A small pouch of low-grade spirit stones. Heavy with promise.",
+    "effect": null,
+    "power": 0,
+    "value": 30,
+    "tags": ["currency"]
+  },
+  {
+    "id": "frost_pelt",
+    "name": "Frost Wolf Pelt",
+    "type": "material",
+    "description": "A pale gray pelt that exhales cold even in summer.",
+    "effect": null,
+    "power": 0,
+    "value": 25,
+    "tags": ["material", "rare"]
+  },
+  {
+    "id": "wolf_fang",
+    "name": "Frost Wolf Fang",
+    "type": "material",
+    "description": "A long curved fang frosted with cold qi.",
+    "effect": null,
+    "power": 0,
+    "value": 12,
+    "tags": ["material"]
+  },
+  {
+    "id": "traveler_robe",
+    "name": "Traveler's Robe",
+    "type": "armor",
+    "description": "A plain hempen robe, dust-resistant and unremarkable.",
+    "effect": null,
+    "power": 0,
+    "value": 18,
+    "tags": ["armor"]
+  },
+  {
+    "id": "bamboo_qi_crystal",
+    "name": "Bamboo Qi Crystal",
+    "type": "treasure",
+    "description": "A green-veined shard of crystallized bamboo qi. Powerful catalyst for cultivation.",
+    "effect": "qi_gain",
+    "power": 60,
+    "value": 120,
+    "tags": ["treasure", "rare"]
+  },
+  {
+    "id": "old_kettle",
+    "name": "Old Hermit's Kettle",
+    "type": "treasure",
+    "description": "A clay kettle that brews a tea of strange clarity.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["quest"]
+  },
+  {
+    "id": "sutra_of_empty_sleeves",
+    "name": "Sutra of Empty Sleeves",
+    "type": "manual",
+    "description": "A worn manuscript bound in pale silk. Reading it grants insight.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["manual"]
+  }
+]

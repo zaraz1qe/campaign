@@ -1,0 +1,51 @@
+[
+  {
+    "id": "bamboo_flute_song",
+    "location": "verdant_bamboo_sea",
+    "chance": 0.35,
+    "text": "A bamboo flute drifts through the green: a slow tune you almost recognize. Your heart settles, and a thread of qi gathers without your asking.",
+    "effect": { "qi": 5 }
+  },
+  {
+    "id": "falling_seedpod",
+    "location": "verdant_bamboo_sea",
+    "chance": 0.15,
+    "text": "A seedpod the color of old gold drops into your sleeve. It is heavier than it should be — tomorrow's tea or tonight's pillow, you cannot tell.",
+    "effect": { "spirit_stones": 3 }
+  },
+  {
+    "id": "sunken_blade_glints",
+    "location": "river_of_swords",
+    "chance": 0.2,
+    "text": "Beneath the water, something flashes silver — a sword's hilt, or a fish's belly. It is gone before you can be sure.",
+    "effect": {}
+  },
+  {
+    "id": "market_pickpocket",
+    "location": "merchant_crossing",
+    "chance": 0.25,
+    "text": "A child bumps into your hip. By the time you turn, three spirit stones are missing and the child is laughing two stalls away.",
+    "effect": { "spirit_stones": -3 }
+  },
+  {
+    "id": "distant_cry_for_help",
+    "location": "bandit_road",
+    "chance": 0.3,
+    "text": "Somewhere in the hills a voice cries out — abruptly, and then is silent. The crows do not even bother to look up.",
+    "effect": {}
+  },
+  {
+    "id": "snow_petal_fall",
+    "location": "azure_cloud_foothills",
+    "chance": 0.25,
+    "text": "White petals fall from no tree you can see. They melt against your face like snow, and leave a strange clarity behind.",
+    "effect": { "qi": 4 }
+  },
+  {
+    "id": "dust_motes_in_lantern_light",
+    "location": "azure_cloud_library",
+    "chance": 0.4,
+    "text": "Lantern-light catches a column of dust drifting through the scrolls. For one heartbeat, the motes seem to spell a word — then they are only dust again.",
+    "effect": { "lore": "the_word_in_dust" }
+  }
+]

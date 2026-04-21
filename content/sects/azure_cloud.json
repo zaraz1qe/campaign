@@ -1,0 +1,10 @@
+{
+  "id": "azure_cloud_sect",
+  "name": "Azure Cloud Sect",
+  "alignment": "righteous",
+  "headquarters": "azure_cloud_inner_courtyard",
+  "description": "A sect of cloud-walkers and sword-singers. They rule the Azure Cloud Range and famously refuse blood-feuds.",
+  "signature_techniques": ["azure_cloud_palm", "cloud_step", "white_crane_sword"],
+  "elders": ["elder_baixu"],
+  "rivals": ["scarlet_lotus_pavilion"]
+}

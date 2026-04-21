@@ -1,0 +1,32 @@
+[
+  {
+    "id": "legend_of_jade_emperor",
+    "title": "The Legend of the Jade Emperor",
+    "category": "myth",
+    "text": "Long ago, when the heavens were young, the Jade Emperor walked the earth in the guise of a beggar. He passed through ten thousand villages, and where men gave him bread he left a spring; where they refused him, he left a stone. The springs still flow; the stones, too, are still where he left them, and on quiet nights they are said to weep."
+  },
+  {
+    "id": "the_word_in_dust",
+    "title": "The Word in Dust",
+    "category": "sutra",
+    "text": "There is a word the dust spells when no one is looking. Sages have spent lifetimes trying to read it. Some say the word is 'forget'. Others say the word is the reader's own name, written in a script none alive remember. The Sutra of Empty Sleeves is silent on the matter, which is itself perhaps an answer."
+  },
+  {
+    "id": "the_sword_river_legend",
+    "title": "Why the River is Full of Swords",
+    "category": "history",
+    "text": "Once, two thousand cultivators fought along the river that has since taken its name. None survived. Their swords sank to the river-bed and remain there, occasionally rising to the surface as if to remind the world that a battle does not always end when the last warrior falls."
+  },
+  {
+    "id": "song_of_the_bamboo",
+    "title": "Song of the Bamboo",
+    "category": "poem",
+    "text": "Hollow inside, I bend; full inside, I break.\nGreen sleeve, white root, I keep no master's name.\nThe wind plays me, and I owe the wind nothing.\nBe like me, says the bamboo, and you will be heard for a thousand miles."
+  },
+  {
+    "id": "founding_of_azure_cloud",
+    "title": "The Founding of the Azure Cloud",
+    "category": "history",
+    "text": "Three centuries past, a tea-seller named Bo Yan climbed the unnamed peak in the Southern Wilds and did not come down for nineteen years. When he descended, the peak descended with him in cloud, and where he sat the first stones of the Azure Cloud Sect were laid. He took no disciples. The disciples came anyway."
+  }
+]
