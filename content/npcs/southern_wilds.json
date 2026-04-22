@@ -101,6 +101,20 @@
     "disposition": "friendly"
   },
   {
+    "id": "forge_master_bo",
+    "name": "Forge-Master Bo",
+    "title": "Smith of the Azure Cloud",
+    "description": "A broad-shouldered man whose beard is singed shorter on the right side than the left. His leather apron is pocked with tiny black burns in the shape of sparks. His hands are the colour of old iron, and he is always, always humming the same four notes.",
+    "dialogue": [
+      "Ha. A cultivator who brings their own teeth, claws and stones — my favourite kind.",
+      "A blade is half the smith's fire and half the owner's grief. Bring me the materials; I will answer for the fire.",
+      "Sect-forged is not the same as sect-blessed. What I make for you will never speak to the Elder, but it will not break against him either.",
+      "Coin is coin. Spirit stones are coin. Fang of a gale tiger is — sit down. We have much to discuss."
+    ],
+    "faction": "azure_cloud_sect",
+    "disposition": "friendly"
+  },
+  {
     "id": "elder_baixu",
     "name": "Elder Baixu",
     "title": "Sword-Elder of the Azure Cloud",

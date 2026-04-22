@@ -10,15 +10,17 @@ A living checklist for what's been done and what to add next.
 
 - **Locations**: Verdant Bamboo Sea, Old Hermit's Hut, River of Swords,
   Merchant's Crossing, Bandit Road, Azure Cloud Foothills, Outer Gate,
-  Inner Courtyard, Library, Elder Baixu's Pavilion, Thousand Venom Valley
-  Mouth, Venom Gorge, Hall of Five Poisons, Poisoner's Garden, Cloudroot
-  Pass, Hanging Terraces of Jadestep, Thunderhead Ridge, Skyweaver's
-  Cloister, Cragspine Shrine, Spirit-Gale Plateau (20 total)
+  Inner Courtyard, Library, Elder Baixu's Pavilion, Azure Cloud Forge,
+  Thousand Venom Valley Mouth, Venom Gorge, Hall of Five Poisons,
+  Poisoner's Garden, Cloudroot Pass, Hanging Terraces of Jadestep,
+  Thunderhead Ridge, Skyweaver's Cloister, Cragspine Shrine, Spirit-Gale
+  Plateau (21 total)
 - **Regions**: Southern Wilds, Azure Cloud Range, Thousand Venom Valley,
   Sky-Spire Reach
 - **Sects**: Azure Cloud Sect (righteous), Scarlet Lotus Pavilion (demonic),
   Five Poisons Sect (neutral/grey), Jadestep Sect Remnant (dead-but-haunted)
-- **Items**: 44 (23 equipment, pills, materials, treasures)
+- **Items**: 46 (25 equipment, pills, materials, treasures)
+- **Recipes**: 15 (Forge-Master Bo: 6, Pillmaster Lu: 4, Apothecary Qi: 5)
 - **Quests**: 6 (Kettle's Request, Study Sutra, Missing Disciple, Oath of
   Fangs, Stormwarden's Test, Broken Terrace)
 - **Realms**: 8 (Mortal → Ascendant Immortal)
@@ -99,8 +101,8 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Engine Improvements (only when content alone won't fix it)
-- [ ] **Alchemy crafting**: combine materials into pills at Pillmaster Lu
-- [ ] **Forging**: combine materials into spirit weapons (now that the equip slot exists)
+- [x] **Alchemy crafting**: combine materials into pills at Pillmaster Lu (s5)
+- [x] **Forging**: combine materials into spirit weapons at Forge-Master Bo (s5)
 - [x] **Equipment slots**: weapon, robe, accessory — affect stats (s3)
 - [ ] **Reputation effects on dialogue**: NPCs respond differently
 - [ ] **Faction war state**: world events triggered by player progression
@@ -126,6 +128,18 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-22 (session 5)** — "The Forge and the Cauldron." End-to-end
+  crafting system: a new `recipes` content category, `craft` /
+  `forge` / `brew` / `recipes` commands, NPC `talk` screens advertise
+  their recipes, crafters gated by location + realm + materials +
+  spirit stones. Shipped 15 recipes across three crafters: Pillmaster
+  Lu (4 brews), Apothecary Qi (5 brews + venom-forges), and a new
+  Forge-Master Bo (6 weapon/robe/accessory forges) at a new location
+  Azure Cloud Forge (off Inner Courtyard). Two new craft-only items:
+  Heart-Devouring Robe (+6 DEF, +20 HP, +1 SPD, Foundation-gated —
+  the sky-spire capstone) and Cloudstep Charm (+2 ATK, +1 SPD, +5 HP).
+  Validator gained a recipes section. SCHEMAS.md documents the
+  recipe shape. Save compat preserved (no new Player fields).
 - **2026-04-22 (session 4)** — "The Sky-Spire Reach." A Foundation-tier
   region to give the realm ladder somewhere to go. Six locations:
   Cloudroot Pass (gated by Stormwarden Gao), Hanging Terraces of Jadestep

@@ -1,0 +1,45 @@
+[
+  {
+    "id": "brew_minor_healing_pill",
+    "name": "Minor Healing Pill",
+    "type": "brew",
+    "crafter": "pillmaster_lu",
+    "inputs": { "viper_fang": 1, "eel_skin": 1 },
+    "stones": 10,
+    "output": "minor_healing_pill",
+    "output_qty": 2,
+    "flavor": "Lu pounds a viper-fang to chalk in ten seconds flat, mutters at a ribbon of eel-skin, and rolls two neat brown pills between his thumb and palm. He sniffs one. 'Good enough for a disciple. Better than good enough for you.'"
+  },
+  {
+    "id": "brew_spirit_gathering_pill",
+    "name": "Spirit Gathering Pill",
+    "type": "brew",
+    "crafter": "pillmaster_lu",
+    "inputs": { "black_lotus_seed": 1 },
+    "stones": 15,
+    "output": "spirit_gathering_pill",
+    "output_qty": 2,
+    "flavor": "One seed, split. Lu grinds each half with a different pestle — 'the left one is friendlier' — and rolls two pine-green pills. They smell of forest rain."
+  },
+  {
+    "id": "brew_iron_skin_pill",
+    "name": "Iron Skin Pill",
+    "type": "brew",
+    "crafter": "pillmaster_lu",
+    "inputs": { "centipede_shell": 2, "wolf_fang": 1 },
+    "stones": 70,
+    "output": "iron_skin_pill",
+    "flavor": "The carapace-plates go into the mortar first, fang last, so the fang 'bites something on the way down.' Lu scowls at his own joke and presses a black-metal pill. 'Do not chew it. One has been chewed before. The disciple who chewed it is fine, but his teeth are not.'"
+  },
+  {
+    "id": "brew_thundergold_pill",
+    "name": "Thundergold Pill",
+    "type": "brew",
+    "crafter": "pillmaster_lu",
+    "inputs": { "cloudroot_spirit_stone": 1, "storm_feather": 1, "black_lotus_seed": 1 },
+    "stones": 60,
+    "requires_realm": "qi_condensation",
+    "output": "thundergold_pill",
+    "flavor": "Lu holds the spirit stone up to the sun; it casts a shadow like weather. 'If you feel the pill laughing in your meridians — sit down. It will pass.' The storm-feather he chars, the lotus-seed he spares, and the result is a pill veined with hair-thin silver."
+  }
+]

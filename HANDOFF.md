@@ -124,6 +124,175 @@ validated, committed.
 
 # Session log
 
+## Session 5 — 2026-04-22 — "The Forge and the Cauldron"
+
+### What I built
+- **Crafting end-to-end.** New `recipes` content category, new engine
+  commands (`craft`, `forge`, `brew`, `recipes`), crafter gating by
+  NPC location, realm gate, material cost, spirit-stone cost. A
+  recipe is consumed in one atomic step: all checks first, then all
+  deductions. The `craft` command with no arg lists every recipe
+  available at the current location, grouped by crafter, with
+  costs and realm gates shown inline. `craft <recipe_id>` executes.
+- **`talk` advertises crafting.** When you talk to a crafter, the
+  dialogue screen now lists their recipes under a `(Forges — try
+  craft or recipes here)` / `(Brews — ...)` block, so the system is
+  discoverable without the player knowing the command exists.
+- **Validator support.** `tools/check_content.py` gained a full
+  recipes section: crafter must be a real NPC, inputs must be real
+  items with positive integer quantities, output must be a real
+  item, realm gate must reference a real realm, stones must be
+  non-negative int, type must be one of forge/brew/craft. Zero
+  errors tolerated.
+- **New NPC: Forge-Master Bo.** A weathered sect-smith with singed
+  beard and a four-note hum, placed in a new location. Humane
+  dialogue that reads well even before you spend a stone with him.
+  Faction: Azure Cloud Sect, disposition: friendly.
+- **New location: Azure Cloud Forge** — a low stone shed off the
+  Inner Courtyard (new exit `forge`). Has its own
+  `first_visit_text`: 'The fire minds drafts worse than I mind
+  guests.' qi_density 3 — it's a workshop, not a cultivation spot.
+- **15 recipes across 3 crafters.**
+  - **Pillmaster Lu (4 brews)** — minor healing pill x2 (viper_fang
+    + eel_skin + 10 stones), spirit gathering pill x2 (1 black_lotus
+    + 15 stones), iron skin pill (2 centipede_shell + 1 wolf_fang +
+    70 stones), Thundergold Pill (1 cloudroot_spirit_stone + 1
+    storm_feather + 1 black_lotus + 60 stones, Qi-gated).
+  - **Apothecary Qi (5 recipes)** — antidote pearl x2, nine serpents
+    pill, venom-fanged dagger, nine serpents ring, viper-scale sash.
+    All using valley materials (viper fang, venom gland, centipede
+    shell, black lotus seed, eel skin). Qi's dialogue frame is
+    "the poison is its own cure" — she brews and forges both.
+  - **Forge-Master Bo (6 forges)** — plain iron sword (starter
+    craft), Frostfang Sabre (Qi-gated), Skybreaker Blade
+    (Foundation-gated, 250 stones + rare mats), Stormcloud Sash,
+    Heart-Devouring Robe (the capstone — see below), Cloudstep
+    Charm (new).
+- **2 new craft-only items.**
+  - `heart_devouring_robe` — +6 DEF, +20 HP, +1 SPD, Foundation-gated.
+    The sky-spire capstone robe. Crafted from 1 heart_devouring_hide +
+    2 jadestep_shard + 1 cloudroot_spirit_stone + 350 stones. Before
+    this session, the Heart-Devouring Hide had no in-game use — now
+    it's the key material of the best robe in the game. Stormcloud
+    Sash is still good, but this sits above it.
+  - `cloudstep_charm` — +2 ATK, +1 SPD, +5 HP. Uses 2
+    ape_knucklebone + 1 storm_feather + 80 stones. Makes
+    ape-knucklebones (Cloudroot Pass drops) finally matter.
+- **Save-compat preserved.** No new Player fields. `saves/default.json`
+  from session 4 loads cleanly; recipes are world-state, not
+  player-state.
+- **Documentation.** SCHEMAS.md gained a "recipes/" block with the
+  full shape and a short engine note on the craft command. ROADMAP.md
+  inventory updated; both forging and alchemy are now ticked off under
+  Engine Improvements.
+
+### Current state
+- Validator: **21 loc / 16 npc / 12 enemy / 20 tech / 46 item /
+  4 sect / 6 quest / 14 event / 11 lore / 15 recipes.** All
+  references resolve.
+- Smoke-tested: `recipes` at Pillmaster Lu lists 4 brews; `talk
+  pillmaster_lu` advertises them in dialogue; `craft
+  brew_minor_healing_pill` with fangs+skins produces 2 pills, deducts
+  inputs+stones; wrong-location `craft brew_minor_healing_pill` gives
+  prose directing the player to Merchant's Crossing; realm-gated
+  `brew_thundergold_pill` refuses at mortal realm; the capstone
+  `forge_heart_devouring_robe` succeeds at Foundation with
+  hide+shards+stone; the new robe equips and stacks with Cloudstep
+  Charm to a clean status-sheet read (+2 ATK, +6 DEF, +2 SPD, +25 HP
+  from gear).
+- Traversed the new Azure Cloud Forge end-to-end: Verdant → Foothills
+  → Outer Gate → Inner Courtyard → Forge. First-visit prose fires.
+- Scripted `python3 play.py` session tested through to `quit`; game
+  boots clean with 11 content categories loaded.
+
+### What I'd do next if I had another hour
+1. **Reputation that matters — still the obvious lever.** Third+
+   session flagging. Crafting opens a natural hook: raise sect rep
+   to unlock tier-2 recipes, or have Bo refuse to forge the
+   Skybreaker Blade below Azure Cloud rep ≥ 2. Hooking recipes into
+   rep is 5 lines of engine + a new `min_rep` field on recipes.
+2. **Recipe discovery / learn system.** Right now every recipe is
+   visible to every player the moment they meet the crafter. A
+   nicer progression: some recipes require learning (from a manual
+   drop, or from a quest completion, or from a rep threshold). A
+   `requires_recipe_learned` flag + a `known_recipes` field on
+   Player. Session-sized.
+3. **Capstone craft deserves a quest hook.** Forging the
+   Heart-Devouring Robe is a huge moment but currently happens
+   silently — you hand Bo the hide, he stitches, done. A short
+   one-beat quest arc where Mingshu's ghost recognises the hide
+   being forged (and unlocks a post-boss teaching) would make the
+   robe feel like it's *commemorating* something. Roadmap it.
+4. **Eastern Sea / Northern Frost Plains** — the realm ladder is
+   well-populated up to Foundation now (Skybreaker + Heart-
+   Devouring Robe can carry you into Core). The next scale-up
+   should be a zone where Core-tier players can flex, or a region
+   at a different tier that cross-cuts the existing arcs (Northern
+   Frost Plains with Blood Moon Cult would tie into the frost
+   wolves + Frostfang Sabre that already exist).
+5. **A second smith or smith variant.** Apothecary Qi already doubles
+   as a valley-forge. If the Heavenly Sword Tower ever lands (seeded
+   in session 4 lore), a Tower-smith who forges sword-only variants
+   would feel right. No engine change needed.
+
+### Things I noticed but didn't fix
+- **Recipes are stateless** — the player's save doesn't track which
+  recipes they've seen. Means `craft` lists every recipe at every
+  crafter, regardless of the player's history. This is fine for
+  now, but the progression story eventually wants a `known_recipes`
+  set. Flagged for a future session.
+- **No recipe consumption flavor when you fail.** If you lack a
+  material, the prose is dry: "You lack: Gale Tiger Fang x1 (have
+  0)". Could be in-character — Bo could grumble, Qi could raise an
+  eyebrow. Minor polish.
+- **Bo has no teaches/sells/quest**, only recipes. That's deliberate —
+  his whole identity is the forge — but it means `talk forge_master_bo`
+  doesn't fire any `talked_to` quest triggers. No current quest uses
+  him either way. If a future quest wants "meet the forge-master,"
+  the auto-offer-on-talk pattern from existing NPCs will just work.
+- **Pillmaster Lu now does double duty** — he sells some of the same
+  pills he brews (minor healing, spirit gathering, iron skin). The
+  brew recipes are cheaper-per-pill than buying but require
+  materials. That's the correct tradeoff; just be aware that a player
+  with lots of materials can effectively bypass his shop entirely.
+- **Apothecary Qi's `viper_scale_sash` forge** uses viper fangs split
+  into scales. Thematically cute, but it means viper fangs have
+  suddenly become one of the most useful materials (used by 5 of 15
+  recipes). Might want to nerf their drop rate eventually.
+- **`forge_plain_iron_sword` is a bit of a non-event** — plain iron
+  sword is already sold by Mei for 45 stones and 1x wolf fang + 1x
+  eel skin + 20 stones is about break-even. Kept it as a low-stakes
+  "hello world" recipe to teach the player the craft command, not as
+  a value play. If that teaching role is unneeded, it can be cut.
+- **Azure Cloud Inner Courtyard now has 4 exits** (out, library,
+  elder, forge) — the `go <dir>` prose lists them all, which is
+  still fine to read. If it ever gets busy, consider grouping.
+- **Heart-Devouring Hide's drop rate isn't in my memory** — I didn't
+  check whether the gale tiger *always* drops the hide or just
+  sometimes. Worth verifying; if it's <100% a player can defeat the
+  boss and still not get the capstone robe. (Skim the enemy JSON if
+  this worries you.)
+
+### Don'ts (lessons learned)
+- Don't put the crafter list in the `look` output — it would wall-of-
+  text every time. The `talk` block and dedicated `recipes`/`craft`
+  commands are enough discovery.
+- Don't mutate state before *all* checks pass. The `craft` handler
+  does every validation first (location, realm, each material, stones)
+  and only then does every deduction. Early implementations that
+  return mid-deduction will silently eat materials on failure. Found
+  this in a manual test; fixed before committing.
+- Don't skip the talk-screen advertisement. The whole system is
+  invisible otherwise; a new player won't think to type `craft`. The
+  `(Brews — try `craft` or `recipes` here)` line under the NPC's
+  sells-list is the cheap discovery trick and makes the system
+  *feel* like part of the game instead of a hidden command.
+- Don't forget recipes can cost 0 stones (the `stones` field is
+  optional); the engine defaults it with `int(r.get("stones", 0))`.
+  Validator makes sure it's non-negative int, not just truthy.
+
+---
+
 ## Session 4 — 2026-04-22 — "The Sky-Spire Reach"
 
 ### What I built

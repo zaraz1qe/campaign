@@ -122,6 +122,37 @@ def main() -> int:
         if s.get("headquarters") and s["headquarters"] not in locs:
             errors.append(f"sect '{sid}' headquarters '{s['headquarters']}' unknown")
 
+    # 9. Recipes: crafter NPC exists, inputs/outputs are items, realm gate
+    # references a real realm, type is one of the accepted flavor tags.
+    valid_recipe_types = {"forge", "brew", "craft"}
+    for rid, r in world["recipes"].items():
+        rtype = r.get("type")
+        if rtype and rtype not in valid_recipe_types:
+            errors.append(f"recipe '{rid}' type '{rtype}' not in {sorted(valid_recipe_types)}")
+        crafter = r.get("crafter")
+        if crafter and crafter not in world["npcs"]:
+            errors.append(f"recipe '{rid}' crafter '{crafter}' not an npc")
+        output = r.get("output")
+        if not output:
+            errors.append(f"recipe '{rid}' has no output")
+        elif output not in world["items"]:
+            errors.append(f"recipe '{rid}' output '{output}' unknown item")
+        inputs = r.get("inputs") or {}
+        if not isinstance(inputs, dict):
+            errors.append(f"recipe '{rid}' inputs must be an object, got {type(inputs).__name__}")
+        else:
+            for iid, qty in inputs.items():
+                if iid not in world["items"]:
+                    errors.append(f"recipe '{rid}' input '{iid}' unknown item")
+                if not isinstance(qty, int) or qty < 1:
+                    errors.append(f"recipe '{rid}' input '{iid}' qty must be positive int")
+        rr = r.get("requires_realm")
+        if rr and rr not in world["realms"]:
+            errors.append(f"recipe '{rid}' requires unknown realm '{rr}'")
+        stones = r.get("stones", 0)
+        if not isinstance(stones, int) or stones < 0:
+            errors.append(f"recipe '{rid}' stones must be non-negative int")
+
     if errors:
         print(f"{len(errors)} reference error(s):")
         for e in errors:

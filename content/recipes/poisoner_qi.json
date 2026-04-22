@@ -1,0 +1,53 @@
+[
+  {
+    "id": "brew_antidote_pearl",
+    "name": "Antidote Pearl",
+    "type": "brew",
+    "crafter": "poisoner_qi",
+    "inputs": { "viper_fang": 1, "venom_gland": 1 },
+    "stones": 20,
+    "output": "antidote_pearl",
+    "output_qty": 2,
+    "flavor": "Qi grinds the fang against the gland — 'the poison is its own cure, if you ask it politely' — and rolls two pearls smooth. She tests one between her teeth and nods. 'Keep them separate from the Nine Serpents. They disagree in a pouch.'"
+  },
+  {
+    "id": "brew_nine_serpents_pill",
+    "name": "Nine Serpents Pill",
+    "type": "brew",
+    "crafter": "poisoner_qi",
+    "inputs": { "venom_gland": 2, "black_lotus_seed": 1, "centipede_shell": 1 },
+    "stones": 60,
+    "output": "nine_serpents_pill",
+    "flavor": "Two glands, one seed, one plate. Qi mixes them with a bone needle in a bone cup, chanting something that is almost a song and almost a lullaby. The resulting pill is the colour of old ochre and wound with nine faint rings. 'Do not take this within a day of grief, or a day of wine.'"
+  },
+  {
+    "id": "forge_venom_fanged_dagger",
+    "name": "Venom-Fanged Dagger",
+    "type": "forge",
+    "crafter": "poisoner_qi",
+    "inputs": { "viper_fang": 2, "venom_gland": 1, "eel_skin": 1 },
+    "stones": 80,
+    "output": "venom_fanged_dagger",
+    "flavor": "Qi works without a forge — only a shallow basin of dark oil, a thin iron blank, and a patience that seems to live in her shoulders rather than her hands. Two fangs along the grooves, a glaze of gland-venom, eel-skin for the grip. She does not even look up. 'Re-edge it here every forty days. Or not.'"
+  },
+  {
+    "id": "forge_nine_serpents_ring",
+    "name": "Nine Serpents Ring",
+    "type": "forge",
+    "crafter": "poisoner_qi",
+    "inputs": { "centipede_shell": 2, "venom_gland": 1, "black_lotus_seed": 1 },
+    "stones": 120,
+    "output": "nine_serpents_ring",
+    "flavor": "Qi takes no spirit stones until the ring is finished — not out of kindness, she says; out of a wariness that the ring might refuse the wearer and return. The carapace is etched into nine serpents in a single evening. The lotus-seed she drops into the quench-oil; it hisses once, like a name. The ring, when she slides it over your finger, is warm."
+  },
+  {
+    "id": "forge_viper_scale_sash",
+    "name": "Viper-Scale Sash",
+    "type": "forge",
+    "crafter": "poisoner_qi",
+    "inputs": { "viper_fang": 3, "centipede_shell": 2, "eel_skin": 2 },
+    "stones": 90,
+    "output": "viper_scale_sash",
+    "flavor": "Qi splits the fangs to make scales — 'a fang is only a large scale that took itself too seriously' — and stitches them onto eel-skin in an overlapping pattern. The carapace-plates reinforce the spine. She smells the finished sash once and nods: 'Vinegar. Good. If it ever smells of honey, burn it.'"
+  }
+]

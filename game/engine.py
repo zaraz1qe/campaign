@@ -82,6 +82,8 @@ class Game:
           equip <item>                    equip a weapon / robe / accessory
           unequip <slot>                  remove what's in a slot
           gear                            list what you have equipped
+          craft [recipe]                  list or execute a forge / brew recipe
+          recipes                         list recipes at this location
           read <lore>                     read a lore entry you've discovered
           inventory  (i)                  list possessions
           techniques (t)                  list martial arts known
@@ -229,6 +231,16 @@ class Game:
                 it = self.world["items"].get(iid, {})
                 self.out(f"     {it.get('name', iid)} — {it.get('value', '?')} stones")
             self.out("  )")
+        recs = self._recipes_at(npc_id)
+        if recs:
+            type_tag = {"forge": "Forges", "brew": "Brews"}.get(
+                next(iter(recs.values())).get("type", ""), "Crafts"
+            )
+            self.out(f"  ({type_tag} — try `craft` or `recipes` here):")
+            for rid, r in recs.items():
+                out_id = r.get("output", "?")
+                out_name = self.world["items"].get(out_id, {}).get("name", out_id)
+                self.out(f"     {rid} → {out_name}")
         self.player.talked_to.add(npc_id)
         if n.get("gives_quest"):
             self.out(quests.offer_quest(self.world, self.player, n["gives_quest"]))
@@ -490,6 +502,114 @@ class Game:
         self.out(f"You pick up {iname}.")
 
     # ------------------------------------------------------------------
+    # ------------------------------------------------------------------
+    # Crafting (forging / brewing).
+    def _recipes_at(self, npc_id: str) -> Dict[str, Dict[str, Any]]:
+        """Recipes keyed by id that belong to the given crafter NPC."""
+        return {
+            rid: r for rid, r in self.world["recipes"].items()
+            if r.get("crafter") == npc_id
+        }
+
+    def _crafters_here(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
+        """crafter_npc_id -> {recipe_id: recipe} for each crafter at this location."""
+        out: Dict[str, Dict[str, Dict[str, Any]]] = {}
+        for nid in self._loc().get("npcs", []):
+            recs = self._recipes_at(nid)
+            if recs:
+                out[nid] = recs
+        return out
+
+    def _format_recipe_line(self, rid: str, r: Dict[str, Any]) -> str:
+        parts = []
+        for mid, qty in (r.get("inputs") or {}).items():
+            mname = self.world["items"].get(mid, {}).get("name", mid)
+            parts.append(f"{qty}x {mname}")
+        stones = int(r.get("stones", 0))
+        if stones:
+            parts.append(f"{stones} stones")
+        cost = ", ".join(parts) if parts else "(no cost)"
+        out_id = r.get("output", "?")
+        out_name = self.world["items"].get(out_id, {}).get("name", out_id)
+        qty_out = int(r.get("output_qty", 1))
+        out_str = out_name + (f" x{qty_out}" if qty_out > 1 else "")
+        req = r.get("requires_realm")
+        gate = ""
+        if req:
+            rname = self.world["realms"].get(req, {}).get("name", req)
+            gate = f"  [{rname}+]"
+        return f"  {rid}: {out_str} — {cost}{gate}"
+
+    def cmd_craft(self, arg: str) -> None:
+        crafters = self._crafters_here()
+        if not arg:
+            if not crafters:
+                self.out("No crafter tends a forge or cauldron here.")
+                return
+            self.out("Crafting available here:")
+            for nid, recs in crafters.items():
+                n = self.world["npcs"].get(nid, {})
+                self.out("")
+                self.out(f"--- {n.get('name', nid)} ---")
+                for rid, r in recs.items():
+                    self.out(self._format_recipe_line(rid, r))
+            self.out("")
+            self.out("Use `craft <recipe_id>` to begin.")
+            return
+        rid = arg.strip().lower().replace(" ", "_")
+        recipe = self.world["recipes"].get(rid)
+        if not recipe:
+            self.out(f"No such recipe: '{rid}'.")
+            return
+        crafter_id = recipe.get("crafter", "")
+        here = self._loc().get("npcs", [])
+        if crafter_id and crafter_id not in here:
+            cname = self.world["npcs"].get(crafter_id, {}).get("name", crafter_id)
+            cloc_id = None
+            for lid, loc in self.world["locations"].items():
+                if crafter_id in (loc.get("npcs") or []):
+                    cloc_id = lid
+                    break
+            cloc = self.world["locations"].get(cloc_id or "", {}).get("name", cloc_id or "?")
+            self.out(f"This craft wants {cname}'s hand. Seek them at {cloc}.")
+            return
+        req = recipe.get("requires_realm")
+        if req and not cultivation.realm_meets(self.world, self.player, req):
+            need = self.world["realms"].get(req, {}).get("name", req)
+            self.out(f"Your foundation is too thin. {recipe.get('name', rid)} requires: {need}.")
+            return
+        inputs = recipe.get("inputs") or {}
+        missing = []
+        for mid, qty in inputs.items():
+            if not self.player.has_item(mid, int(qty)):
+                iname = self.world["items"].get(mid, {}).get("name", mid)
+                have = self.player.inventory.get(mid, 0)
+                missing.append(f"{iname} x{qty} (have {have})")
+        if missing:
+            self.out("You lack: " + "; ".join(missing))
+            return
+        stones = int(recipe.get("stones", 0))
+        if self.player.spirit_stones < stones:
+            self.out(f"You lack {stones} spirit stones (have {self.player.spirit_stones}).")
+            return
+        for mid, qty in inputs.items():
+            self.player.remove_item(mid, int(qty))
+        self.player.spirit_stones -= stones
+        output = recipe["output"]
+        qty_out = int(recipe.get("output_qty", 1))
+        self.player.add_item(output, qty_out)
+        out_name = self.world["items"].get(output, {}).get("name", output)
+        flavor = recipe.get("flavor", "")
+        if flavor:
+            self.out("")
+            self.out(_wrap(flavor))
+        suffix = f" x{qty_out}" if qty_out > 1 else ""
+        self.out(f"  (Crafted: {out_name}{suffix})")
+
+    def cmd_recipes(self, _arg: str) -> None:
+        self.cmd_craft("")
+
+    # ------------------------------------------------------------------
     def cmd_read(self, arg: str) -> None:
         if not arg:
             if not self.player.known_lore:
@@ -634,6 +754,10 @@ class Game:
         "gear": "cmd_gear",
         "equipment": "cmd_gear",
         "take": "cmd_take",
+        "craft": "cmd_craft",
+        "forge": "cmd_craft",
+        "brew": "cmd_craft",
+        "recipes": "cmd_recipes",
         "read": "cmd_read",
         "lore": "cmd_lore",
         "inventory": "cmd_inventory",

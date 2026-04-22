@@ -9,6 +9,7 @@ CONTENT_ROOT = Path(__file__).resolve().parent.parent / "content"
 CATEGORIES = (
     "locations", "npcs", "enemies", "techniques",
     "items", "sects", "quests", "events", "realms", "lore",
+    "recipes",
 )
 
 

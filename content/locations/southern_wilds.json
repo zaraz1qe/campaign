@@ -96,7 +96,7 @@
     "name": "Azure Cloud Inner Courtyard",
     "region": "Azure Cloud Range",
     "description": "A wide courtyard of polished stone. Banners snap in the high wind. Stairways rise to the elders' pavilions; a small library nests under a curving roof.",
-    "exits": { "out": "azure_cloud_outer_gate", "library": "azure_cloud_library", "elder": "elder_baixus_pavilion" },
+    "exits": { "out": "azure_cloud_outer_gate", "library": "azure_cloud_library", "elder": "elder_baixus_pavilion", "forge": "azure_cloud_forge" },
     "npcs": ["disciple_meilin"],
     "enemies": [],
     "events": [],
@@ -116,6 +116,21 @@
     "items_on_ground": [],
     "qi_density": 4,
     "tags": ["sect_inner", "library"]
+  },
+  {
+    "id": "azure_cloud_forge",
+    "name": "Azure Cloud Forge",
+    "region": "Azure Cloud Range",
+    "description": "A low stone shed set apart from the main sect, built into the cliff so the forge-fire vents out into open air. The doorway glows orange even at noon. Rows of weapon-blanks, robe-stitchings and accessory-blanks hang from hooks along the rafters. A heavy anvil of black iron squats in the centre; a wooden bench along the wall bears a scarred leather apron, neatly folded, and a half-finished cup of tea.",
+    "first_visit_text": "Heat washes out through the door. Inside, a forge-master looks up, squints, and grunts once in approval before going back to the bellows: 'Come in, close the door behind you. The fire minds drafts worse than I mind guests.'",
+    "exits": { "out": "azure_cloud_inner_courtyard" },
+    "npcs": ["forge_master_bo"],
+    "enemies": [],
+    "events": [],
+    "items_on_ground": [],
+    "qi_density": 3,
+    "sect": "azure_cloud_sect",
+    "tags": ["sect_inner", "forge", "crafter"]
   },
   {
     "id": "elder_baixus_pavilion",

@@ -1,0 +1,66 @@
+[
+  {
+    "id": "forge_plain_iron_sword",
+    "name": "Plain Iron Sword",
+    "type": "forge",
+    "crafter": "forge_master_bo",
+    "inputs": { "wolf_fang": 1, "eel_skin": 1 },
+    "stones": 20,
+    "output": "plain_iron_sword",
+    "flavor": "Bo slips the wolf-fang into the blade's throat and pours a ladle of molten iron around it. A short grip of eel-skin, laced tight and tied off with a single hard knot. 'There. A sword. Nothing spirit, nothing sect — only honest.'"
+  },
+  {
+    "id": "forge_frostfang_sabre",
+    "name": "Frostfang Sabre",
+    "type": "forge",
+    "crafter": "forge_master_bo",
+    "inputs": { "wolf_fang": 3, "frost_pelt": 2 },
+    "stones": 150,
+    "requires_realm": "qi_condensation",
+    "output": "frostfang_sabre",
+    "flavor": "Three fangs of frost-wolf lock along the spine; the pelt Bo boils down for the quench. The steam rises grey and lazy. When the blade comes out of the oil it is already cold — and will be, he grunts, 'until the day some fool throws it in a forge that isn't mine.'"
+  },
+  {
+    "id": "forge_skybreaker_blade",
+    "name": "Skybreaker Blade",
+    "type": "forge",
+    "crafter": "forge_master_bo",
+    "inputs": { "gale_tiger_fang": 1, "cloudroot_spirit_stone": 2, "jadestep_shard": 1 },
+    "stones": 250,
+    "requires_realm": "foundation_establishment",
+    "output": "skybreaker_blade",
+    "flavor": "Bo sets the gale-tiger fang into the fuller with tweezers no longer than his little finger. The jadestep shard he grinds to ash and lets settle on the metal while it is still the colour of a sunrise. When he quenches the blade in the water of the two spirit stones, the forge goes silent — even the fire bows. 'There. Breathe on it. If it answers, it is yours.'"
+  },
+  {
+    "id": "forge_stormcloud_sash",
+    "name": "Stormcloud Sash",
+    "type": "forge",
+    "crafter": "forge_master_bo",
+    "inputs": { "storm_feather": 3, "cloudroot_spirit_stone": 1, "eel_skin": 2 },
+    "stones": 150,
+    "requires_realm": "foundation_establishment",
+    "output": "stormcloud_sash",
+    "flavor": "Eel-skin forms the base, stitched double against draft. Three storm-crow feathers Bo lays along the hip-line, quills pointing rearward 'so the wind cannot get in front of you again.' The spirit stone he grinds to powder and beats into the weave. The sash, when it settles on your shoulder, is heavier than feathers should be."
+  },
+  {
+    "id": "forge_heart_devouring_robe",
+    "name": "Heart-Devouring Robe",
+    "type": "forge",
+    "crafter": "forge_master_bo",
+    "inputs": { "heart_devouring_hide": 1, "jadestep_shard": 2, "cloudroot_spirit_stone": 1 },
+    "stones": 350,
+    "requires_realm": "foundation_establishment",
+    "output": "heart_devouring_robe",
+    "flavor": "Bo lays the grey hide across his bench and is, for the first time in your hearing, quiet. He stitches in silence — five strokes, knot; five strokes, knot. Jadestep-shard dust rubbed into every seam. When he folds the robe and presses it into your arms, it is colder than the forge has any right to let anything be. 'Wear it,' he says. 'The tiger will forgive you. Eventually.'"
+  },
+  {
+    "id": "forge_cloudstep_charm",
+    "name": "Cloudstep Charm",
+    "type": "forge",
+    "crafter": "forge_master_bo",
+    "inputs": { "ape_knucklebone": 2, "storm_feather": 1 },
+    "stones": 80,
+    "output": "cloudstep_charm",
+    "flavor": "The apprentice makes this one — Bo only watches, arms folded. Two knucklebones strung on cord, three feathers knotted between. The apprentice nearly drops it; Bo clicks his tongue once and the knot holds. 'Better,' he says, and takes your stones without looking at them."
+  }
+]

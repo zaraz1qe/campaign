@@ -137,5 +137,30 @@
     "power": 0,
     "value": 180,
     "tags": ["material", "rare", "sky_spire"]
+  },
+  {
+    "id": "heart_devouring_robe",
+    "name": "Heart-Devouring Robe",
+    "type": "armor",
+    "slot": "robe",
+    "def_bonus": 6,
+    "hp_bonus": 20,
+    "spd_bonus": 1,
+    "requires_realm": "foundation_establishment",
+    "description": "A long grey robe stitched from the pelt of the Heart-Devouring Gale Tiger, seams cured with jadestep-shard dust. The cloth drinks the cold out of the air around the wearer; the shoulders never bear snow. Blades striking it slide a fraction too far to the left, as if remembering that the hide had teeth once.",
+    "value": 520,
+    "tags": ["armor", "spirit", "rare", "sky_spire", "craft_only"]
+  },
+  {
+    "id": "cloudstep_charm",
+    "name": "Cloudstep Charm",
+    "type": "accessory",
+    "slot": "accessory",
+    "atk_bonus": 2,
+    "spd_bonus": 1,
+    "hp_bonus": 5,
+    "description": "A short string of cloudstep-ape knucklebones bound between three storm-crow quills. Knotted by a novice of the Azure Cloud Forge and blessed, in passing, by whoever happened to be in the room. It rattles faintly when the wearer moves, which Forge-Master Bo insists is the charm reminding the bones that they are a weapon.",
+    "value": 180,
+    "tags": ["accessory", "sky_spire", "craft_only"]
   }
 ]

@@ -183,6 +183,32 @@ Random text encounters. Triggered with some probability when entering a location
 }
 ```
 
+## recipes/  — `Recipe`
+```jsonc
+{
+  "id": "forge_skybreaker_blade",
+  "name": "Skybreaker Blade",
+  "type": "forge",                  // forge | brew | craft  (flavor tag, all use `craft`)
+  "crafter": "forge_master_bo",     // npc id; player must be at their location to use
+  "inputs": { "gale_tiger_fang": 1, "cloudroot_spirit_stone": 2 },  // item_id -> qty
+  "stones": 250,                    // spirit stones consumed (default 0)
+  "requires_realm": "foundation_establishment",   // optional realm gate
+  "output": "skybreaker_blade",     // item id
+  "output_qty": 1,                  // default 1
+  "flavor": "Bo sets the fang into the fuller..."  // prose on successful craft
+}
+```
+
+### Crafting (engine)
+`craft` with no arg lists recipes available from every crafter NPC at the
+current location. `craft <recipe_id>` executes one: it checks that the
+crafter is here, that realm gates are met, that the player has every input
+(items + spirit stones), then consumes the inputs and adds the output to
+inventory. `forge` and `brew` are aliases for `craft`; `recipes` is an
+alias for `craft` (with no arg). NPCs automatically advertise their
+recipes when the player `talk`s to them.
+
+
 ## lore/  — `Lore`
 ```jsonc
 {
