@@ -11,12 +11,16 @@ A living checklist for what's been done and what to add next.
 - **Locations**: Verdant Bamboo Sea, Old Hermit's Hut, River of Swords,
   Merchant's Crossing, Bandit Road, Azure Cloud Foothills, Outer Gate,
   Inner Courtyard, Library, Elder Baixu's Pavilion, Thousand Venom Valley
-  Mouth, Venom Gorge, Hall of Five Poisons, Poisoner's Garden (14 total)
-- **Regions**: Southern Wilds, Azure Cloud Range, Thousand Venom Valley
+  Mouth, Venom Gorge, Hall of Five Poisons, Poisoner's Garden, Cloudroot
+  Pass, Hanging Terraces of Jadestep, Thunderhead Ridge, Skyweaver's
+  Cloister, Cragspine Shrine, Spirit-Gale Plateau (20 total)
+- **Regions**: Southern Wilds, Azure Cloud Range, Thousand Venom Valley,
+  Sky-Spire Reach
 - **Sects**: Azure Cloud Sect (righteous), Scarlet Lotus Pavilion (demonic),
-  Five Poisons Sect (neutral/grey)
-- **Items**: 31 (13 equipment, pills, materials, treasures)
-- **Quests**: 4 (including the Oath of Fangs)
+  Five Poisons Sect (neutral/grey), Jadestep Sect Remnant (dead-but-haunted)
+- **Items**: 44 (23 equipment, pills, materials, treasures)
+- **Quests**: 6 (Kettle's Request, Study Sutra, Missing Disciple, Oath of
+  Fangs, Stormwarden's Test, Broken Terrace)
 - **Realms**: 8 (Mortal → Ascendant Immortal)
 
 ## How to Add Content (the path of least resistance)
@@ -35,7 +39,8 @@ A living checklist for what's been done and what to add next.
 - [ ] **Eastern Sea of Cloud** — pirate sects, sword-sailors, sea-dragon
 - [ ] **Western Demon Wastes** — heretical cultivators, blood-cultivation
 - [ ] **Imperial Capital** — politics, the Emperor's Hidden Guard, court intrigue
-- [ ] **Sky-Spire** — late-game vertical dungeon, Heaven Tribulation arena
+- [x] **Sky-Spire Reach** — Foundation-tier foothills + Core boss (s4)
+- [ ] **Sky-Spire True Peak** — higher than the Reach, the summit itself (Nascent Soul)
 - [ ] **Underworld of Yellow Springs** — ghost-cultivators, judges of the dead
 - [ ] **Hundred-Thousand-Mountains** — beast tide, ancient ruins
 - [ ] **Sect Conference Grounds** — neutral meeting place for sect tournaments
@@ -58,6 +63,8 @@ A living checklist for what's been done and what to add next.
 - [ ] Settle the feud between two villages
 - [ ] Avenge Old Hermit Yun's slain disciple (long arc)
 - [ ] Climb the Sky-Spire (capstone, requires Nascent Soul)
+- [x] The Stormwarden's Test — storm-crow feather from Thunderhead Ridge (s4)
+- [x] The Broken Terrace — slay the Heart-Devouring Gale Tiger for Mingshu (s4)
 
 ### 4. Enemy Bestiary Expansion
 - [ ] Spirit beasts at every realm tier (one per realm, scaling)
@@ -119,6 +126,25 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-22 (session 4)** — "The Sky-Spire Reach." A Foundation-tier
+  region to give the realm ladder somewhere to go. Six locations:
+  Cloudroot Pass (gated by Stormwarden Gao), Hanging Terraces of Jadestep
+  (ruined sect, haunted by Patriarch Mingshu's ghost), Thunderhead Ridge
+  (lightning + rival-sect disciples), Skyweaver's Cloister (the last
+  living Jadestep teacher, the Old Dog), Cragspine Shrine (a qi-9
+  cultivation spot with a Sky-Qi Crystal on the altar), and Spirit-Gale
+  Plateau (the boss arena). 5 new enemies including the Core-Formation
+  Heart-Devouring Gale Tiger boss. 3 NPCs. 5 techniques — including the
+  heaven-rank Thundering Palm of the Nine Heavens (damage 24, stun 2).
+  13 new items: Skybreaker Blade (9 ATK, on-hit stun, Foundation-gated),
+  Stormcloud Sash, Broken Terrace Medallion, Storm-Warded Talisman,
+  Thundergold Pill (80 qi), Ironbark Pill (def_buff — new pill effect),
+  Sky-Qi Crystal (120 qi), Cloudroot Spirit Stone, Storm-Crow Feather,
+  Ape Knucklebone, Jadestep Shard, Gale Tiger Fang, Heart-Devouring Hide.
+  2 quests (Stormwarden's Test, Broken Terrace — big rewards, sect-worthy).
+  1 sect stub (Jadestep Remnant). 4 lore entries, 4 events.
+  Engine: added `def_buff` pill effect (symmetric with `atk_buff`).
+  Connected: north from Azure Cloud Foothills.
 - **2026-04-22 (session 3)** — "The First Blade." Equipment system end-to-end:
   three slots (weapon / robe / accessory), `equip` / `unequip` / `gear` commands,
   status screen shows base+gear breakdown, prompt HP bar reflects gear HP.

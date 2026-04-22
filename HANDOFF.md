@@ -124,6 +124,196 @@ validated, committed.
 
 # Session log
 
+## Session 4 — 2026-04-22 — "The Sky-Spire Reach"
+
+### What I built
+- **A whole Foundation-tier region** — six locations that climb above the
+  cloud line, north from the existing Azure Cloud Foothills. The realm
+  ladder finally has somewhere to go above Qi Condensation.
+  - **Cloudroot Pass** — gatekeeper post at the cloud line.
+  - **Hanging Terraces of Jadestep** — ruined sect, haunted by its own
+    Patriarch's ghost. Cracked prayer bells, crane-and-peak crest worn
+    smooth by 400 years of wind. Medallion on the ground.
+  - **Thunderhead Ridge** — knife-thin ridge between two abysses,
+    lightning walking sideways through cloud. Home of the Storm-Crow
+    Spirit and a Heavenly Sword Tower disciple who shouldn't be here.
+  - **Skyweaver's Cloister** — hermitage of the Old Dog of Jadestep, the
+    sect's last living master. Nine sword-scars on the wall; a tenth
+    halfway finished.
+  - **Cragspine Shrine** — qi-density 9 cultivation spot with a
+    Sky-Qi Crystal on the altar (+120 qi). Event grants +20 qi on
+    visit with 0.5 chance.
+  - **Spirit-Gale Plateau** — the summit's arena, home of the
+    **Heart-Devouring Gale Tiger** (Core Formation: 200 HP / 22 ATK /
+    10 DEF / 12 SPD, three techniques including Five Poisons Palm).
+- **5 new enemies** — cloudstep_ape, terrace_revenant, storm_crow_spirit,
+  stormcaller_disciple, heart_devouring_gale_tiger (boss). Foundation
+  tier across the board; boss is Core Formation. Drops include the
+  rare Skybreaker Blade at 35% from the boss, 7% from Stormcallers.
+- **3 NPCs** — Stormwarden Gao (gatekeeper quest-giver, neutral,
+  righteous-adjacent — teaches Ironbark Stance, sells Thundergold Pill
+  and Storm-Warded Talisman); Ghost of Patriarch Mingshu (the unquiet
+  founder, gives the boss quest, teaches Thundering Palm of the Nine
+  Heavens as post-quest reward — but the quest already gives the palm
+  implicitly by `talked_to` tracking); The Old Dog of Jadestep (last
+  living teacher, teaches Cloudtread Footwork and Skyweaver's Veil,
+  sells Ironbark Pill and Cloud Silk Robe).
+- **5 new techniques** — Thundering Palm of the Nine Heavens (heaven
+  rank, 24 dmg + stun 2, 18 qi, Foundation-gated, 180 stones);
+  Cloudtread Footwork (buff_def 3, 6 qi); Ironbark Stance (buff_def 5,
+  8 qi, Foundation-gated); Skyweaver's Veil (stun 2 + 3 dmg, 12 qi,
+  Foundation-gated); Stormcall Bolt (bleed 3 + 15 dmg — enemy-only for
+  now, sits in storm-spirit / disciple loadouts).
+- **13 new items.** Weapons: Skybreaker Blade (9 ATK, +1 SPD, on-hit
+  stun 1, Foundation-gated, 420 stones). Robes: Stormcloud Sash (+5 DEF,
+  +15 HP, +1 SPD, Foundation-gated, 320 stones). Accessories: Broken
+  Terrace Medallion (+2 DEF, +10 HP; free drop on terrace floor),
+  Storm-Warded Talisman (+3 DEF, +2 SPD, 240 stones). Pills:
+  Thundergold Pill (80 qi, 120 stones), Ironbark Pill (**new pill
+  effect** `def_buff`: permanent +1 DEF, 110 stones). Treasure: Sky-Qi
+  Crystal (120 qi, 220 stones). Materials: Cloudroot Spirit Stone (75
+  stones), Storm-Crow Feather (30), Ape Knucklebone (22), Jadestep
+  Shard (45), Gale Tiger Fang (150, quest item), Heart-Devouring Hide
+  (180).
+- **2 quests.**
+  - *The Stormwarden's Test* — visit Thunderhead Ridge → defeat
+    Storm-Crow Spirit → collect a Storm-Crow Feather → return to Gao.
+    Reward: 180 stones, storm_warded_talisman, thundergold_pill, 110 XP.
+  - *The Broken Terrace* — defeat the Gale Tiger → collect its fang →
+    return to Mingshu's ghost. Reward: 400 stones, Skybreaker Blade,
+    Stormcloud Sash, Sky-Qi Crystal, 300 XP. The big-arc reward: a
+    full Foundation-tier loadout plus a realm-advancing 120-qi crystal.
+- **4 lore entries** — Why the Sky-Spire Will Not Be Climbed (myth),
+  The Fall of the Jadestep Sect (history, grants on bell-toll event at
+  terraces), Song of the Stormwarden (poem), The Eight-Pointed Star
+  (history, Heavenly Sword Tower lore — seeds a future sect).
+- **4 events** — high_wind_cuts_through, terrace_bell_tolls (grants
+  lore), lightning_walks_the_ridge, sky_qi_descends (+20 qi at shrine).
+- **1 sect stub** — Jadestep Sect (Remnant) — HQ at Skyweaver's
+  Cloister, elder is the Old Dog, signature techniques are the three
+  Jadestep arts. Dead sect but referenced by `sect` field on the
+  cloister and by NPC faction.
+- **Engine — one small addition.** Added `def_buff` pill effect
+  (permanent +1 DEF) symmetric with the existing `atk_buff`. Three
+  lines in `combat.py:_apply_pill`. Documented in SCHEMAS.md.
+- **Connectivity.** Added `north -> cloudroot_pass` to
+  `azure_cloud_foothills`. The region ladders up from there:
+  pass → terraces → ridge → plateau, with side branches east
+  (cloister) and west (shrine) off the terraces and ridge respectively.
+
+### Current state
+- Validator: **20 loc / 15 npc / 12 enemy / 20 tech / 44 item / 4 sect /
+  6 quest / 14 event / 11 lore**. All references resolve.
+- Smoke-tested: traversal through all 6 locations, NPC dialogue for
+  all 3 new NPCs, quest auto-accept on talk, quest step auto-progress
+  on visit (`[The Stormwarden's Test] step complete — next: defeat
+  storm_crow_spirit`), `cultivate` at qi_density 9 (36 qi per sit —
+  nice jump vs 5–15 earlier), `take sky_qi_crystal`, `inventory`
+  round-trip, Foundation-gated `equip skybreaker_blade` refusal at
+  Qi Condensation with proper prose ("Your foundation is too thin..."),
+  `use ironbark_pill` → "+1 DEF (permanent)" with stats updated,
+  `gear` display, `save`/`load` with mid-session save file.
+- A mortal-realm test character fought a Terrace Revenant and lost
+  cleanly (woke at 1 HP, as expected). Foundation-tier enemies are
+  correctly *tough* — this is not a region for under-leveled players.
+- Old save format (Session 3 and earlier) still loads — no new Player
+  fields. The new pill effect just dispatches on `item["effect"]`.
+
+### What I'd do next if I had another hour
+1. **Forging at the Skyweaver's Cloister or a new smith.** The region
+   has a pile of materials now (gale-tiger fang *and* hide, storm
+   feathers, spirit stones, ape bones, jadestep shards, plus all
+   session-2 materials). A `forge <recipe>` command that consumes
+   materials and produces pre-specified equipment would be the
+   logical next system. Recipes in JSON under `content/recipes/`.
+   Candidate: 3× storm_feather + 1× cloudroot_spirit_stone → Stormcloud
+   Sash; 1× gale_tiger_fang + 2× cloudroot_spirit_stone + 1× jadestep_shard
+   → Skybreaker Blade. One new command, one JSON loader branch, one
+   validator check.
+2. **Reputation finally doing something.** Third session flagging
+   this. Specifically: quest completion should adjust rep; NPC
+   dialogue should branch on it; sect-controlled locations should
+   refuse entry below a threshold. The `reputation` field exists
+   since session 1 but is never *written to*.
+3. **The other boss: `heart_devouring_gale_tiger`** exists and works
+   mechanically, but a core-formation player has no reason to return
+   to the Reach once Mingshu is laid to rest. A post-boss location
+   unlock — maybe an *eastern* exit from the plateau that appears only
+   after the fang has been delivered, leading to the true Sky-Spire
+   above — would give the region a second life.
+4. **Faction-war state.** The Stormcaller Disciple name-drops the
+   Heavenly Sword Tower; that's a whole righteous-militant sect seeded
+   for a future session. A small state machine that tracks whether the
+   Tower and Azure Cloud are currently feuding (triggered by the
+   player's actions in the Reach) would give the world reactivity.
+
+### Things I noticed but didn't fix
+- **Stormcall Bolt is enemy-only.** It has `learn_cost: 999` so no
+  teacher offers it. A reasonable future move: give Stormwarden Gao
+  a second teaching slot, or introduce a Heavenly Sword NPC who
+  teaches it after a rep gate.
+- **`terrace_revenant` has `techniques: ["bleeding_pincers", "icy_bite"]`.**
+  Bleeding_pincers fits. Icy_bite is slightly weird thematic-wise
+  (ghost in stone ruins, no cold element on anyone else here), but
+  it's close enough — a cold ghostly swordstroke reads. If someone
+  finds it dissonant, swap for a new technique.
+- **Ghost of Patriarch Mingshu** has `teaches: ["thundering_nine_heavens_palm"]`,
+  but *also* `gives_quest` — and the quest reward doesn't include the
+  palm itself. The palm is learnable from Mingshu post-talk via
+  `learn thundering_nine_heavens_palm`, gated by Foundation realm
+  and 180 stones. A player might expect completing the quest to also
+  teach them the technique as part of the reward. Kept as-is — the
+  ghost says "only then will I teach" which matches the learn path
+  (the quest makes him willing; the learn costs the stones). Re-read
+  his dialogue to make sure it's not misleading.
+- **Sky-Spire True Peak isn't real** — the plateau's prose says "the
+  true Sky-Spire rises — a single black needle of peak no mortal hand
+  has ever climbed". That's a promise. Added as a roadmap item.
+- **Heart-Devouring Gale Tiger uses `five_poisons_palm` as a technique.**
+  That's thematically weird (it's a beast, not a Five Poisons
+  cultivator). Narratively I'm hand-waving it as "a spirit-beast
+  imitating any art it has seen" — fine for now, but worth a custom
+  beast technique someday (e.g. "gale_tiger_roar" with stun+bleed).
+- **Storm-Crow Spirit's drop table is generous** — 70% storm_feather,
+  50% spirit stone, 20% thundergold pill, plus its 1.0 chance of 85
+  XP. Storm-crow farming for feathers will be very efficient. Kept
+  for now; the ridge is dangerous enough to self-regulate.
+- **No first_visit_text on Skyweaver's Cloister or Cragspine Shrine** —
+  there is one on the Cloister in the entering-prose sense, but no
+  `first_visit_text` field per se. I put one on 3 of the 6 (pass,
+  terraces, plateau) where atmosphere pays biggest.
+- **Sect stub for Jadestep** is mostly cosmetic — it isn't used by
+  any faction mechanic yet (reputation still dormant).
+
+### Don'ts (lessons learned)
+- Don't forget the `_apply_pill` is called in *two* places: combat
+  (with `status_list`) and outside combat (from `cmd_use`, no list).
+  Session 2 flagged this; I nearly tripped on it again when adding
+  `def_buff`. The new branch is simple enough it doesn't need the
+  list, but remember to think about status-list interaction when
+  adding future pill effects.
+- Don't forget `requires_realm` on enemy drops is different from
+  `requires_realm` on items. The Skybreaker Blade has a realm gate;
+  dropping it off a Stormcaller Disciple is fine — the player just
+  can't *equip* it until Foundation. That creates a nice "I have
+  the blade but can't use it" moment as motivation to break through.
+  Worked perfectly in testing.
+- Don't stack too many active enemies on a single Foundation-tier
+  location. Thunderhead Ridge has two (storm-crow, stormcaller); the
+  terraces have two (ape, revenant). Any more and the player can't
+  engage one without the visible list being wall-of-text. The current
+  engine doesn't support multi-enemy combat anyway; seeing two enemies
+  in the list when only one can be fought at a time reads as "pick
+  your fight" which is fine.
+- Don't tie a quest's step to a `talk` with the giver and then forget
+  that the auto-offer on talk is already firing. I double-checked:
+  Broken Terrace's step 3 is `talk ghost_of_patriarch_mingshu` after
+  the collect, which completes the quest on the return visit — this
+  works because the quest is progressed *after* the `talk`, not
+  during. Tested the pattern in Oath of Fangs already; same shape.
+
+---
+
 ## Session 3 — 2026-04-22 — "The First Blade"
 
 ### What I built

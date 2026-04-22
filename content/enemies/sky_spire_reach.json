@@ -1,0 +1,78 @@
+[
+  {
+    "id": "cloudstep_ape",
+    "name": "Cloudstep Ape",
+    "description": "A great grey ape the size of two men, with long arms that carry it from ledge to ledge in a gliding bound. Its fur smells of wet stone and its yellow eyes are patient as weather.",
+    "realm": "foundation_establishment",
+    "hp": 95, "atk": 14, "def": 6, "spd": 9,
+    "techniques": ["wild_swing"],
+    "drops": [
+      { "item": "cloudroot_spirit_stone", "chance": 0.7 },
+      { "item": "spirit_stone_pouch", "chance": 0.5 },
+      { "item": "ape_knucklebone", "chance": 0.4 }
+    ],
+    "xp": 65,
+    "tags": ["beast", "sky_spire"]
+  },
+  {
+    "id": "terrace_revenant",
+    "name": "Terrace Revenant",
+    "description": "The shape of a disciple in cracked jade armor, kneeling — until it is not. Its face has been scoured smooth by four hundred years of wind. The blade it lifts is all light and no steel.",
+    "realm": "foundation_establishment",
+    "hp": 85, "atk": 13, "def": 7, "spd": 8,
+    "techniques": ["bleeding_pincers", "icy_bite"],
+    "drops": [
+      { "item": "spirit_stone_pouch", "chance": 0.7 },
+      { "item": "jadestep_shard", "chance": 0.5 },
+      { "item": "broken_terrace_medallion", "chance": 0.05 }
+    ],
+    "xp": 70,
+    "tags": ["undead", "cultivator", "sky_spire"]
+  },
+  {
+    "id": "storm_crow_spirit",
+    "name": "Storm-Crow Spirit",
+    "description": "A crow the size of a horse, feathered in slate and silver. Where its shadow passes, the stone blackens and smokes. When it cries, distant thunder answers.",
+    "realm": "foundation_establishment",
+    "hp": 110, "atk": 15, "def": 5, "spd": 13,
+    "techniques": ["stormcall_bolt"],
+    "drops": [
+      { "item": "storm_feather", "chance": 0.7 },
+      { "item": "cloudroot_spirit_stone", "chance": 0.5 },
+      { "item": "thundergold_pill", "chance": 0.2 }
+    ],
+    "xp": 85,
+    "tags": ["beast", "spirit", "storm", "sky_spire"]
+  },
+  {
+    "id": "stormcaller_disciple",
+    "name": "Stormcaller Disciple",
+    "description": "A lean swordsman in a dark mantle lined with silver thread. Ball-lightning walks the length of his blade with the hush of a well-kept secret. The brand on his brow is the eight-pointed star of the Heavenly Sword Tower — they are not welcome here either.",
+    "realm": "foundation_establishment",
+    "hp": 90, "atk": 16, "def": 6, "spd": 11,
+    "techniques": ["stormcall_bolt", "wild_swing"],
+    "drops": [
+      { "item": "spirit_stone_pouch", "chance": 0.8 },
+      { "item": "storm_feather", "chance": 0.3 },
+      { "item": "skybreaker_blade", "chance": 0.07 }
+    ],
+    "xp": 80,
+    "tags": ["human", "cultivator", "sky_spire"]
+  },
+  {
+    "id": "heart_devouring_gale_tiger",
+    "name": "Heart-Devouring Gale Tiger",
+    "description": "A tiger the color of moving cloud, four eyes open, four more closed along its flanks. It does not roar; it inhales, and the air before its jaws goes still. Patriarch Mingshu's last words were 'don't' — the wind took them before he could finish.",
+    "realm": "core_formation",
+    "hp": 200, "atk": 22, "def": 10, "spd": 12,
+    "techniques": ["five_poisons_palm", "bleeding_pincers", "stormcall_bolt"],
+    "drops": [
+      { "item": "gale_tiger_fang", "chance": 1.0 },
+      { "item": "heart_devouring_hide", "chance": 0.9 },
+      { "item": "thundergold_pill", "chance": 0.6 },
+      { "item": "skybreaker_blade", "chance": 0.35 }
+    ],
+    "xp": 220,
+    "tags": ["beast", "boss", "spirit", "sky_spire"]
+  }
+]

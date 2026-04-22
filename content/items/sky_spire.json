@@ -1,0 +1,141 @@
+[
+  {
+    "id": "skybreaker_blade",
+    "name": "Skybreaker Blade",
+    "type": "weapon",
+    "slot": "weapon",
+    "atk_bonus": 9,
+    "spd_bonus": 1,
+    "on_hit_effect": "stun",
+    "on_hit_power": 1,
+    "requires_realm": "foundation_establishment",
+    "description": "A heavy straight sword of grey meteor-iron. Storm-quenched, fuller inlaid with a running line of silver that flickers when the wielder's pulse quickens. When it strikes true, the air itself briefly forgets which way to fall.",
+    "value": 420,
+    "tags": ["weapon", "spirit", "rare", "sky_spire"]
+  },
+  {
+    "id": "stormcloud_sash",
+    "name": "Stormcloud Sash",
+    "type": "armor",
+    "slot": "robe",
+    "def_bonus": 5,
+    "hp_bonus": 15,
+    "spd_bonus": 1,
+    "requires_realm": "foundation_establishment",
+    "description": "A wide grey sash stitched with woven storm-crow feathers. Blows that would shatter ribs drop a hand's span short, as if the cloth were remembering being weather.",
+    "value": 320,
+    "tags": ["armor", "spirit", "sky_spire"]
+  },
+  {
+    "id": "broken_terrace_medallion",
+    "name": "Broken Terrace Medallion",
+    "type": "accessory",
+    "slot": "accessory",
+    "def_bonus": 2,
+    "hp_bonus": 10,
+    "description": "A half-disc of jade, broken cleanly along a line of old qi. The Jadestep crest — crane over peak — survives on one half; the other belongs to a cultivator four hundred years dead. Warm in the palm.",
+    "value": 180,
+    "tags": ["accessory", "spirit", "sky_spire"]
+  },
+  {
+    "id": "storm_warded_talisman",
+    "name": "Storm-Warded Talisman",
+    "type": "accessory",
+    "slot": "accessory",
+    "def_bonus": 3,
+    "spd_bonus": 2,
+    "description": "A slim bronze plaque inscribed with the eight-character Stormwarden ward. The etching still smells faintly of ozone; the charm hums in the pocket when lightning is close.",
+    "value": 240,
+    "tags": ["accessory", "sky_spire"]
+  },
+  {
+    "id": "thundergold_pill",
+    "name": "Thundergold Pill",
+    "type": "pill",
+    "description": "A gold-brown pill veined with hair-thin silver lines. It tastes like copper and summer. Floods the meridians with a sudden, jagged tide of qi.",
+    "effect": "qi_gain",
+    "power": 80,
+    "value": 120,
+    "tags": ["consumable", "rare", "sky_spire"]
+  },
+  {
+    "id": "ironbark_pill",
+    "name": "Ironbark Pill",
+    "type": "pill",
+    "description": "A dense dark-brown pill pressed from ironbark resin and crushed ape-knucklebone. Hardens the skin and the will together. Permanent +1 DEF.",
+    "effect": "def_buff",
+    "power": 1,
+    "value": 110,
+    "tags": ["consumable", "rare", "sky_spire"]
+  },
+  {
+    "id": "sky_qi_crystal",
+    "name": "Sky-Qi Crystal",
+    "type": "treasure",
+    "description": "A shard of crystal that was never cut — only grown in the high air. It is cold to the touch and faintly luminous; holding it is like breathing at twice the altitude.",
+    "effect": "qi_gain",
+    "power": 120,
+    "value": 220,
+    "tags": ["treasure", "rare", "sky_spire"]
+  },
+  {
+    "id": "cloudroot_spirit_stone",
+    "name": "Cloudroot Spirit Stone",
+    "type": "treasure",
+    "description": "A fist-sized chunk of qi-dense stone the colour of stormlight. Heavier than it looks; every cultivator in every sect would take one as payment without bargaining.",
+    "effect": null,
+    "power": 0,
+    "value": 75,
+    "tags": ["currency", "rare", "sky_spire"]
+  },
+  {
+    "id": "storm_feather",
+    "name": "Storm-Crow Feather",
+    "type": "material",
+    "description": "A long slate-and-silver feather. It does not lie flat — the quill remembers wind and the wind remembers back.",
+    "effect": null,
+    "power": 0,
+    "value": 30,
+    "tags": ["material", "sky_spire"]
+  },
+  {
+    "id": "ape_knucklebone",
+    "name": "Cloudstep Ape Knucklebone",
+    "type": "material",
+    "description": "A dense white bone, warm in the hand. Alchemists pay for it; forge-masters pay more.",
+    "effect": null,
+    "power": 0,
+    "value": 22,
+    "tags": ["material", "sky_spire"]
+  },
+  {
+    "id": "jadestep_shard",
+    "name": "Jadestep Sword-Shard",
+    "type": "material",
+    "description": "A broken fragment of a revenant's spirit-blade. It cuts nothing; it only remembers having cut. Collectors of old-sect relics pay handsomely.",
+    "effect": null,
+    "power": 0,
+    "value": 45,
+    "tags": ["material", "rare", "sky_spire"]
+  },
+  {
+    "id": "gale_tiger_fang",
+    "name": "Gale Tiger Fang",
+    "type": "material",
+    "description": "A long curved fang still cold with stolen wind. It is the only part of the beast that did not dissolve into cloud. Patriarch Mingshu asked for it by name.",
+    "effect": null,
+    "power": 0,
+    "value": 150,
+    "tags": ["material", "rare", "quest", "sky_spire"]
+  },
+  {
+    "id": "heart_devouring_hide",
+    "name": "Heart-Devouring Hide",
+    "type": "material",
+    "description": "A dense grey pelt still exhaling a thin, cold mist. Sect forge-masters can stitch it into robes that laugh at bladework.",
+    "effect": null,
+    "power": 0,
+    "value": 180,
+    "tags": ["material", "rare", "sky_spire"]
+  }
+]

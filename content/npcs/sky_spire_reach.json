@@ -1,0 +1,50 @@
+[
+  {
+    "id": "stormwarden_gao",
+    "name": "Stormwarden Gao",
+    "title": "Keeper of Cloudroot",
+    "description": "A spare, grey-haired woman in waxed travelling robes. A long iron-bound staff leans at her shoulder; a small bronze compass sways at her hip though the needle keeps no north up here. Her eyes are the colour of clean rain.",
+    "dialogue": [
+      "Hold a moment, cultivator. I do not refuse the road — I only weigh who walks it.",
+      "Up past the terraces, the ridge has become a place of crossings. Storm-crows nest where they should not. A Heavenly Sword disciple was seen on the pass last month; he did not come down.",
+      "Before I open the pass, bring me proof that you have not come here only to die. A storm-crow's feather, say. Survive the ridge, and we will speak of the peak.",
+      "The Sky-Spire is not a mountain you climb. It is a mountain that climbs you. Forget this, and every step is your last."
+    ],
+    "teaches": ["ironbark_stance"],
+    "sells": ["thundergold_pill", "storm_warded_talisman"],
+    "gives_quest": "the_stormwardens_test",
+    "faction": "azure_cloud_sect",
+    "disposition": "neutral"
+  },
+  {
+    "id": "ghost_of_patriarch_mingshu",
+    "name": "Ghost of Patriarch Mingshu",
+    "title": "Last of the Jadestep",
+    "description": "The translucent shape of a tall man in a crane-and-peak robe, his beard still un-combed four centuries after his death. He does not quite stand on the stone; the wind passes through his sleeves without lifting them. When he turns to face you, the flagstones beneath show no shadow at all.",
+    "dialogue": [
+      "Nineteen of us stood here the morning the tiger came. I — was the twentieth. Had I stood with my disciples, there might have been twenty.",
+      "The beast is not a beast. It is a hunger with four eyes. The sect thought it could bind the hunger. We were wrong by exactly one student.",
+      "If you would close what we left open, bring me the fang of the thing that ate my hall. I cannot rest until it is set on the last stone here. Then, and only then, will I teach what I could not teach in life.",
+      "Do not pity me. Pity the student who drew the tenth scar on the Skyweaver's wall — and did not live to finish it."
+    ],
+    "teaches": ["thundering_nine_heavens_palm"],
+    "gives_quest": "the_broken_terrace",
+    "disposition": "friendly"
+  },
+  {
+    "id": "old_dog_of_jadestep",
+    "name": "The Old Dog of Jadestep",
+    "title": "Last Teacher of a Dead Sect",
+    "description": "A thin old man with a grin that seems to belong to a younger face. He wears a patched grey robe with one unmended tear over the heart. He is pouring tea for someone who is not there — and when he looks up, he pours a second cup for you without asking.",
+    "dialogue": [
+      "Sit, sit. The cushion is older than your grandfather's grandfather; it will not mind one more bony youngster.",
+      "They call me 'Old Dog' because I outlived everyone with a prettier name. When you live long enough, cultivator, fashion forgives you.",
+      "The nine scars on the wall were my students, each a senior brother to the next. The tenth I could not finish. Finish it for me, if you have wind enough in your chest.",
+      "Footwork before the sword, breath before the footwork, stillness before the breath. Try it tomorrow; you will be worse. Try it again; you will be worse still. On the fortieth day, be surprised."
+    ],
+    "teaches": ["cloudtread_footwork", "skyweavers_veil"],
+    "sells": ["ironbark_pill", "cloud_silk_robe"],
+    "faction": "jadestep_remnant",
+    "disposition": "friendly"
+  }
+]

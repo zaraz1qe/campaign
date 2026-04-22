@@ -473,6 +473,9 @@ def _apply_pill(player: Player, item: Dict[str, Any], io,
     elif eff == "atk_buff":
         player.atk += pwr
         io.out(f"You swallow {item['name']}; +{pwr} ATK (permanent).")
+    elif eff == "def_buff":
+        player.defense += pwr
+        io.out(f"You swallow {item['name']}; +{pwr} DEF (permanent).")
     elif eff == "cleanse":
         if status_list is None:
             io.out(f"You swallow {item['name']}. A cool stillness settles in your chest.")

@@ -1,0 +1,10 @@
+{
+  "id": "jadestep_remnant",
+  "name": "Jadestep Sect (Remnant)",
+  "alignment": "righteous",
+  "headquarters": "skyweavers_cloister",
+  "description": "A sect four centuries dead, whose last living master and last unquiet founder have not yet agreed it is over. Its crest — a crane over a peak — is carved into the stones of the hanging terraces, where nineteen disciples fell in one night and the twentieth has not finished his sword-scar.",
+  "signature_techniques": ["thundering_nine_heavens_palm", "cloudtread_footwork", "skyweavers_veil"],
+  "elders": ["old_dog_of_jadestep"],
+  "rivals": []
+}

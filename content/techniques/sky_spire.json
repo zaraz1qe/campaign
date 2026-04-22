@@ -1,0 +1,67 @@
+[
+  {
+    "id": "thundering_nine_heavens_palm",
+    "name": "Thundering Palm of the Nine Heavens",
+    "type": "martial",
+    "rank": "heaven",
+    "description": "The signature art of the lost Jadestep Sect. The palm gathers the weight of nine overlapping skies and sets it down, once, on a single point. Thunder follows — sometimes the air itself; sometimes the opponent's bones.",
+    "qi_cost": 18,
+    "damage": 24,
+    "effect": "stun",
+    "effect_power": 2,
+    "requires_realm": "foundation_establishment",
+    "learn_cost": 180
+  },
+  {
+    "id": "cloudtread_footwork",
+    "name": "Cloudtread Footwork",
+    "type": "body",
+    "rank": "earth",
+    "description": "A higher octave of cloud-step. Each footfall is a small decision not to be where the blow is aimed. The body becomes cheap; the stance becomes expensive.",
+    "qi_cost": 6,
+    "damage": 0,
+    "effect": "buff_def",
+    "effect_power": 3,
+    "requires_realm": "qi_condensation",
+    "learn_cost": 70
+  },
+  {
+    "id": "ironbark_stance",
+    "name": "Ironbark Stance",
+    "type": "body",
+    "rank": "earth",
+    "description": "An old mountain-guard stance. The legs are roots, the spine is a trunk; the hands do not move until they must. A blow that lands slides off like rain down bark.",
+    "qi_cost": 8,
+    "damage": 0,
+    "effect": "buff_def",
+    "effect_power": 5,
+    "requires_realm": "foundation_establishment",
+    "learn_cost": 90
+  },
+  {
+    "id": "skyweavers_veil",
+    "name": "Skyweaver's Veil",
+    "type": "mental",
+    "rank": "earth",
+    "description": "A lattice of qi drawn across the opponent's senses like weather. For two breaths, they forget which way is up. If the caster's footwork is good, they never remember in time.",
+    "qi_cost": 12,
+    "damage": 3,
+    "effect": "stun",
+    "effect_power": 2,
+    "requires_realm": "foundation_establishment",
+    "learn_cost": 110
+  },
+  {
+    "id": "stormcall_bolt",
+    "name": "Stormcall Bolt",
+    "type": "qi",
+    "rank": "earth",
+    "description": "A bolt of pale qi wound tight as lightning and released along the length of a weapon or limb. What it does not burn, it makes bleed.",
+    "qi_cost": 10,
+    "damage": 15,
+    "effect": "bleed",
+    "effect_power": 3,
+    "requires_realm": "qi_condensation",
+    "learn_cost": 999
+  }
+]

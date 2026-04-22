@@ -100,7 +100,7 @@ Self-effects (heal/buff_atk/buff_def) always fire when the technique is used.
   "name": "Spirit Gathering Pill",
   "type": "pill",                   // pill | weapon | armor | accessory | material | treasure | manual
   "description": "A jade-green pill smelling of pine.",
-  "effect": "qi_gain",              // qi_gain | hp_heal | atk_buff | cleanse | unlock_technique | breakthrough_aid
+  "effect": "qi_gain",              // qi_gain | hp_heal | atk_buff | def_buff | cleanse | unlock_technique | breakthrough_aid
   "power": 25,
   "value": 30,                      // sell price in spirit stones
   "tags": ["consumable"],

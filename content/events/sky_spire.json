@@ -1,0 +1,30 @@
+[
+  {
+    "id": "high_wind_cuts_through",
+    "location": "cloudroot_pass",
+    "chance": 0.35,
+    "text": "A gust comes up the cliff face cold enough to taste metal. Your prayer-flag memory of the lower world rattles and lets go; for a breath, you cannot remember what any of it was for. Then the wind passes, and the pass is only stone again.",
+    "effect": {}
+  },
+  {
+    "id": "terrace_bell_tolls",
+    "location": "hanging_terraces_of_jadestep",
+    "chance": 0.3,
+    "text": "One of the cracked prayer bells on the cliff above finds the right angle of wind and rings — a single long cracked note. From nowhere in particular, a faint answering note lifts from the stones. The nineteen, you think; or the twenty.",
+    "effect": { "lore": "fall_of_jadestep" }
+  },
+  {
+    "id": "lightning_walks_the_ridge",
+    "location": "thunderhead_ridge",
+    "chance": 0.4,
+    "text": "A blue-white bolt leaps sideways from one cloud-wall to the other, just below your boots. The air rings like a struck bowl, and for a long moment the world is a negative of itself.",
+    "effect": {}
+  },
+  {
+    "id": "sky_qi_descends",
+    "location": "cragspine_shrine",
+    "chance": 0.5,
+    "text": "A column of pale qi drops slowly out of the high air and settles through the crown of your head like cool water. The shrine has been doing this, it seems, for a very long time — and will keep doing it long after you.",
+    "effect": { "qi": 20 }
+  }
+]

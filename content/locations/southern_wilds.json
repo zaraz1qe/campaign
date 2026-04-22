@@ -70,7 +70,7 @@
     "name": "Azure Cloud Foothills",
     "region": "Azure Cloud Range",
     "description": "Mist hangs in white ribbons between pines. A worn pilgrim path climbs in switchbacks toward a peak so tall it disappears into cloud. Ahead, a stone gate carved with cranes marks the outer boundary of the Azure Cloud Sect.",
-    "exits": { "south": "verdant_bamboo_sea", "south_to_market": "merchant_crossing", "up": "azure_cloud_outer_gate" },
+    "exits": { "south": "verdant_bamboo_sea", "south_to_market": "merchant_crossing", "up": "azure_cloud_outer_gate", "north": "cloudroot_pass" },
     "npcs": [],
     "enemies": ["frost_wolf"],
     "events": ["snow_petal_fall"],

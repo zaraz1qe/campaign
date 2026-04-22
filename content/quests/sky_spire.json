@@ -1,0 +1,27 @@
+[
+  {
+    "id": "the_stormwardens_test",
+    "name": "The Stormwarden's Test",
+    "giver": "stormwarden_gao",
+    "description": "Stormwarden Gao will not open the higher pass until you prove you can survive the ridge. Climb to Thunderhead Ridge, bring down a storm-crow spirit, and return with a single slate-and-silver feather.",
+    "steps": [
+      { "type": "visit", "target": "thunderhead_ridge" },
+      { "type": "defeat", "target": "storm_crow_spirit" },
+      { "type": "collect", "target": "storm_feather" },
+      { "type": "talk", "target": "stormwarden_gao" }
+    ],
+    "reward": { "spirit_stones": 180, "items": ["storm_warded_talisman", "thundergold_pill"], "xp": 110 }
+  },
+  {
+    "id": "the_broken_terrace",
+    "name": "The Broken Terrace",
+    "giver": "ghost_of_patriarch_mingshu",
+    "description": "Patriarch Mingshu's ghost cannot rest until the thing that ate his sect is put down. Climb to the Spirit-Gale Plateau, end the Heart-Devouring Gale Tiger, and bring him its fang to set upon the last unbroken flagstone of Jadestep.",
+    "steps": [
+      { "type": "defeat", "target": "heart_devouring_gale_tiger" },
+      { "type": "collect", "target": "gale_tiger_fang" },
+      { "type": "talk", "target": "ghost_of_patriarch_mingshu" }
+    ],
+    "reward": { "spirit_stones": 400, "items": ["skybreaker_blade", "stormcloud_sash", "sky_qi_crystal"], "xp": 300 }
+  }
+]
