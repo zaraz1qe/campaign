@@ -124,6 +124,125 @@ validated, committed.
 
 # Session log
 
+## Session 3 — 2026-04-22 — "The First Blade"
+
+### What I built
+- **Equipment system, end-to-end.** Three slots — `weapon`, `robe`,
+  `accessory`. Gear applies stat bonuses (`atk_bonus`, `def_bonus`,
+  `spd_bonus`, `hp_bonus`) wherever effective stats are read: the
+  prompt's HP bar, the `status` screen, every combat roll (attack,
+  technique, dodge, crit, flee). Base and gear are displayed separately
+  so the player can see where each point comes from.
+- **Weapon on-hit effects.** A weapon can carry `on_hit_effect` = one of
+  `poison` / `bleed` / `stun` with `on_hit_power`. It fires when a plain
+  attack lands (not on techniques — those carry their own effect). The
+  smoke test with Venom-Fanged Dagger killed a Bamboo Viper purely
+  through the lingering poison its own blade applied — clean.
+- **Realm gates on gear.** Equipment can require a realm (e.g. Azure
+  Cloud Sword — `foundation_establishment`, Cloud Silk Robe —
+  `qi_condensation`). Equipping refused with a matching line of prose.
+- **Engine glue.** `equip <item>`, `unequip <slot>`, `gear`/`equipment`
+  commands. Synonyms: `wield`, `wear`, `remove`. Slot-swap returns the
+  old item to inventory automatically. HP is clamped down if a
+  stat-granting robe is unequipped at full HP; an injured player is
+  never magically healed by swapping gear. Save/load preserves
+  `equipped`; pre-session-3 saves get back-filled with empty slots.
+- **Content — 13 new equipment items.**
+  - Weapons: Plain Iron Sword (+3 ATK), Bamboo Longstaff (+2 ATK, +1
+    SPD), Venom-Fanged Dagger (+4 ATK, on-hit poison 2), Jade Serpent
+    Fang Blade (+5 ATK, on-hit poison 1), Azure Cloud Sword (+6 ATK,
+    +1 DEF, +1 SPD, Foundation-gated), Frostfang Sabre (+7 ATK,
+    on-hit bleed 2, Qi-gated).
+  - Robes: Hempspun Traveler's Robe (+3 DEF, +8 HP), Cloud Silk Robe
+    (+4 DEF, +1 SPD, +12 HP, Qi-gated), Viper-Scale Sash (+3 DEF, +6
+    HP).
+  - Accessories: Jade Qi Pendant (+1 DEF, +5 HP, free starter on the
+    ground at the hermit's hut), Azure Guardian Talisman (+2 DEF, +1
+    SPD), Nine Serpents Ring (+2 ATK, on-hit poison 1), Monk's Wooden
+    Beads (+1 DEF, +4 HP).
+  - Upgraded existing: Rusty Dao Saber (+2 ATK, slot weapon),
+    Traveler's Robe (+2 DEF, +4 HP, slot robe).
+- **Placement.** Merchant Mei (plain sword, hempspun robe, jade
+  pendant, plus existing traveler robe). Huilin (bamboo longstaff,
+  monk's beads). Elder Baixu (azure cloud sword, cloud silk robe,
+  azure talisman — gated by realm). Apothecary Qi (venom-fanged
+  dagger, viper-scale sash). Oath of Fangs quest reward now includes
+  the Nine Serpents Ring — fits the arc. Rare drops: frost wolf has
+  an 8% chance to drop the Frostfang Sabre; Grey Disciple has 8%
+  for the Jade Serpent Fang Blade.
+- **Validator.** New checks for item `slot`, bonus types, on-hit
+  effect name, and realm reference.
+- **SCHEMAS.md** updated with equipment fields + an "Equipment slots"
+  engine note.
+
+### Current state
+- Validator: 14 loc / 12 npc / 7 enemy / 15 tech / **31 item** / 3 sect /
+  4 quest / 10 event / 7 lore.
+- Smoke-tested: look → status → gear → take ground pendant → equip →
+  status (shows +1 DEF / +5 HP breakdown) → unequip → status; buy flow
+  at Mei; realm-gate refusal for Azure Cloud Sword at mortal realm;
+  full combat with Venom-Fanged Dagger including on-hit poison tick;
+  save/load equipment round-trip; old-save backfill; HP-clamp on
+  gear-downsize of injured player.
+- Old save format still loads (equipped backfill).
+
+### What I'd do next if I had another hour
+1. **Forging / simple crafting.** Materials (viper fang, venom gland,
+   frost pelt, centipede shell, black lotus seed, wolf fang) now have
+   *spec* — equipment exists that could be forged from them. Add a
+   `forge <recipe>` or `brew <recipe>` at Pillmaster Lu or a new
+   Azure Cloud smith NPC. Recipes in JSON under `content/recipes/`
+   (new category → extend loader, new validator check). Session-sized.
+2. **Foundation-tier content.** The Azure Cloud Sword and Frostfang
+   Sabre are already realm-gated, but there's no Foundation-tier region
+   to *use* them in. Sky-Spire Foothills is listed in the roadmap as
+   a zone for this. One new region with 3–4 locations and a Foundation-
+   or Core-tier boss would light up the realm ladder.
+3. **Reputation that matters** (still from session-2 todo). Quests
+   should adjust rep; Five Poisons disciples stop respawning once rep
+   ≥ 2; NPC greeting lines branch. Low effort, big feel.
+4. **Equipment flavor on the `look` of shop NPCs.** Mei's stall
+   already shows prices; consider previewing bonuses inline, e.g.
+   `Plain Iron Sword — 45 stones  (+3 ATK)`. One-liner in engine.
+
+### Things I noticed but didn't fix
+- **Equipment swap mid-combat isn't supported.** Combat snapshots
+  `p_gear_*` once at the start of the fight. Gear swap from the item
+  menu would need a re-snapshot. Not worth doing unless we add an
+  in-combat `swap` action; for now, pills remain the only in-fight
+  item interaction.
+- **Inventory doesn't mark equipped items** — but since equip *moves*
+  the item out of inventory and into `equipped`, the UX is consistent:
+  you see it under `gear` only. Some players might want to see
+  equipped gear in inventory with a (E) marker. Debatable.
+- **`atk_buff` pill now stacks with gear ATK cleanly**, since the pill
+  modifies base `player.atk` and gear is read separately. Verified in
+  the stat line prose.
+- **On-hit effect only fires on normal attacks that land.** A
+  technique-and-weapon combo doesn't double-apply — techniques carry
+  their own effect and skip the weapon rider, matching the intent.
+- **Bandit scout drops `rusty_dao` at 30%.** That's a free +2 ATK
+  equip after one fight — early game may be slightly easier now.
+  Kept as-is; it's welcome power for a new character.
+- **No way to drop items** yet (still on the roadmap). Weapons you
+  swap out accumulate forever.
+
+### Don'ts (lessons learned)
+- Don't read `player.atk / defense / spd / max_hp` directly in combat
+  code — always go through the effective accessors (`eff_atk(world)`
+  etc.) or the snapshot variables, or gear bonuses silently go
+  missing. Three places in combat.py were the whole-file pattern to
+  update.
+- Don't store equipped items as `None` in a `Dict[str, Optional[str]]`
+  — `asdict` round-trips dicts but `None` vs `""` trips up field
+  defaults and from_json. Used `""` as the empty sentinel; simpler.
+- Don't forget `cmd_status` — the status screen is how the player
+  first *sees* that equipment is a thing. A raw `ATK/DEF/SPD: 8/4/6`
+  line would hide where the points came from; the base+gear split is
+  why equipment *reads* as a system instead of a stat bump.
+
+---
+
 ## Session 2 — 2026-04-22 — "Venom in the Veins"
 
 ### What I built

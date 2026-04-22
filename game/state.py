@@ -1,8 +1,11 @@
 """Mutable player state. Pure data — methods only mutate self."""
 from __future__ import annotations
 from dataclasses import dataclass, field, asdict
-from typing import Dict, List, Set, Any
+from typing import Dict, List, Set, Any, Optional
 import json
+
+
+EQUIP_SLOTS = ("weapon", "robe", "accessory")
 
 
 @dataclass
@@ -41,6 +44,11 @@ class Player:
     # Reputation per sect
     reputation: Dict[str, int] = field(default_factory=dict)
 
+    # Equipment — slot -> item_id (empty string = nothing equipped)
+    equipped: Dict[str, str] = field(
+        default_factory=lambda: {s: "" for s in EQUIP_SLOTS}
+    )
+
     # ------------------------------------------------------------------
     def add_item(self, item_id: str, count: int = 1) -> None:
         self.inventory[item_id] = self.inventory.get(item_id, 0) + count
@@ -62,6 +70,37 @@ class Player:
         self.reputation[sect_id] = self.reputation.get(sect_id, 0) + delta
 
     # ------------------------------------------------------------------
+    # Equipment helpers. Bonuses are always computed from `world` so the
+    # player's stored stats stay as their *base* values.
+    def gear_bonuses(self, world: Dict[str, Any]) -> Dict[str, int]:
+        out = {"atk": 0, "def": 0, "spd": 0, "hp": 0}
+        for iid in self.equipped.values():
+            if not iid:
+                continue
+            it = world.get("items", {}).get(iid, {})
+            for k in out:
+                out[k] += int(it.get(f"{k}_bonus", 0) or 0)
+        return out
+
+    def eff_max_hp(self, world: Dict[str, Any]) -> int:
+        return self.max_hp + self.gear_bonuses(world)["hp"]
+
+    def eff_atk(self, world: Dict[str, Any]) -> int:
+        return self.atk + self.gear_bonuses(world)["atk"]
+
+    def eff_def(self, world: Dict[str, Any]) -> int:
+        return self.defense + self.gear_bonuses(world)["def"]
+
+    def eff_spd(self, world: Dict[str, Any]) -> int:
+        return self.spd + self.gear_bonuses(world)["spd"]
+
+    def weapon(self, world: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        wid = self.equipped.get("weapon", "")
+        if not wid:
+            return None
+        return world.get("items", {}).get(wid)
+
+    # ------------------------------------------------------------------
     def to_json(self) -> str:
         d = asdict(self)
         d["visited"] = sorted(self.visited)
@@ -77,4 +116,7 @@ class Player:
         d["known_lore"] = set(d.get("known_lore", []))
         d["completed_quests"] = set(d.get("completed_quests", []))
         d["talked_to"] = set(d.get("talked_to", []))
+        # Backfill equipment for pre-session-3 saves.
+        eq = d.get("equipped") or {}
+        d["equipped"] = {s: eq.get(s, "") for s in EQUIP_SLOTS}
         return cls(**d)

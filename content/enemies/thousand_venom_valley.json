@@ -23,7 +23,8 @@
     "drops": [
       { "item": "venom_gland", "chance": 0.6 },
       { "item": "spirit_stone_pouch", "chance": 0.5 },
-      { "item": "nine_serpents_pill", "chance": 0.15 }
+      { "item": "nine_serpents_pill", "chance": 0.15 },
+      { "item": "jade_serpent_fang_blade", "chance": 0.08 }
     ],
     "xp": 34,
     "tags": ["human", "cultivator", "five_poisons"]

@@ -8,7 +8,7 @@ import textwrap
 import shlex
 
 from . import loader, cultivation, combat, quests
-from .state import Player
+from .state import Player, EQUIP_SLOTS
 
 
 SAVE_DIR = Path(__file__).resolve().parent.parent / "saves"
@@ -79,6 +79,9 @@ class Game:
           learn <technique>               learn a known technique (if NPC teaches)
           buy <item>                      buy an item from a vendor here
           use <item>                      use a pill from inventory
+          equip <item>                    equip a weapon / robe / accessory
+          unequip <slot>                  remove what's in a slot
+          gear                            list what you have equipped
           read <lore>                     read a lore entry you've discovered
           inventory  (i)                  list possessions
           techniques (t)                  list martial arts known
@@ -366,6 +369,111 @@ class Game:
         combat._apply_pill(self.player, it, self.io)
         self.player.remove_item(iid, 1)
 
+    # ------------------------------------------------------------------
+    def _resolve_item_by_query(self, q: str) -> Optional[str]:
+        """Match an item id from inventory by id or by display name."""
+        if q in self.player.inventory:
+            return q
+        for cand in self.player.inventory:
+            cname = self.world["items"].get(cand, {}).get("name", "").lower().replace(" ", "_")
+            if cname == q:
+                return cand
+        return None
+
+    def cmd_equip(self, arg: str) -> None:
+        if not arg:
+            self.out("Equip what?")
+            return
+        q = arg.strip().lower().replace(" ", "_")
+        iid = self._resolve_item_by_query(q)
+        if not iid:
+            self.out("You have no such item.")
+            return
+        it = self.world["items"].get(iid, {})
+        slot = it.get("slot")
+        if slot not in EQUIP_SLOTS:
+            self.out(f"{it.get('name', iid)} cannot be equipped.")
+            return
+        req = it.get("requires_realm")
+        if req and not cultivation.realm_meets(self.world, self.player, req):
+            need = self.world["realms"].get(req, {}).get("name", req)
+            self.out(f"Your foundation is too thin. {it['name']} requires: {need}.")
+            return
+        # Swap: return current to inventory, equip new.
+        cur = self.player.equipped.get(slot, "")
+        if cur == iid:
+            self.out(f"{it.get('name', iid)} is already equipped.")
+            return
+        if cur:
+            self.player.add_item(cur, 1)
+            cur_name = self.world["items"].get(cur, {}).get("name", cur)
+            self.out(f"You stow {cur_name}.")
+        self.player.remove_item(iid, 1)
+        self.player.equipped[slot] = iid
+        # HP stays absolute; new max may raise or keep it.
+        new_max = self.player.eff_max_hp(self.world)
+        if self.player.hp > new_max:
+            self.player.hp = new_max
+        self.out(f"You equip {it['name']}. ({slot})")
+        self._describe_gear_bonuses(it)
+
+    def cmd_unequip(self, arg: str) -> None:
+        slot = arg.strip().lower()
+        if not slot:
+            self.out(f"Unequip which slot? ({', '.join(EQUIP_SLOTS)})")
+            return
+        if slot not in EQUIP_SLOTS:
+            self.out(f"No such slot '{slot}'.")
+            return
+        cur = self.player.equipped.get(slot, "")
+        if not cur:
+            self.out(f"Your {slot} slot is already empty.")
+            return
+        self.player.equipped[slot] = ""
+        self.player.add_item(cur, 1)
+        new_max = self.player.eff_max_hp(self.world)
+        if self.player.hp > new_max:
+            self.player.hp = new_max
+        name = self.world["items"].get(cur, {}).get("name", cur)
+        self.out(f"You unequip {name}.")
+
+    def cmd_gear(self, _arg: str) -> None:
+        self.out("Equipped:")
+        any_gear = False
+        for slot in EQUIP_SLOTS:
+            iid = self.player.equipped.get(slot, "")
+            if not iid:
+                self.out(f"  {slot:10s} —")
+                continue
+            any_gear = True
+            it = self.world["items"].get(iid, {})
+            bonuses = []
+            for k in ("atk", "def", "spd", "hp"):
+                v = int(it.get(f"{k}_bonus", 0) or 0)
+                if v:
+                    bonuses.append(f"+{v} {k.upper()}")
+            if it.get("on_hit_effect"):
+                bonuses.append(f"on hit: {it['on_hit_effect']} {it.get('on_hit_power', 1)}")
+            suffix = f"  ({', '.join(bonuses)})" if bonuses else ""
+            self.out(f"  {slot:10s} {it.get('name', iid)}{suffix}")
+        if not any_gear:
+            self.out("  (nothing — visit a vendor or earn gear in battle)")
+        gb = self.player.gear_bonuses(self.world)
+        totals = ", ".join(f"+{v} {k.upper()}" for k, v in gb.items() if v)
+        if totals:
+            self.out(f"Gear totals: {totals}")
+
+    def _describe_gear_bonuses(self, it: Dict[str, Any]) -> None:
+        bonuses = []
+        for k in ("atk", "def", "spd", "hp"):
+            v = int(it.get(f"{k}_bonus", 0) or 0)
+            if v:
+                bonuses.append(f"+{v} {k.upper()}")
+        if it.get("on_hit_effect"):
+            bonuses.append(f"on hit: {it['on_hit_effect']} {it.get('on_hit_power', 1)}")
+        if bonuses:
+            self.out("  (" + ", ".join(bonuses) + ")")
+
     def cmd_take(self, arg: str) -> None:
         loc = self._loc()
         items = loc.get("items_on_ground", [])
@@ -430,6 +538,7 @@ class Game:
     def cmd_status(self, _arg: str) -> None:
         cr = cultivation.current_realm(self.world, self.player)
         nxt = cultivation.next_realm(self.world, self.player)
+        gb = self.player.gear_bonuses(self.world)
         self.out("")
         self.out(f"Name:    {self.player.name}")
         self.out(f"Realm:   {cr.get('name','?')}  —  {cr.get('description','')}")
@@ -438,12 +547,30 @@ class Game:
                      f"(next: {nxt.get('name','?')})")
         else:
             self.out(f"  Qi: {self.player.qi}  (no higher realm known)")
-        self.out(f"HP:      {self.player.hp}/{self.player.max_hp}")
-        self.out(f"ATK/DEF/SPD: {self.player.atk} / {self.player.defense} / {self.player.spd}")
+        eff_max_hp = self.player.eff_max_hp(self.world)
+        hp_tag = f" (base {self.player.max_hp} +{gb['hp']} gear)" if gb["hp"] else ""
+        self.out(f"HP:      {self.player.hp}/{eff_max_hp}{hp_tag}")
+        def _line(label: str, base: int, bonus: int) -> str:
+            if bonus:
+                return f"  {label}: {base + bonus}  (base {base} +{bonus} gear)"
+            return f"  {label}: {base}"
+        self.out("Stats:")
+        self.out(_line("ATK", self.player.atk, gb["atk"]))
+        self.out(_line("DEF", self.player.defense, gb["def"]))
+        self.out(_line("SPD", self.player.spd, gb["spd"]))
         self.out(f"XP:      {self.player.xp}")
         self.out(f"Stones:  {self.player.spirit_stones}")
         self.out(f"Location:{self.world['locations'].get(self.player.location,{}).get('name', self.player.location)}")
         self.out(f"Visited: {len(self.player.visited)} / {len(self.world['locations'])} locations")
+        # Equipped
+        equipped_names = []
+        for slot in EQUIP_SLOTS:
+            iid = self.player.equipped.get(slot, "")
+            if iid:
+                nm = self.world["items"].get(iid, {}).get("name", iid)
+                equipped_names.append(f"{slot}={nm}")
+        if equipped_names:
+            self.out("Gear:    " + "; ".join(equipped_names))
         if self.player.reputation:
             self.out("Reputation:")
             for sid, v in sorted(self.player.reputation.items()):
@@ -499,6 +626,13 @@ class Game:
         "learn": "cmd_learn",
         "buy": "cmd_buy",
         "use": "cmd_use",
+        "equip": "cmd_equip",
+        "wield": "cmd_equip",
+        "wear": "cmd_equip",
+        "unequip": "cmd_unequip",
+        "remove": "cmd_unequip",
+        "gear": "cmd_gear",
+        "equipment": "cmd_gear",
         "take": "cmd_take",
         "read": "cmd_read",
         "lore": "cmd_lore",
@@ -547,7 +681,7 @@ class Game:
     def _prompt(self) -> str:
         cr = cultivation.current_realm(self.world, self.player)
         qi_cap = cr.get("qi_required", self.player.max_qi)
-        return (f"[HP {self.player.hp}/{self.player.max_hp}  "
+        return (f"[HP {self.player.hp}/{self.player.eff_max_hp(self.world)}  "
                 f"Qi {self.player.qi}/{qi_cap}] > ")
 
     def repl(self) -> None:

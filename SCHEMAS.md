@@ -98,14 +98,34 @@ Self-effects (heal/buff_atk/buff_def) always fire when the technique is used.
 {
   "id": "spirit_gathering_pill",
   "name": "Spirit Gathering Pill",
-  "type": "pill",                   // pill | weapon | armor | material | treasure | manual
+  "type": "pill",                   // pill | weapon | armor | accessory | material | treasure | manual
   "description": "A jade-green pill smelling of pine.",
   "effect": "qi_gain",              // qi_gain | hp_heal | atk_buff | cleanse | unlock_technique | breakthrough_aid
   "power": 25,
   "value": 30,                      // sell price in spirit stones
-  "tags": ["consumable"]
+  "tags": ["consumable"],
+
+  // --- Equipment fields (optional; omit for non-gear items) ---
+  "slot": "weapon",                 // weapon | robe | accessory
+  "atk_bonus": 3,                   // integer, default 0
+  "def_bonus": 0,
+  "spd_bonus": 0,
+  "hp_bonus": 0,
+  "requires_realm": "qi_condensation",  // optional; realm gate to equip
+  "on_hit_effect": "poison",        // poison | bleed | stun — fires on successful normal attacks
+  "on_hit_power": 1                 // dmg/turn for poison/bleed, turns stunned for stun
 }
 ```
+
+### Equipment slots (engine)
+The Player has three slots: `weapon`, `robe`, `accessory`. Only one item
+per slot. `equip <item>` moves an item from inventory into its slot;
+`unequip <slot>` moves it back out. Gear bonuses apply whenever the
+effective stat is read (combat rolls, the prompt bar, the `status`
+screen). Weapon `on_hit_effect` fires only on plain `attack` actions
+that actually land — not on techniques (which carry their own effects).
+Unequipping gear that bumps `max_hp` clamps current HP down if over.
+
 
 ## sects/  — `Sect`
 ```jsonc

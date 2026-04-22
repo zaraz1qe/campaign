@@ -92,6 +92,25 @@ def main() -> int:
         if rr and rr not in world["realms"]:
             errors.append(f"technique '{tid}' requires unknown realm '{rr}'")
 
+    # 7b. Equipment items: slot must be valid; bonuses must be ints; on_hit
+    # effect must be a known combat effect; requires_realm must exist.
+    from game.state import EQUIP_SLOTS
+    valid_on_hit = {"poison", "bleed", "stun"}
+    for iid, it in world["items"].items():
+        slot = it.get("slot")
+        if slot is not None and slot not in EQUIP_SLOTS:
+            errors.append(f"item '{iid}' has invalid slot '{slot}' (expected {EQUIP_SLOTS})")
+        for k in ("atk_bonus", "def_bonus", "spd_bonus", "hp_bonus", "on_hit_power"):
+            v = it.get(k)
+            if v is not None and not isinstance(v, int):
+                errors.append(f"item '{iid}' field '{k}' must be an integer, got {type(v).__name__}")
+        on_hit = it.get("on_hit_effect")
+        if on_hit is not None and on_hit not in valid_on_hit:
+            errors.append(f"item '{iid}' on_hit_effect '{on_hit}' not one of {sorted(valid_on_hit)}")
+        rr = it.get("requires_realm")
+        if rr and rr not in world["realms"]:
+            errors.append(f"item '{iid}' requires unknown realm '{rr}'")
+
     # 8. Sect references.
     for sid, s in world["sects"].items():
         for tid in s.get("signature_techniques") or []:

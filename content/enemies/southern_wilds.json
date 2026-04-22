@@ -63,7 +63,8 @@
     "techniques": ["icy_bite"],
     "drops": [
       { "item": "frost_pelt", "chance": 0.7 },
-      { "item": "wolf_fang", "chance": 0.5 }
+      { "item": "wolf_fang", "chance": 0.5 },
+      { "item": "frostfang_sabre", "chance": 0.08 }
     ],
     "xp": 40,
     "tags": ["beast", "ice"]

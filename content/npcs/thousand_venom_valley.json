@@ -38,7 +38,8 @@
       "The Nine Serpents Pill is a guest in the dantian. Welcome it; do not bow to it."
     ],
     "teaches": ["serpent_strike", "web_of_silk"],
-    "sells": ["antidote_pearl", "nine_serpents_pill", "minor_healing_pill"],
+    "sells": ["antidote_pearl", "nine_serpents_pill", "minor_healing_pill",
+              "venom_fanged_dagger", "viper_scale_sash"],
     "faction": "five_poisons_sect",
     "disposition": "friendly"
   }

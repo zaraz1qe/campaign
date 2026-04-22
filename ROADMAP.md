@@ -15,6 +15,7 @@ A living checklist for what's been done and what to add next.
 - **Regions**: Southern Wilds, Azure Cloud Range, Thousand Venom Valley
 - **Sects**: Azure Cloud Sect (righteous), Scarlet Lotus Pavilion (demonic),
   Five Poisons Sect (neutral/grey)
+- **Items**: 31 (13 equipment, pills, materials, treasures)
 - **Quests**: 4 (including the Oath of Fangs)
 - **Realms**: 8 (Mortal → Ascendant Immortal)
 
@@ -92,8 +93,8 @@ A living checklist for what's been done and what to add next.
 
 ## Engine Improvements (only when content alone won't fix it)
 - [ ] **Alchemy crafting**: combine materials into pills at Pillmaster Lu
-- [ ] **Forging**: combine materials into spirit weapons; equip slot
-- [ ] **Equipment slots**: weapon, robe, accessory — affect stats
+- [ ] **Forging**: combine materials into spirit weapons (now that the equip slot exists)
+- [x] **Equipment slots**: weapon, robe, accessory — affect stats (s3)
 - [ ] **Reputation effects on dialogue**: NPCs respond differently
 - [ ] **Faction war state**: world events triggered by player progression
 - [ ] **Auto-respawn enemies** so locations don't go empty after one fight
@@ -118,6 +119,15 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-22 (session 3)** — "The First Blade." Equipment system end-to-end:
+  three slots (weapon / robe / accessory), `equip` / `unequip` / `gear` commands,
+  status screen shows base+gear breakdown, prompt HP bar reflects gear HP.
+  Weapons can carry an `on_hit_effect` (poison/bleed/stun) that fires on normal
+  attacks. 13 new gear items with 2 tiers of robes, 5 weapons (including two
+  rare spirit-weapon drops), and 4 accessories. Existing `rusty_dao` and
+  `traveler_robe` upgraded to real equipment. Validator now checks slot values,
+  on_hit effect name, bonus integer types, and realm requirement. Saves from
+  session 2 back-fill an empty equipped dict.
 - **2026-04-22 (session 2)** — "Venom in the Veins." Wired up status effects
   end-to-end in combat (poison, bleed, buff_atk, buff_def, and a new
   `cleanse` pill effect); added critical hits and SPD-based dodge; put

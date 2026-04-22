@@ -7,9 +7,11 @@
     "dialogue": [
       "All paths lead inward, friend. Even the path through bamboo.",
       "I once climbed the Heaven-Reaching Spire. The wind there has a name; it would not give it to me.",
-      "If you ever face the Scarlet Lotus, remember: their fire feeds on your fear. Be empty, and you cannot burn."
+      "If you ever face the Scarlet Lotus, remember: their fire feeds on your fear. Be empty, and you cannot burn.",
+      "I carry only what I cannot set down. The staff — and these beads. If you need either more than I do, name a price."
     ],
     "teaches": ["empty_palm"],
+    "sells": ["bamboo_longstaff", "monks_wooden_beads"],
     "faction": "shaolin",
     "disposition": "friendly"
   },
@@ -57,9 +59,10 @@
     "description": "A bright-eyed young woman in many-colored sleeves. She bargains as if it were a swordfight.",
     "dialogue": [
       "Silk from beyond the sea! Cheaper than yesterday, dearer than tomorrow!",
-      "Heard the Black Banner cut a courier on the east road. Be careful out there."
+      "Heard the Black Banner cut a courier on the east road. Be careful out there.",
+      "A robe is not just cloth, cultivator — it is the first wall between your meridians and someone else's sword."
     ],
-    "sells": ["traveler_robe"],
+    "sells": ["traveler_robe", "hempspun_robe", "plain_iron_sword", "jade_qi_pendant"],
     "disposition": "friendly"
   },
   {
@@ -105,9 +108,11 @@
     "dialogue": [
       "So. You came. The bamboo whispered as much.",
       "There is a thing I would ask of you, if you have the heart for it.",
-      "Climb the peak only when you are sure of your foundation, child. The mountain has a memory of those who stumbled."
+      "Climb the peak only when you are sure of your foundation, child. The mountain has a memory of those who stumbled.",
+      "When your foundation is set, come speak of a blade. A sword without a master is only metal that remembers grief."
     ],
     "teaches": ["azure_cloud_palm", "cloud_step"],
+    "sells": ["azure_cloud_sword", "cloud_silk_robe", "azure_guardian_talisman"],
     "gives_quest": "the_missing_disciple",
     "faction": "azure_cloud_sect",
     "disposition": "friendly"

@@ -163,6 +163,20 @@ def _apply_tech_effect(t: Dict[str, Any], attacker_status: List[Dict[str, Any]],
         io.out(f"  ({subj} an unshakable stance: +{max(1,pwr)} DEF for 3 turns)")
 
 
+def _apply_weapon_on_hit(kind: str, power: int,
+                         defender_status: List[Dict[str, Any]],
+                         defender_name: str, io) -> None:
+    """A weapon's on_hit_effect: fires on normal attacks that actually land."""
+    if kind in ("poison", "bleed"):
+        _apply_status(defender_status, kind, max(1, power), 3)
+        flavor = "venom" if kind == "poison" else "blood"
+        io.out(f"  (The blade's edge draws {flavor} from {defender_name}.)")
+    elif kind == "stun":
+        turns = max(1, power)
+        _apply_status(defender_status, "stun", 1, turns)
+        io.out(f"  ({defender_name} reels, stunned for {turns} turn(s).)")
+
+
 # ---------------------------------------------------------------------------
 
 def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
@@ -185,24 +199,40 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
     }
     player_status: List[Dict[str, Any]] = []
 
+    # Freeze effective player stats for this encounter. Changing gear mid-fight
+    # isn't a supported action, so we snapshot once and read from these.
+    p_gear_atk = player.eff_atk(world)
+    p_gear_def = player.eff_def(world)
+    p_gear_spd = player.eff_spd(world)
+    p_gear_hp_max = player.eff_max_hp(world)
+    # Clamp current HP to whatever gear allows (should already match).
+    if player.hp > p_gear_hp_max:
+        player.hp = p_gear_hp_max
+    weapon = player.weapon(world)
+    weapon_name = weapon.get("name") if weapon else None
+    weapon_on_hit = weapon.get("on_hit_effect") if weapon else None
+    weapon_on_hit_pwr = int(weapon.get("on_hit_power", 0) or 0) if weapon else 0
+
     io.out("")
     io.out(f"=== Combat begins: {e['name']} ===")
     desc = enemy_def.get("description", "")
     if desc:
         io.out(desc)
+    if weapon_name:
+        io.out(f"(You draw {weapon_name}.)")
 
     def _player_take(dmg: int) -> None:
         player.hp -= dmg
     def _enemy_take(dmg: int) -> None:
         e["hp"] -= dmg
     def _player_heal(amt: int) -> None:
-        player.hp = min(player.max_hp, player.hp + amt)
+        player.hp = min(p_gear_hp_max, player.hp + amt)
     def _enemy_heal(amt: int) -> None:
         e["hp"] = min(e["max_hp"], e["hp"] + amt)
 
     while True:
         io.out("")
-        io.out(_print_bar(player.name.ljust(16), player.hp, player.max_hp)
+        io.out(_print_bar(player.name.ljust(16), player.hp, p_gear_hp_max)
                + _status_summary(player_status))
         io.out(_print_bar(e["name"].ljust(16), e["hp"], e["max_hp"])
                + _status_summary(e["status"]))
@@ -224,20 +254,25 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
             choice = io.ask("> ").strip().lower()
 
             if choice in ("a", "attack", ""):
-                atk_total = player.atk + _active_buff(player_status, "buff_atk")
-                if random.random() < _dodge_chance(e["spd"], player.spd + 0):
+                atk_total = p_gear_atk + _active_buff(player_status, "buff_atk")
+                if random.random() < _dodge_chance(e["spd"], p_gear_spd):
                     io.out("You strike — " + random.choice(_MISS_LINES).format(name=e["name"]))
                 else:
                     base = max(1, atk_total + random.randint(-1, 3) - e["def"])
-                    crit = random.random() < _crit_chance(player.spd, e["spd"])
+                    crit = random.random() < _crit_chance(p_gear_spd, e["spd"])
                     dmg = int(base * 1.7) if crit else base
                     _enemy_take(dmg)
                     verb = random.choice(_STRIKE_VERBS)
+                    with_weapon = f" with {weapon_name}" if weapon_name else ""
                     if crit:
                         io.out(f"** {random.choice(_CRIT_LINES)} ** "
-                               f"You {verb} {e['name']} for {dmg} damage.")
+                               f"You {verb} {e['name']}{with_weapon} for {dmg} damage.")
                     else:
-                        io.out(f"You {verb} {e['name']} for {dmg} damage.")
+                        io.out(f"You {verb} {e['name']}{with_weapon} for {dmg} damage.")
+                    # Weapon on-hit rider (poison/bleed/stun from the blade itself).
+                    if weapon_on_hit and weapon_on_hit_pwr > 0:
+                        _apply_weapon_on_hit(weapon_on_hit, weapon_on_hit_pwr,
+                                             e["status"], e["name"], io)
             elif choice in ("t", "technique"):
                 if not player.techniques:
                     io.out("You know no techniques.")
@@ -267,12 +302,12 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
                                 player_acted = False
                             else:
                                 player.qi -= cost
-                                atk_total = player.atk + _active_buff(player_status, "buff_atk")
+                                atk_total = p_gear_atk + _active_buff(player_status, "buff_atk")
                                 base = int(t.get("damage", 0))
                                 if base > 0:
                                     raw = max(1, base + atk_total // 2
                                               + random.randint(0, 3) - e["def"])
-                                    crit = random.random() < _crit_chance(player.spd, e["spd"])
+                                    crit = random.random() < _crit_chance(p_gear_spd, e["spd"])
                                     dmg = int(raw * 1.7) if crit else raw
                                     _enemy_take(dmg)
                                     if crit:
@@ -311,7 +346,7 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
                             _apply_pill(player, it, io, player_status)
                             player.remove_item(iid, 1)
             elif choice in ("f", "flee"):
-                flee_chance = 0.5 + max(0, player.spd - e["spd"]) * 0.05
+                flee_chance = 0.5 + max(0, p_gear_spd - e["spd"]) * 0.05
                 if random.random() < min(0.9, flee_chance):
                     io.out("You break away into cover. The duel is broken.")
                     return "fled"
@@ -363,18 +398,18 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
 
         # -------- Enemy action --------
         tech = _enemy_choose_technique(world, e)
-        player_def_total = player.defense + _active_buff(player_status, "buff_def")
+        player_def_total = p_gear_def + _active_buff(player_status, "buff_def")
         if tech:
             base = int(tech.get("damage", 0))
             landed = True
             if base > 0:
-                if random.random() < _dodge_chance(player.spd, e["spd"]):
+                if random.random() < _dodge_chance(p_gear_spd, e["spd"]):
                     io.out(f"{e['name']} unleashes {tech['name']} — "
                            "but you slip the path of their qi.")
                     landed = False
                 else:
                     raw = max(1, base + e["atk"] // 2 + random.randint(0, 2) - player_def_total)
-                    crit = random.random() < _crit_chance(e["spd"], player.spd)
+                    crit = random.random() < _crit_chance(e["spd"], p_gear_spd)
                     dmg = int(raw * 1.7) if crit else raw
                     _player_take(dmg)
                     if crit:
@@ -391,11 +426,11 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
                                attacker_heal=_enemy_heal, io=io,
                                include_offensive=landed)
         else:
-            if random.random() < _dodge_chance(player.spd, e["spd"]):
+            if random.random() < _dodge_chance(p_gear_spd, e["spd"]):
                 io.out(f"{e['name']} lunges — but you slide under the arc of the blow.")
             else:
                 base = max(1, _enemy_atk(e) - player_def_total)
-                crit = random.random() < _crit_chance(e["spd"], player.spd)
+                crit = random.random() < _crit_chance(e["spd"], p_gear_spd)
                 dmg = int(base * 1.7) if crit else base
                 _player_take(dmg)
                 if crit:
