@@ -10,7 +10,13 @@
       "Antidote is a courtesy. Venom is the honest speech. Remember which is which."
     ],
     "faction": "five_poisons_sect",
-    "disposition": "neutral"
+    "disposition": "neutral",
+    "rep_dialogue": {
+      "five_poisons_sect": {
+        "1":  ["The scorpion does not wake for you anymore. That is the whole of my welcome; do not ask for more."],
+        "-2": ["Pause. The seven steles remember your step. Walk softly."]
+      }
+    }
   },
   {
     "id": "matriarch_shan",
@@ -25,7 +31,17 @@
     "teaches": ["five_poisons_palm", "centipede_stance"],
     "gives_quest": "oath_of_fangs",
     "faction": "five_poisons_sect",
-    "disposition": "neutral"
+    "disposition": "neutral",
+    "rep_dialogue": {
+      "five_poisons_sect": {
+        "3":  ["The valley opens for you as it opens for our own. Sit. Drink. The serpent has learned your step.", "If you should ever need a hall to stand between you and the sword — the Five Poisons remembers you."],
+        "1":  ["You are not a stranger now. The gatekeeper's scorpion did not rouse when you crossed the steles."],
+        "-2": ["Speak plainly, outsider. The valley does not lie, but it weighs every breath that enters it."]
+      },
+      "azure_cloud_sect": {
+        "5": ["So. You are a sword of the Azure Cloud and still you come to my hall. That is either courage or confusion; I have not decided which."]
+      }
+    }
   },
   {
     "id": "poisoner_qi",

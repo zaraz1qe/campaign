@@ -10,6 +10,7 @@
       { "type": "collect", "target": "wolf_fang" },
       { "type": "talk",    "target": "matriarch_shan" }
     ],
-    "reward": { "spirit_stones": 150, "items": ["nine_serpents_pill", "antidote_pearl", "nine_serpents_ring"], "xp": 80 }
+    "reward": { "spirit_stones": 150, "items": ["nine_serpents_pill", "antidote_pearl", "nine_serpents_ring"], "xp": 80 },
+    "rep_change": { "five_poisons_sect": 2, "azure_cloud_sect": -1 }
   }
 ]

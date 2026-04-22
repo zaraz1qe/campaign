@@ -28,6 +28,7 @@
     "inputs": { "gale_tiger_fang": 1, "cloudroot_spirit_stone": 2, "jadestep_shard": 1 },
     "stones": 250,
     "requires_realm": "foundation_establishment",
+    "requires_rep": { "azure_cloud_sect": 2 },
     "output": "skybreaker_blade",
     "flavor": "Bo sets the gale-tiger fang into the fuller with tweezers no longer than his little finger. The jadestep shard he grinds to ash and lets settle on the metal while it is still the colour of a sunrise. When he quenches the blade in the water of the two spirit stones, the forge goes silent — even the fire bows. 'There. Breathe on it. If it answers, it is yours.'"
   },

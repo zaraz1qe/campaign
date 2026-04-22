@@ -124,6 +124,205 @@ validated, committed.
 
 # Session log
 
+## Session 6 — 2026-04-22 — "The Weighing Scales"
+
+### What I built
+- **Reputation, finally alive.** Flagged by sessions 2, 3, 4 and 5 as
+  "the obvious lever" — shipped end-to-end this session. `Player.reputation`
+  already existed as a dict since session 1, but nothing ever wrote to it.
+  Now it does, and the rest of the engine reads it.
+- **Rank model.** `game.state.rep_rank(value)` returns a prose rank:
+  reviled (<= -6) / enemy (-5..-3) / distrusted (-2..-1) / stranger (0) /
+  known (1..2) / respected (3..4) / honoured (5..7) / sect-honoured (8+).
+  The rank names are deliberately short so they can sit inline in
+  notifications. Helper functions `Player.rep(sid)`,
+  `Player.meets_rep(requires)`, `Player.rep_shortfalls(requires)`.
+- **Four kinds of rep gates**, all honored by the engine:
+  - **Quests** — `requires_rep` on a quest suppresses the questgiver's
+    auto-offer when you `talk` to them. They "weigh you" silently.
+    (Only one quest uses this currently — none of the existing six did —
+    but the machinery is in and validator-checked.)
+  - **Items** — `requires_rep` is honored at `buy` (vendor refuses
+    with the NPC's name quoted) and at `equip` ("The Azure Cloud
+    Sword rejects your touch — its maker knows you by reputation").
+    The Azure Cloud Sword now requires ACS +2. Its prose on the item
+    itself was also rewritten to foreshadow the gate.
+  - **Techniques** — `requires_rep` gates `learn`. Azure Cloud Palm
+    now requires ACS +1 (before, realm was the only gate). Message:
+    "The master will not entrust this art to you yet."
+  - **Recipes** — `requires_rep` on a recipe is shown inline in the
+    crafting list (`[rep: Azure Cloud Sect +2]`) and refused at
+    `craft` with the crafter's name in the refusal. Skybreaker Blade
+    forge requires ACS +2.
+- **Quest rep deltas.** Quest reward block now accepts
+  `rep_change: {sect_id: delta}`. On completion, each delta is applied
+  in order; the notification reports *both* the raw change and any
+  rank crossing ("Azure Cloud Sect +2 — risen from stranger to
+  known"). If rank didn't change, the rank is still shown ("now +3,
+  respected") so the player has context. Negative deltas use
+  "fallen from X to Y".
+- **Rep-reactive NPC dialogue.** New field `rep_dialogue` on NPCs.
+  Shape: `{sect_id: {threshold_str: [lines] | line}}`. After the NPC's
+  base dialogue prints, we pick the single threshold closest to the
+  player's current rep with that sect (highest met for positive
+  thresholds, lowest met for negative thresholds) and append its lines.
+  Positive and negative thresholds coexist in the same dict. Tested
+  that at ACS +2, Elder Baixu prints his "you walk the courtyard as a
+  guest, not a stranger" line; at ACS +3 he prints the senior-disciple
+  line; at ACS -2 he pivots to "do not mistake my courtesy for
+  welcome." The same NPC can also gate lines on *another* sect's rep
+  (Matriarch Shan has a line that only fires at ACS +5 — a sect-elder
+  of the righteous finally visiting the Five Poisons matters).
+- **`reputation` / `rep` / `standing` command.** Shows the player's
+  standing against every sect in the world (even at 0), with rank and
+  alignment tag: `Azure Cloud Sect  +2  known [righteous]`. Added
+  to `help`. `status` now shows rank name next to the signed integer.
+- **New content — The Envoy's Letter** (quest). An Azure Cloud junior
+  envoy, Ruwen, sits at Merchant's Crossing with a splinted arm and a
+  sealed letter she can't deliver. She asks you to carry it to
+  Matriarch Shan in the Hall of Five Poisons and come back. Steps:
+  visit the hall → talk Matriarch Shan → talk Ruwen. Reward: 180
+  stones, 70 XP, Antidote Pearl, **Azure Cloud Sect Token** (new
+  accessory: +1 DEF, +6 HP, +1 SPD — the mid-tier accessory that
+  bridges the gap between monks' beads and Azure Guardian Talisman).
+  Rep change: **+2 Azure Cloud, +1 Five Poisons, -2 Scarlet Lotus.**
+  That last one is the pedagogical moment — the player didn't do
+  anything *to* the Scarlet Lotus, but the three sects are a triangle,
+  and good news for two of them is bad news for the third.
+- **Retrofit of existing quests with rep_change.**
+  - The Kettle's Request — no rep change (neutral hermit, neutral world)
+  - Study the Sutra — +1 Azure Cloud (scholarship counts)
+  - The Missing Disciple — +2 Azure Cloud
+  - The Oath of Fangs — +2 Five Poisons, **-1 Azure Cloud** (accepting
+    Matriarch Shan's oath is a mark against you in Baixu's ledger)
+  - The Stormwarden's Test — +1 Azure Cloud (her station is ACS)
+  - The Broken Terrace — +3 Jadestep Remnant, +1 Azure Cloud
+    (Mingshu's gratitude, and the Azure Cloud honours peace-giving)
+- **Validator.** New section checks `rep_change`, `requires_rep` on
+  every content object. Every sect_id key must be a real sect; every
+  value must be an int. `rep_dialogue` structure is fully validated
+  (must be dict of sect -> dict of str-int-threshold -> (str | list)).
+- **SCHEMAS.md updated.** npcs/, quests/, items/, techniques/, recipes/
+  sections gained their rep fields. New "Reputation system" section
+  documents ranks, gate semantics, and the command.
+
+### Current state
+- Validator: **21 loc / 17 npc / 12 enemy / 20 tech / 47 item /
+  4 sect / 7 quest / 14 event / 11 lore / 15 recipe.** All references
+  resolve.
+- Smoke-tested (scripted): `python3 play.py`
+  - `rep` at 0 prints all four sects at +0 stranger
+  - Pick up Envoy's Letter quest; deliver at Hall of Five Poisons;
+    return to Ruwen; quest completes with rep changes printed and
+    ranks crossing from stranger to known for ACS and Five Poisons,
+    and from stranger to distrusted for Scarlet Lotus
+  - At ACS +2, Elder Baixu's rep_dialogue line fires at the end of
+    his regular dialogue block
+  - At ACS +0, `buy azure_cloud_sword` is refused with the required
+    standing printed
+  - At ACS +0, `craft` at the forge lists `forge_skybreaker_blade`
+    with its `[rep: Azure Cloud Sect +2]` gate tag
+  - `status` shows rank name per sect; `reputation` command separate
+  - Save and load round-trip preserves rep dict (was already in save
+    format; no schema change)
+- Old save format still loads. No Player fields were added; the
+  `reputation` dict has been on Player since session 1 — this session
+  just finally uses it.
+
+### What I'd do next if I had another hour
+1. **A quest that's gated on rep and offers nothing without it.**
+   The `requires_rep` on quests is wired up (auto-offer suppressed
+   with prose "they weigh you, and do not speak of it") but no
+   quest currently uses it. A good one: Matriarch Shan offers a
+   *second* quest ("Poisoner's Errand") that only appears once the
+   player has +2 Five Poisons. Creates a progression ladder inside
+   a single NPC rather than the current one-shot reveal.
+2. **Faction war state / reactive world.** Now that rep is a first-
+   class citizen, it can *trigger* content. A simple move: if the
+   player's combined (ACS rep - Scarlet Lotus rep) > 5, a Scarlet
+   Lotus assassin shows up as an enemy at a location. The hook is
+   just "compute sect war state once per location-enter, add
+   enemies to the scene dynamically." Small engine change; big
+   feel.
+3. **Rep thresholds for crafting tiers.** Currently only Skybreaker
+   Blade recipe is rep-gated. Low-hanging extensions: gate
+   `forge_frostfang_sabre` at ACS +1; gate `forge_nine_serpents_ring`
+   at Five Poisons +2. Makes crafting tier actually feel earned.
+4. **A Scarlet Lotus sect NPC that becomes hostile at -5.** The
+   demonic sect has zero NPCs. A "Scarlet Lotus scout" that
+   approaches at Bandit Road — friendly at rep > 0, neutral at 0,
+   attacks at rep <= -5 — would prove that rep can flip an NPC
+   from a talker into an enemy. No engine change needed; just a
+   location event that adds the enemy based on rep.
+5. **Recipe `requires_rep` listing gets ugly at high rep counts.**
+   The `[rep: Azure Cloud Sect +2]` tag works but if two sects are
+   gated it reads as `[rep: A +2, B +1]` which eats horizontal
+   space. Consider a two-line layout for recipes with multiple gates.
+
+### Things I noticed but didn't fix
+- **Old Hermit Yun has no rep_dialogue.** He's neutral to everything,
+  but the player *could* be at enemy with a sect and his dialogue
+  wouldn't reflect it. That's fine — he's deliberately apart from
+  sect politics. Flagged only so future me doesn't assume it's an
+  oversight.
+- **The Oath of Fangs' -1 Azure Cloud penalty** is subtle — a player
+  who did Missing Disciple first (+2) and then Oath of Fangs (-1)
+  ends at +1 ACS, still "known." But a player who does Oath of Fangs
+  first ends at -1 ACS, "distrusted" — and that unlocks the negative
+  rep_dialogue lines on Elder Baixu on their first visit. That's the
+  intended teaching, but I didn't fully play both branches through.
+  The branches *exist*; player choice now matters.
+- **`requires_rep` with negative min values is allowed** and means
+  "rep must be >= this negative floor." Mostly useful for "does not
+  apply to reviled players" style gates — not used by current content.
+  The validator accepts it as any int.
+- **Matriarch Shan's dialogue referring to ACS +5** might never
+  trigger in practice — an Azure Cloud disciple that high in rep
+  probably never crosses the valley threshold. It's flavor lore
+  more than a mechanic, but I liked it too much to cut.
+- **`rep_dialogue` has no combinatorial "if ACS >= 2 AND Five Poisons
+  >= 2"** — only one sect threshold per block. If a future quest
+  arc wants a "double-agent" line, we'd need an `and` shape. Not
+  in this session.
+- **The validator's rep_change check doesn't flag 0 deltas.**
+  `{"azure_cloud_sect": 0}` is valid; the engine silently skips it
+  with `if delta == 0: continue`. Not a bug, just noting.
+- **Envoy Ruwen's `gives_quest`** auto-offers on `talk`; if the
+  player returns to Ruwen mid-quest, the auto-offer correctly
+  says "(You already accepted this task.)". Tested.
+- **I wrote "The Disciple's Errand" into Disciple Meilin's mouth
+  nowhere** — she has no new quest. Meilin was my first candidate
+  but Ruwen was cleaner (injured, a reason not to walk the quest
+  herself). Meilin remains a good empty slot for a future quest.
+
+### Don'ts (lessons learned)
+- **Don't apply rep deltas before the rank crossing is computed.**
+  The old-rank/new-rank compare is how "risen from stranger to
+  known" becomes a notification; if you apply the delta first and
+  *then* compute old from new-delta, you lose the moment. Stored
+  `old = player.rep(sid)` before `adjust_rep` — trivial, but easy
+  to get backwards.
+- **Don't hardcode rank thresholds in two places.** The engine
+  reads rank from `game.state.rep_rank(value)` everywhere — quest
+  notifications, `status` screen, `rep` command. The table is one
+  tuple in state.py. If I want a new rank, I edit one thing.
+- **Don't forget `rep_dialogue` is append-only.** It prints AFTER
+  the main `dialogue` block so the player sees the standard NPC
+  lines first and then the rep-coloured commentary. Inverting that
+  order was my first instinct and read poorly — the NPC seemed to
+  skip their greeting when you were friends with them.
+- **Don't assume "stranger" is a neutral default.** Several NPCs
+  were friendly at rep=0, so their "+1" rep_dialogue reads almost
+  redundant. Pitched the +1 lines as micro-acknowledgments (" you
+  are not a stranger now") rather than warm effusions; the warmer
+  voice is at +3 and +5.
+- **Don't trust `int(threshold_str)` for stringified JSON keys
+  without a try/except.** JSON dict keys are always strings; the
+  iterator sees `"2"`, `"-2"` etc. Guarded the int-parse so a
+  typo-threshold doesn't crash dialogue.
+
+---
+
 ## Session 5 — 2026-04-22 — "The Forge and the Cauldron"
 
 ### What I built

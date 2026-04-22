@@ -2,7 +2,7 @@
 from __future__ import annotations
 from typing import Dict, Any, List
 
-from .state import Player
+from .state import Player, rep_rank
 
 
 def _step_satisfied(step: Dict[str, Any], player: Player) -> bool:
@@ -27,6 +27,15 @@ def offer_quest(world: Dict[str, Dict[str, Any]], player: Player, quest_id: str)
     q = world["quests"].get(quest_id)
     if not q:
         return ""
+    # Rep gate — skip auto-offer quietly if the giver won't entrust it yet.
+    req = q.get("requires_rep") or {}
+    if not player.meets_rep(req):
+        short = player.rep_shortfalls(req)
+        pieces = []
+        for sid, s in short.items():
+            sname = world["sects"].get(sid, {}).get("name", sid)
+            pieces.append(f"{sname} {s:+d}")
+        return f"\n  (They weigh you, and do not speak of it. Required: {', '.join(pieces)}.)"
     player.active_quests[quest_id] = 0
     return f"\n[QUEST ACCEPTED] {q['name']}\n  {q.get('description','')}"
 
@@ -66,6 +75,28 @@ def progress_quests(world: Dict[str, Dict[str, Any]], player: Player) -> List[st
                 r_parts.append("items: " + ", ".join(names))
             rwd = ", ".join(r_parts) or "(no reward)"
             notes.append(f"[QUEST COMPLETE] {q['name']} — reward: {rwd}")
+            # Apply reputation changes. Show old->new rank when the change
+            # crosses a threshold so the player feels it.
+            rep_changes = q.get("rep_change") or {}
+            for sid, delta in rep_changes.items():
+                delta = int(delta)
+                if delta == 0:
+                    continue
+                old = player.rep(sid)
+                player.adjust_rep(sid, delta)
+                new = player.rep(sid)
+                old_rank = rep_rank(old)
+                new_rank = rep_rank(new)
+                sname = world["sects"].get(sid, {}).get("name", sid)
+                if old_rank == new_rank:
+                    notes.append(f"  [Reputation] {sname} {delta:+d}  "
+                                 f"(now {new:+d}, {new_rank})")
+                else:
+                    notes.append(f"  [Reputation] {sname} {delta:+d}  "
+                                 f"— risen from {old_rank} to {new_rank}"
+                                 if delta > 0 else
+                                 f"  [Reputation] {sname} {delta:+d}  "
+                                 f"— fallen from {old_rank} to {new_rank}")
     return notes
 
 

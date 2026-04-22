@@ -19,7 +19,25 @@
       { "type": "visit", "target": "azure_cloud_library" },
       { "type": "talk",  "target": "librarian_zhao" }
     ],
-    "reward": { "spirit_stones": 50, "items": ["spirit_gathering_pill"], "xp": 25 }
+    "reward": { "spirit_stones": 50, "items": ["spirit_gathering_pill"], "xp": 25 },
+    "rep_change": { "azure_cloud_sect": 1 }
+  },
+  {
+    "id": "the_envoys_letter",
+    "name": "The Envoy's Letter",
+    "giver": "azure_envoy_ruwen",
+    "description": "Envoy Ruwen of the Azure Cloud has a sealed letter for Matriarch Shan of the Five Poisons Sect. Her arm is broken; she cannot cross the valley herself. Carry the letter to the Hall of Five Poisons, place it in the Matriarch's hands, and return.",
+    "steps": [
+      { "type": "visit", "target": "five_poisons_hall" },
+      { "type": "talk",  "target": "matriarch_shan" },
+      { "type": "talk",  "target": "azure_envoy_ruwen" }
+    ],
+    "reward": { "spirit_stones": 180, "items": ["azure_cloud_token", "antidote_pearl"], "xp": 70 },
+    "rep_change": {
+      "azure_cloud_sect": 2,
+      "five_poisons_sect": 1,
+      "scarlet_lotus_pavilion": -2
+    }
   },
   {
     "id": "the_missing_disciple",
@@ -31,6 +49,7 @@
       { "type": "defeat", "target": "frost_wolf" },
       { "type": "talk",   "target": "elder_baixu" }
     ],
-    "reward": { "spirit_stones": 120, "items": ["spirit_gathering_pill", "iron_skin_pill"], "xp": 60 }
+    "reward": { "spirit_stones": 120, "items": ["spirit_gathering_pill", "iron_skin_pill"], "xp": 60 },
+    "rep_change": { "azure_cloud_sect": 2 }
   }
 ]

@@ -45,7 +45,7 @@
     "region": "Southern Wilds",
     "description": "A bustling market at the river's far bank. Stalls smell of dried fish, cinnabar paper, and frying oil. A cinnabar gate marks the road to greater cities.",
     "exits": { "across": "river_of_swords", "north": "azure_cloud_foothills", "east": "bandit_road" },
-    "npcs": ["pillmaster_lu", "cloth_merchant_mei"],
+    "npcs": ["pillmaster_lu", "cloth_merchant_mei", "azure_envoy_ruwen"],
     "enemies": [],
     "events": ["market_pickpocket"],
     "items_on_ground": [],

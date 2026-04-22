@@ -42,7 +42,19 @@ Optional fields can be omitted. Unknown fields are ignored (forward-compatible).
   "sells": ["item_id"],            // optional items he sells
   "gives_quest": "quest_id",       // optional quest start
   "faction": "shaolin",            // optional
-  "disposition": "friendly"        // friendly | neutral | hostile
+  "disposition": "friendly",       // friendly | neutral | hostile
+
+  // Optional rep-reactive dialogue. Lines show AFTER the main dialogue
+  // block when the player's rep with the sect passes the threshold.
+  // Positive thresholds fire when rep >= threshold; negative fire when
+  // rep <= threshold. Only the single closest-to-current met threshold
+  // per sect is used. Keys are stringified ints.
+  "rep_dialogue": {
+    "azure_cloud_sect": {
+      "2":  ["Welcome, friend of the sect."],
+      "-2": ["You have stood too often with those who owe us blood."]
+    }
+  }
 }
 ```
 
@@ -77,6 +89,7 @@ Optional fields can be omitted. Unknown fields are ignored (forward-compatible).
   "effect": null,                   // see "Effects" below
   "effect_power": 0,
   "requires_realm": "foundation_establishment",
+  "requires_rep": { "azure_cloud_sect": 1 },  // optional; rep gate to learn
   "learn_cost": 50                  // spirit stones
 }
 ```
@@ -112,6 +125,7 @@ Self-effects (heal/buff_atk/buff_def) always fire when the technique is used.
   "spd_bonus": 0,
   "hp_bonus": 0,
   "requires_realm": "qi_condensation",  // optional; realm gate to equip
+  "requires_rep": { "azure_cloud_sect": 2 },  // optional; rep gate to buy or equip
   "on_hit_effect": "poison",        // poison | bleed | stun — fires on successful normal attacks
   "on_hit_power": 1                 // dmg/turn for poison/bleed, turns stunned for stun
 }
@@ -153,7 +167,15 @@ Unequipping gear that bumps `max_hp` clamps current HP down if over.
     { "type": "defeat", "target": "frost_wolf" },
     { "type": "talk",   "target": "elder_baixu" }
   ],
-  "reward": { "spirit_stones": 100, "items": ["spirit_gathering_pill"], "xp": 50 }
+  "reward": { "spirit_stones": 100, "items": ["spirit_gathering_pill"], "xp": 50 },
+
+  // Reputation deltas applied on quest completion. Deltas can be negative.
+  "rep_change": { "azure_cloud_sect": 2, "scarlet_lotus_pavilion": -1 },
+
+  // Optional rep gate on quest offer. If the player doesn't meet this,
+  // the questgiver's `talk` will not auto-offer the quest (they weigh
+  // you silently).
+  "requires_rep": { "azure_cloud_sect": 1 }
 }
 ```
 
@@ -207,6 +229,39 @@ crafter is here, that realm gates are met, that the player has every input
 inventory. `forge` and `brew` are aliases for `craft`; `recipes` is an
 alias for `craft` (with no arg). NPCs automatically advertise their
 recipes when the player `talk`s to them.
+
+Rep gate on a recipe is expressed as `requires_rep: {sect_id: min_rep}`
+and blocks `craft`; the listing shows the required standing inline.
+
+---
+
+## Reputation system
+
+Every sect defined in `content/sects/` is a potential reputation bucket.
+The player's rep is stored in `Player.reputation` as a `sect_id -> int`
+dict. Default is 0 (stranger).
+
+Ranks (from `game.state.rep_rank`):
+- `+8..`      sect-honoured
+- `+5..+7`    honoured
+- `+3..+4`    respected
+- `+1..+2`    known
+- `  0`       stranger
+- `-1..-2`    distrusted
+- `-3..-5`    enemy
+- `-6..`      reviled
+
+Any content object can gate itself with `requires_rep: {sect_id: min}`.
+Currently honored on: quests (auto-offer on talk), items (buy, equip),
+techniques (learn), recipes (craft). All require *every* threshold in
+the dict to be met; negative min means "rep must be >= this value".
+
+Quests also support `rep_change: {sect_id: delta}` — applied on
+completion, reported to the player with old->new rank crossings when
+the change moves them through a rank boundary.
+
+The `reputation` / `rep` / `standing` command shows rep against every
+known sect, with rank names.
 
 
 ## lore/  — `Lore`

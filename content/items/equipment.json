@@ -1,5 +1,17 @@
 [
   {
+    "id": "azure_cloud_token",
+    "name": "Azure Cloud Sect Token",
+    "type": "accessory",
+    "slot": "accessory",
+    "def_bonus": 1,
+    "hp_bonus": 6,
+    "spd_bonus": 1,
+    "description": "A disc of pale jade, the azure-crane sigil carved on one face. Awarded to those whose errands the sect counts as its own. Wear it and the sentries will not call for reinforcements at your back.",
+    "value": 120,
+    "tags": ["accessory", "azure_cloud_sect", "quest_reward"]
+  },
+  {
     "id": "plain_iron_sword",
     "name": "Plain Iron Sword",
     "type": "weapon",
@@ -54,7 +66,8 @@
     "def_bonus": 1,
     "spd_bonus": 1,
     "requires_realm": "foundation_establishment",
-    "description": "A Sect-forged jian of blued steel, the fuller inlaid with a faint cloud pattern. Balanced as a scholar's brush.",
+    "requires_rep": { "azure_cloud_sect": 2 },
+    "description": "A Sect-forged jian of blued steel, the fuller inlaid with a faint cloud pattern. Balanced as a scholar's brush. Disciples say the blade knows its own kind; strangers who lift it will feel no more than their own weight back.",
     "value": 260,
     "tags": ["weapon", "azure_cloud_sect", "spirit"]
   },

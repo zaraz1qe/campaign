@@ -14,7 +14,13 @@
     "sells": ["thundergold_pill", "storm_warded_talisman"],
     "gives_quest": "the_stormwardens_test",
     "faction": "azure_cloud_sect",
-    "disposition": "neutral"
+    "disposition": "neutral",
+    "rep_dialogue": {
+      "azure_cloud_sect": {
+        "2":  ["You carry Baixu's warranty now. The pass is yours; I only hold the door for you."],
+        "-2": ["I know your face from the courier's notes. Do not mistake the cloud for a hiding-place."]
+      }
+    }
   },
   {
     "id": "ghost_of_patriarch_mingshu",

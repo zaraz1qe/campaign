@@ -19,10 +19,10 @@ A living checklist for what's been done and what to add next.
   Sky-Spire Reach
 - **Sects**: Azure Cloud Sect (righteous), Scarlet Lotus Pavilion (demonic),
   Five Poisons Sect (neutral/grey), Jadestep Sect Remnant (dead-but-haunted)
-- **Items**: 46 (25 equipment, pills, materials, treasures)
+- **Items**: 47 (26 equipment, pills, materials, treasures)
 - **Recipes**: 15 (Forge-Master Bo: 6, Pillmaster Lu: 4, Apothecary Qi: 5)
-- **Quests**: 6 (Kettle's Request, Study Sutra, Missing Disciple, Oath of
-  Fangs, Stormwarden's Test, Broken Terrace)
+- **Quests**: 7 (Kettle's Request, Study Sutra, Missing Disciple, Envoy's
+  Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace)
 - **Realms**: 8 (Mortal → Ascendant Immortal)
 
 ## How to Add Content (the path of least resistance)
@@ -57,6 +57,7 @@ A living checklist for what's been done and what to add next.
 - [ ] Phantom Shadow Pavilion (assassins-for-hire, neutral)
 
 ### 3. Quests to Write
+- [x] The Envoy's Letter — deliver a sealed letter from Azure Cloud to Five Poisons (s6)
 - [ ] Multi-part sect tournament (Azure Cloud vs Scarlet Lotus)
 - [ ] Find the lost manual at the bottom of the River of Swords
 - [ ] Investigate why frost wolves descended on the foothills (link to Blood Moon Cult)
@@ -104,7 +105,8 @@ A living checklist for what's been done and what to add next.
 - [x] **Alchemy crafting**: combine materials into pills at Pillmaster Lu (s5)
 - [x] **Forging**: combine materials into spirit weapons at Forge-Master Bo (s5)
 - [x] **Equipment slots**: weapon, robe, accessory — affect stats (s3)
-- [ ] **Reputation effects on dialogue**: NPCs respond differently
+- [x] **Reputation effects on dialogue**: NPCs respond differently (s6)
+- [x] **Reputation gates on items / techniques / recipes / quest offers** (s6)
 - [ ] **Faction war state**: world events triggered by player progression
 - [ ] **Auto-respawn enemies** so locations don't go empty after one fight
 - [ ] **Multi-enemy combat** (1v many)
@@ -128,6 +130,26 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-22 (session 6)** — "The Weighing Scales." End-to-end reputation
+  system. Every sect is now a live rep bucket (`Player.reputation`, already
+  present, finally used). Ranks: reviled / enemy / distrusted / stranger /
+  known / respected / honoured / sect-honoured. New `rep` / `reputation` /
+  `standing` command; rep rank shown in `status`. Quest completion applies
+  `rep_change: {sect_id: delta}` with a prose beat on rank crossings
+  ("risen from stranger to known"). `requires_rep: {sect_id: min}` gates
+  honored on quests (auto-offer suppressed), items (buy + equip),
+  techniques (learn), and recipes (craft). NPCs can carry
+  `rep_dialogue: {sect_id: {threshold: [lines]}}` that branches on
+  player standing (positive and negative thresholds both work). Retrofit:
+  6 existing quests got thoughtful rep deltas; Azure Cloud Sword now
+  requires ACS +2 to buy; Azure Cloud Palm requires ACS +1 to learn;
+  Skybreaker Blade forge requires ACS +2. New content: quest "The
+  Envoy's Letter" (Envoy Ruwen at Merchant's Crossing carries a letter
+  to Matriarch Shan — +2 ACS, +1 Five Poisons, -2 Scarlet Lotus), new
+  accessory Azure Cloud Sect Token (+1 DEF, +6 HP, +1 SPD). New
+  rep_dialogue on Elder Baixu, Matriarch Shan, Gatekeeper Wuwei,
+  Stormwarden Gao. Validator checks rep fields. Save-compat preserved
+  (no new Player fields; `reputation` was there since session 1).
 - **2026-04-22 (session 5)** — "The Forge and the Cauldron." End-to-end
   crafting system: a new `recipes` content category, `craft` /
   `forge` / `brew` / `recipes` commands, NPC `talk` screens advertise

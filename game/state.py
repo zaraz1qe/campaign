@@ -8,6 +8,30 @@ import json
 EQUIP_SLOTS = ("weapon", "robe", "accessory")
 
 
+# Reputation ranks — thresholds are inclusive floors. Walk from highest down.
+# Anyone below -5 is reviled; anyone at 0 is a stranger; +3 earns respect; +8
+# approaches sect-elder status. Keep the table short — ranks are flavor, the
+# number is the mechanic.
+REP_RANKS = (
+    (8,  "sect-honoured"),
+    (5,  "honoured"),
+    (3,  "respected"),
+    (1,  "known"),
+    (0,  "stranger"),
+    (-2, "distrusted"),
+    (-5, "enemy"),
+    (-99, "reviled"),
+)
+
+
+def rep_rank(value: int) -> str:
+    """Return the rank title for a reputation value."""
+    for floor, name in REP_RANKS:
+        if value >= floor:
+            return name
+    return "reviled"
+
+
 @dataclass
 class Player:
     name: str = "Wanderer"
@@ -68,6 +92,28 @@ class Player:
 
     def adjust_rep(self, sect_id: str, delta: int) -> None:
         self.reputation[sect_id] = self.reputation.get(sect_id, 0) + delta
+
+    def rep(self, sect_id: str) -> int:
+        return int(self.reputation.get(sect_id, 0))
+
+    def meets_rep(self, requires: Dict[str, int]) -> bool:
+        """True iff the player's rep meets every sect threshold in `requires`."""
+        if not requires:
+            return True
+        for sid, minv in requires.items():
+            if self.rep(sid) < int(minv):
+                return False
+        return True
+
+    def rep_shortfalls(self, requires: Dict[str, int]) -> Dict[str, int]:
+        """Return {sect_id: shortfall_value} for each failing rep requirement."""
+        out: Dict[str, int] = {}
+        if not requires:
+            return out
+        for sid, minv in requires.items():
+            if self.rep(sid) < int(minv):
+                out[sid] = int(minv) - self.rep(sid)
+        return out
 
     # ------------------------------------------------------------------
     # Equipment helpers. Bonuses are always computed from `world` so the

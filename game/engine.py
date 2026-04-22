@@ -8,7 +8,7 @@ import textwrap
 import shlex
 
 from . import loader, cultivation, combat, quests
-from .state import Player, EQUIP_SLOTS
+from .state import Player, EQUIP_SLOTS, rep_rank
 
 
 SAVE_DIR = Path(__file__).resolve().parent.parent / "saves"
@@ -89,6 +89,7 @@ class Game:
           techniques (t)                  list martial arts known
           status     (s)                  player sheet
           quest                           list quests
+          reputation (rep)                list standing with each sect
           lore                            list lore you've collected
           name <yourname>                 set your name
           save [slot]                     save game (slot defaults to 'default')
@@ -222,6 +223,8 @@ class Game:
         self.out(f"--- {n.get('name', npc_id)} ---")
         for line in n.get("dialogue", []):
             self.out(_wrap(f'  "{line}"'))
+        for line in self._rep_dialogue_lines(n):
+            self.out(_wrap(f'  "{line}"'))
         if n.get("teaches"):
             names = [self.world["techniques"].get(t, {}).get("name", t) for t in n["teaches"]]
             self.out(f"  (Can teach: {', '.join(names)})")
@@ -245,6 +248,55 @@ class Game:
         if n.get("gives_quest"):
             self.out(quests.offer_quest(self.world, self.player, n["gives_quest"]))
         self._note_quests()
+
+    def _rep_gate_msg(self, requires: Dict[str, int]) -> str:
+        """Return '' if the player meets all rep requirements; otherwise a
+        short gating message enumerating the shortfalls by sect name."""
+        short = self.player.rep_shortfalls(requires or {})
+        if not short:
+            return ""
+        parts = []
+        for sid, s in short.items():
+            sname = self.world["sects"].get(sid, {}).get("name", sid)
+            have = self.player.rep(sid)
+            need = have + s
+            parts.append(f"{sname} (have {have:+d}, need {need:+d})")
+        return "Required standing: " + "; ".join(parts) + "."
+
+    def _rep_dialogue_lines(self, npc: Dict[str, Any]) -> list:
+        """Pick one line per sect from npc['rep_dialogue'] whose threshold the
+        player's rep currently meets. Positive thresholds trigger when rep >=
+        threshold; negative ones trigger when rep <= threshold. The chosen
+        threshold is the one closest to the player's rep — i.e. highest met
+        positive, or lowest met negative."""
+        out = []
+        rep_lines = npc.get("rep_dialogue") or {}
+        if not isinstance(rep_lines, dict):
+            return out
+        for sid, tiers in rep_lines.items():
+            if not isinstance(tiers, dict):
+                continue
+            value = self.player.rep(sid)
+            chosen_thr = None
+            for thr_s in tiers:
+                try:
+                    thr = int(thr_s)
+                except (TypeError, ValueError):
+                    continue
+                if thr >= 0 and value >= thr:
+                    if chosen_thr is None or thr > chosen_thr:
+                        chosen_thr = thr
+                elif thr < 0 and value <= thr:
+                    if chosen_thr is None or thr < chosen_thr:
+                        chosen_thr = thr
+            if chosen_thr is None:
+                continue
+            block = tiers.get(str(chosen_thr)) or tiers.get(chosen_thr) or []
+            if isinstance(block, str):
+                block = [block]
+            for line in block:
+                out.append(line)
+        return out
 
     def _find_in_loc(self, category: str, query: str) -> Optional[str]:
         q = query.lower().replace(" ", "_")
@@ -329,6 +381,10 @@ class Game:
             need = self.world["realms"].get(t["requires_realm"], {}).get("name", t["requires_realm"])
             self.out(f"Your realm is too low. Requires: {need}.")
             return
+        gate = self._rep_gate_msg(t.get("requires_rep") or {})
+        if gate:
+            self.out(f"The master will not entrust this art to you yet. {gate}")
+            return
         cost = int(t.get("learn_cost", 0))
         if self.player.spirit_stones < cost:
             self.out(f"You lack {cost} spirit stones.")
@@ -349,6 +405,10 @@ class Game:
                 cname = self.world["items"].get(cand, {}).get("name", "").lower().replace(" ", "_")
                 if cand == iid or cname == iid:
                     it = self.world["items"][cand]
+                    gate = self._rep_gate_msg(it.get("requires_rep") or {})
+                    if gate:
+                        self.out(f"{n['name']} will not sell {it['name']} to you. {gate}")
+                        return
                     price = int(it.get("value", 0))
                     if self.player.spirit_stones < price:
                         self.out(f"You cannot afford {it['name']} ({price} stones).")
@@ -410,6 +470,10 @@ class Game:
         if req and not cultivation.realm_meets(self.world, self.player, req):
             need = self.world["realms"].get(req, {}).get("name", req)
             self.out(f"Your foundation is too thin. {it['name']} requires: {need}.")
+            return
+        gate = self._rep_gate_msg(it.get("requires_rep") or {})
+        if gate:
+            self.out(f"{it['name']} rejects your touch — its maker knows you by reputation. {gate}")
             return
         # Swap: return current to inventory, equip new.
         cur = self.player.equipped.get(slot, "")
@@ -538,6 +602,13 @@ class Game:
         if req:
             rname = self.world["realms"].get(req, {}).get("name", req)
             gate = f"  [{rname}+]"
+        rep_req = r.get("requires_rep") or {}
+        if rep_req:
+            parts = []
+            for sid, minv in rep_req.items():
+                sname = self.world["sects"].get(sid, {}).get("name", sid)
+                parts.append(f"{sname} {minv:+d}")
+            gate += f"  [rep: {', '.join(parts)}]"
         return f"  {rid}: {out_str} — {cost}{gate}"
 
     def cmd_craft(self, arg: str) -> None:
@@ -577,6 +648,11 @@ class Game:
         if req and not cultivation.realm_meets(self.world, self.player, req):
             need = self.world["realms"].get(req, {}).get("name", req)
             self.out(f"Your foundation is too thin. {recipe.get('name', rid)} requires: {need}.")
+            return
+        gate = self._rep_gate_msg(recipe.get("requires_rep") or {})
+        if gate:
+            cname = self.world["npcs"].get(recipe.get("crafter", ""), {}).get("name", "The crafter")
+            self.out(f"{cname} shakes their head over the plans. {gate}")
             return
         inputs = recipe.get("inputs") or {}
         missing = []
@@ -695,10 +771,27 @@ class Game:
             self.out("Reputation:")
             for sid, v in sorted(self.player.reputation.items()):
                 sname = self.world["sects"].get(sid, {}).get("name", sid)
-                self.out(f"  {sname}: {v:+d}")
+                self.out(f"  {sname}: {v:+d} ({rep_rank(int(v))})")
 
     def cmd_quest(self, _arg: str) -> None:
         self.out(quests.quest_status(self.world, self.player))
+
+    def cmd_reputation(self, _arg: str) -> None:
+        """Show the player's standing with each sect that knows them."""
+        sects = self.world.get("sects", {})
+        # Show every sect, even at 0, so the player sees the full landscape.
+        rows = []
+        for sid, s in sorted(sects.items(), key=lambda kv: kv[1].get("name", kv[0])):
+            v = self.player.rep(sid)
+            rank = rep_rank(v)
+            rows.append((s.get("name", sid), v, rank, s.get("alignment", "")))
+        if not rows:
+            self.out("No sects are known in this world yet.")
+            return
+        self.out("Standing with the sects:")
+        for name, v, rank, align in rows:
+            align_tag = f" [{align}]" if align else ""
+            self.out(f"  {name:<32s}  {v:+3d}  {rank}{align_tag}")
 
     # ------------------------------------------------------------------
     def cmd_name(self, arg: str) -> None:
@@ -770,6 +863,9 @@ class Game:
         "s": "cmd_status",
         "quest": "cmd_quest",
         "quests": "cmd_quest",
+        "reputation": "cmd_reputation",
+        "rep": "cmd_reputation",
+        "standing": "cmd_reputation",
         "name": "cmd_name",
         "save": "cmd_save",
         "load": "cmd_load",

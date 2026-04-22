@@ -153,6 +153,51 @@ def main() -> int:
         if not isinstance(stones, int) or stones < 0:
             errors.append(f"recipe '{rid}' stones must be non-negative int")
 
+    # 10. Reputation fields: sect ids must exist; values must be ints.
+    def _check_rep_map(owner: str, field: str, mapping: dict) -> None:
+        if mapping is None:
+            return
+        if not isinstance(mapping, dict):
+            errors.append(f"{owner} {field} must be an object of sect_id -> int")
+            return
+        for sid, v in mapping.items():
+            if sid not in world["sects"]:
+                errors.append(f"{owner} {field} references unknown sect '{sid}'")
+            if not isinstance(v, int):
+                errors.append(f"{owner} {field}[{sid}] must be an int, got {type(v).__name__}")
+
+    for qid, q in world["quests"].items():
+        _check_rep_map(f"quest '{qid}'", "rep_change", q.get("rep_change"))
+        _check_rep_map(f"quest '{qid}'", "requires_rep", q.get("requires_rep"))
+    for iid, it in world["items"].items():
+        _check_rep_map(f"item '{iid}'", "requires_rep", it.get("requires_rep"))
+    for tid, t in world["techniques"].items():
+        _check_rep_map(f"technique '{tid}'", "requires_rep", t.get("requires_rep"))
+    for rid, r in world["recipes"].items():
+        _check_rep_map(f"recipe '{rid}'", "requires_rep", r.get("requires_rep"))
+    for nid, n in world["npcs"].items():
+        rd = n.get("rep_dialogue")
+        if rd is None:
+            continue
+        if not isinstance(rd, dict):
+            errors.append(f"npc '{nid}' rep_dialogue must be an object")
+            continue
+        for sid, tiers in rd.items():
+            if sid not in world["sects"]:
+                errors.append(f"npc '{nid}' rep_dialogue references unknown sect '{sid}'")
+            if not isinstance(tiers, dict):
+                errors.append(f"npc '{nid}' rep_dialogue[{sid}] must be an object of threshold -> lines")
+                continue
+            for thr, lines in tiers.items():
+                try:
+                    int(thr)
+                except (TypeError, ValueError):
+                    errors.append(f"npc '{nid}' rep_dialogue[{sid}] threshold '{thr}' must be an int")
+                if isinstance(lines, str):
+                    continue
+                if not isinstance(lines, list):
+                    errors.append(f"npc '{nid}' rep_dialogue[{sid}][{thr}] must be a string or list")
+
     if errors:
         print(f"{len(errors)} reference error(s):")
         for e in errors:

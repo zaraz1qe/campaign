@@ -34,6 +34,7 @@
     "damage": 14,
     "effect": null,
     "requires_realm": "qi_condensation",
+    "requires_rep": { "azure_cloud_sect": 1 },
     "learn_cost": 50
   },
   {

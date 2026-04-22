@@ -53,6 +53,27 @@
     "disposition": "friendly"
   },
   {
+    "id": "azure_envoy_ruwen",
+    "name": "Envoy Ruwen",
+    "title": "Junior Envoy of the Azure Cloud Sect",
+    "description": "A young woman in travelling blacks, the azure-crane sigil stitched inside her collar rather than on her sleeve. Her left arm is splinted. She is writing, slowly, with her right. A lacquered letter-case rests on the table beside her kettle; it has not been opened.",
+    "dialogue": [
+      "Quiet, if you please. I am not supposed to be here with this arm, or that letter, or at this table at all.",
+      "My sect has a letter for the Five Poisons. A small letter. It asks a small question. It is the kind of small question that spoils only if nobody carries it.",
+      "I cannot make the road to the valley — not with this arm. If you will go in my place, I will know you are honest by the fact of your return.",
+      "Do not read the letter. Seal still, seal broken — both are accountable answers. Seal missing is not."
+    ],
+    "gives_quest": "the_envoys_letter",
+    "faction": "azure_cloud_sect",
+    "disposition": "friendly",
+    "rep_dialogue": {
+      "azure_cloud_sect": {
+        "2":  ["I heard Baixu's younger disciples name you at the gate. They pretended not to be impressed."],
+        "-2": ["You move freely here, but I will not ask a service of you. We have different masters."]
+      }
+    }
+  },
+  {
     "id": "cloth_merchant_mei",
     "name": "Cloth Merchant Mei",
     "title": "Silk Trader",
@@ -129,6 +150,13 @@
     "sells": ["azure_cloud_sword", "cloud_silk_robe", "azure_guardian_talisman"],
     "gives_quest": "the_missing_disciple",
     "faction": "azure_cloud_sect",
-    "disposition": "friendly"
+    "disposition": "friendly",
+    "rep_dialogue": {
+      "azure_cloud_sect": {
+        "3":  ["The sect counts you among its own now. The courtyard's bells will ring when you next cross the gate — a small ringing, but it is yours.", "There are disciples who would call you senior. Do not correct them too quickly."],
+        "1":  ["You walk the courtyard as a guest, not a stranger. That is rarer than it sounds."],
+        "-2": ["You have stood too often with those who owe us blood. Do not mistake my courtesy for welcome.", "The sect's swords remember what my hands have forgiven. Tread carefully."]
+      }
+    }
   }
 ]

@@ -10,7 +10,8 @@
       { "type": "collect", "target": "storm_feather" },
       { "type": "talk", "target": "stormwarden_gao" }
     ],
-    "reward": { "spirit_stones": 180, "items": ["storm_warded_talisman", "thundergold_pill"], "xp": 110 }
+    "reward": { "spirit_stones": 180, "items": ["storm_warded_talisman", "thundergold_pill"], "xp": 110 },
+    "rep_change": { "azure_cloud_sect": 1 }
   },
   {
     "id": "the_broken_terrace",
@@ -22,6 +23,7 @@
       { "type": "collect", "target": "gale_tiger_fang" },
       { "type": "talk", "target": "ghost_of_patriarch_mingshu" }
     ],
-    "reward": { "spirit_stones": 400, "items": ["skybreaker_blade", "stormcloud_sash", "sky_qi_crystal"], "xp": 300 }
+    "reward": { "spirit_stones": 400, "items": ["skybreaker_blade", "stormcloud_sash", "sky_qi_crystal"], "xp": 300 },
+    "rep_change": { "jadestep_remnant": 3, "azure_cloud_sect": 1 }
   }
 ]
