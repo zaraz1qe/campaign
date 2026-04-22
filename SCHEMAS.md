@@ -44,6 +44,15 @@ Optional fields can be omitted. Unknown fields are ignored (forward-compatible).
   "faction": "shaolin",            // optional
   "disposition": "friendly",       // friendly | neutral | hostile
 
+  // Optional rep spawn gates. If present, the NPC only appears at their
+  // location when the player's rep meets the condition. Used for scouts
+  // or recruiters who retreat once a player has become hostile enough.
+  // `requires_rep`: rep floor (player.rep(sid) >= min).
+  // `requires_rep_at_most`: rep ceiling (player.rep(sid) <= max).
+  // Both may be combined. Missing field = no gate.
+  "requires_rep": { "scarlet_lotus_pavilion": -2 },
+  "requires_rep_at_most": { "scarlet_lotus_pavilion": 4 },
+
   // Optional rep-reactive dialogue. Lines show AFTER the main dialogue
   // block when the player's rep with the sect passes the threshold.
   // Positive thresholds fire when rep >= threshold; negative fire when
@@ -71,6 +80,17 @@ Optional fields can be omitted. Unknown fields are ignored (forward-compatible).
     { "item": "serpent_gallbladder", "chance": 0.4 },
     { "item": "jade_scale",          "chance": 0.7 }
   ],
+
+  // Optional rep spawn gates. Same shape as on NPCs. Use for enemies that
+  // only appear after the player has angered (or endeared themselves to)
+  // a sect — hunters, assassins, sect guardians that attack outsiders.
+  "requires_rep": { "azure_cloud_sect": 3 },
+  "requires_rep_at_most": { "scarlet_lotus_pavilion": -1 },
+
+  // Optional single-line atmospheric announcement shown under the enemy
+  // in `look` when they are visible. Useful for ambush-spawned foes.
+  "ambush_text": "A crimson silk scarf flutters from a crow-perch as you pass. There is no bird.",
+
   "xp": 30,
   "tags": ["beast", "venomous"]
 }
@@ -253,8 +273,16 @@ Ranks (from `game.state.rep_rank`):
 
 Any content object can gate itself with `requires_rep: {sect_id: min}`.
 Currently honored on: quests (auto-offer on talk), items (buy, equip),
-techniques (learn), recipes (craft). All require *every* threshold in
+techniques (learn), recipes (craft), and the **spawn presence** of
+NPCs and enemies at their location. All require *every* threshold in
 the dict to be met; negative min means "rep must be >= this value".
+
+NPCs and enemies additionally support `requires_rep_at_most: {sect_id: max}`
+as a ceiling — the entity disappears when the player's rep exceeds it.
+Used for "scouts who retreat once you outrank them" and for defenders
+who only attack when the player has insulted the sect. Enemies can
+also carry `ambush_text`, a one-line atmospheric tag shown under the
+enemy in `look` — pairs naturally with rep-triggered spawns.
 
 Quests also support `rep_change: {sect_id: delta}` — applied on
 completion, reported to the player with old->new rank crossings when

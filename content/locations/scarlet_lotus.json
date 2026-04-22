@@ -1,0 +1,31 @@
+[
+  {
+    "id": "crimson_creek",
+    "name": "Crimson Creek",
+    "region": "Scarlet Lotus Reach",
+    "description": "The creek runs slow and rust-red between pale boulders — the colour, the locals tell no one, comes from the dye-pits further upstream, though no dyer has worked them in a generation. A stand of red lotuses pushes up through the stones in spite of the season; their petals are thick as lacquer. A narrow path bends east into a cleft that ought to lead nowhere.",
+    "first_visit_text": "A bronze bell hangs from a branch at the path's edge. Its tongue has been stolen — or removed — and nothing remains but the mouth. When the wind tugs it, it still seems to toll, somewhere further in.",
+    "exits": { "north": "bandit_road", "east": "scarlet_lotus_shrine" },
+    "npcs": [],
+    "enemies": ["blood_sworn_cultivator"],
+    "events": ["crimson_wind_carries_chanting"],
+    "items_on_ground": [],
+    "qi_density": 2,
+    "tags": ["approach", "scarlet_lotus", "hidden"]
+  },
+  {
+    "id": "scarlet_lotus_shrine",
+    "name": "Scarlet Lotus Hidden Shrine",
+    "region": "Scarlet Lotus Reach",
+    "description": "A pavilion of dark lacquered wood rises from an island in the middle of a still pond. The pond itself is red — whether with petals, silt, or something else is a question the pavilion does not answer. Bronze censers smoke along the gallery; the smoke smells of iron and sweetgrass. Disciples in robes the colour of cut wrists move between the pillars without speaking.",
+    "first_visit_text": "You step onto the bridge. The water beneath you is not stirring at your passage; it is stirring in advance of it, as though something already under the surface is moving to meet you. No one here hurries. No one here needs to.",
+    "exits": { "west": "crimson_creek" },
+    "npcs": ["elder_red_feather", "apothecary_weilan"],
+    "enemies": ["scarlet_pavilion_guardian"],
+    "events": ["lotus_pond_reflects_blood"],
+    "items_on_ground": ["crimson_registry"],
+    "qi_density": 6,
+    "sect": "scarlet_lotus_pavilion",
+    "tags": ["sect_inner", "scarlet_lotus", "demonic"]
+  }
+]

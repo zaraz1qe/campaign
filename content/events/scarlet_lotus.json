@@ -1,0 +1,16 @@
+[
+  {
+    "id": "crimson_wind_carries_chanting",
+    "location": "crimson_creek",
+    "chance": 0.35,
+    "text": "A dry wind comes up the creek, carrying the end of a chant — words you almost understand, a rhythm like a heartbeat counted aloud. It stops mid-line, as though the chanter had walked indoors. The red lotuses at your feet tremble.",
+    "effect": {}
+  },
+  {
+    "id": "lotus_pond_reflects_blood",
+    "location": "scarlet_lotus_shrine",
+    "chance": 0.45,
+    "text": "The pond's surface settles. For a moment, in the red water, you do not see yourself — you see someone who looks almost like you but older, in robes the colour of the water, smiling with a mouth that has learned a new shape. Then the image is gone, and the pond is only a pond again.",
+    "effect": { "lore": "scarlet_lotus_oath" }
+  }
+]

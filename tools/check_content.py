@@ -175,6 +175,13 @@ def main() -> int:
         _check_rep_map(f"technique '{tid}'", "requires_rep", t.get("requires_rep"))
     for rid, r in world["recipes"].items():
         _check_rep_map(f"recipe '{rid}'", "requires_rep", r.get("requires_rep"))
+    # requires_rep / requires_rep_at_most on spawnable entities — NPCs, enemies.
+    for nid, n in world["npcs"].items():
+        _check_rep_map(f"npc '{nid}'", "requires_rep", n.get("requires_rep"))
+        _check_rep_map(f"npc '{nid}'", "requires_rep_at_most", n.get("requires_rep_at_most"))
+    for eid, e in world["enemies"].items():
+        _check_rep_map(f"enemy '{eid}'", "requires_rep", e.get("requires_rep"))
+        _check_rep_map(f"enemy '{eid}'", "requires_rep_at_most", e.get("requires_rep_at_most"))
     for nid, n in world["npcs"].items():
         rd = n.get("rep_dialogue")
         if rd is None:

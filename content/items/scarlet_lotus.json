@@ -1,0 +1,59 @@
+[
+  {
+    "id": "blood_lotus_petal",
+    "name": "Blood Lotus Petal",
+    "type": "material",
+    "description": "A curled petal of a deep arterial red, thick and slightly warm to the touch. Ground, it is one of the chief ingredients of the Pavilion's pharmacopoeia; whole, it should not be held long — it wants to be used.",
+    "effect": null,
+    "power": 0,
+    "value": 55,
+    "tags": ["material", "scarlet_lotus", "rare"]
+  },
+  {
+    "id": "crimson_cinnabar_pill",
+    "name": "Crimson Cinnabar Pill",
+    "type": "pill",
+    "description": "A small dull-red pellet that leaves a heat on the tongue and, afterwards, a taste of iron. Closes the meridians around a wound and forces the body to keep fighting. Azure Cloud apothecaries will not sell its like.",
+    "effect": "hp_heal",
+    "power": 45,
+    "value": 95,
+    "tags": ["consumable", "scarlet_lotus"]
+  },
+  {
+    "id": "scarlet_pavilion_token",
+    "name": "Scarlet Pavilion Token",
+    "type": "accessory",
+    "slot": "accessory",
+    "atk_bonus": 2,
+    "spd_bonus": 1,
+    "on_hit_effect": "poison",
+    "on_hit_power": 1,
+    "requires_rep": { "scarlet_lotus_pavilion": 1 },
+    "description": "A small lacquered medallion shaped like a half-open lotus. The bearer is known to the Pavilion — and to its assassins, who will step aside rather than cross one of their own.",
+    "value": 180,
+    "tags": ["accessory", "scarlet_lotus"]
+  },
+  {
+    "id": "blood_petal_mantle",
+    "name": "Blood-Petal Mantle",
+    "type": "armor",
+    "slot": "robe",
+    "def_bonus": 4,
+    "atk_bonus": 2,
+    "hp_bonus": 10,
+    "requires_rep": { "scarlet_lotus_pavilion": 2 },
+    "description": "A long sleeveless robe stitched from overlapping petal-shapes of oiled red leather. It does not quite lie flat; the mantle seems to stir very faintly between breaths, as though the petals themselves remember how to open.",
+    "value": 340,
+    "tags": ["armor", "scarlet_lotus", "rare"]
+  },
+  {
+    "id": "crimson_registry",
+    "name": "Fragment of the Crimson Registry",
+    "type": "treasure",
+    "description": "A single page torn from a ledger bound in red leather. The writing is in a clear schoolmaster's hand: names, dates, and a neat column of prices. Some of the names have been crossed through; some have a small circle beside them. You do not want to think about what the circle means.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["treasure", "scarlet_lotus", "lore"]
+  }
+]

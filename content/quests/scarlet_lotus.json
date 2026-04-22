@@ -1,0 +1,20 @@
+[
+  {
+    "id": "the_red_path",
+    "name": "The Red Path",
+    "giver": "scarlet_scout_rulan",
+    "description": "Rulan, the thin-smiling scout of the Scarlet Lotus, will not offer friendship without a token. She asks for three tributes from the souther sects' own gardens: a viper's fang from the bamboo sea, a venom gland harvested by hand, and a black lotus seed from the Five Poisons' own terrace. Bring them all — and do not ask what they are for.",
+    "steps": [
+      { "type": "collect", "target": "viper_fang" },
+      { "type": "collect", "target": "venom_gland" },
+      { "type": "collect", "target": "black_lotus_seed" },
+      { "type": "talk",    "target": "scarlet_scout_rulan" }
+    ],
+    "reward": { "spirit_stones": 160, "items": ["scarlet_pavilion_token", "crimson_cinnabar_pill"], "xp": 75 },
+    "rep_change": {
+      "scarlet_lotus_pavilion": 3,
+      "azure_cloud_sect": -2,
+      "five_poisons_sect": -1
+    }
+  }
+]

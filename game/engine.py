@@ -103,6 +103,35 @@ class Game:
     def _loc(self) -> Dict[str, Any]:
         return self.world["locations"].get(self.player.location, {})
 
+    def _rep_visible(self, obj: Dict[str, Any]) -> bool:
+        """True if the player's current rep meets the object's spawn gates.
+        A missing field means no gate. `requires_rep` is a floor (rep >= min);
+        `requires_rep_at_most` is a ceiling (rep <= max). Used to let NPCs and
+        enemies appear/disappear based on faction standing — e.g. an assassin
+        who only shows up once you've angered their sect, or a sect scout who
+        vanishes once you're reviled enough that even they have given up."""
+        req_min = obj.get("requires_rep") or {}
+        if req_min and not self.player.meets_rep(req_min):
+            return False
+        req_max = obj.get("requires_rep_at_most") or {}
+        if req_max:
+            for sid, maxv in req_max.items():
+                if self.player.rep(sid) > int(maxv):
+                    return False
+        return True
+
+    def _visible_here(self, category: str, field: str) -> list:
+        """Filter a location's npc/enemy list by per-object rep gates."""
+        loc = self._loc()
+        out = []
+        for cid in (loc.get(field) or []):
+            obj = self.world[category].get(cid)
+            if obj is None:
+                continue
+            if self._rep_visible(obj):
+                out.append(cid)
+        return out
+
     def cmd_look(self, _arg: str) -> None:
         loc = self._loc()
         if not loc:
@@ -119,19 +148,22 @@ class Game:
                 self.out("")
                 self.out(_wrap(ft))
             self.player.visited.add(self.player.location)
-        npcs = loc.get("npcs", [])
+        npcs = self._visible_here("npcs", "npcs")
         if npcs:
             self.out("")
             self.out("Here you see:")
             for nid in npcs:
                 n = self.world["npcs"].get(nid, {})
                 self.out(f"  - {n.get('name', nid)}: {n.get('title','')}")
-        enemies = loc.get("enemies", [])
+        enemies = self._visible_here("enemies", "enemies")
         if enemies:
             self.out("Threats prowl these grounds:")
             for eid in enemies:
                 e = self.world["enemies"].get(eid, {})
                 self.out(f"  ! {e.get('name', eid)}")
+                ambush = e.get("ambush_text")
+                if ambush:
+                    self.out(_wrap("      " + ambush))
         items = loc.get("items_on_ground", [])
         if items:
             self.out("On the ground:")
@@ -306,6 +338,10 @@ class Game:
             candidates = loc.get("enemies", [])
         elif category == "npcs":
             candidates = loc.get("npcs", [])
+        # Filter out entities whose rep gates aren't met — they aren't here
+        # for this player right now.
+        candidates = [c for c in candidates
+                      if self._rep_visible(self.world[category].get(c, {}))]
         for cid in candidates:
             if cid == q:
                 return cid
@@ -320,8 +356,8 @@ class Game:
     # ------------------------------------------------------------------
     def cmd_fight(self, arg: str) -> None:
         if not arg:
-            # If there's exactly one enemy here, fight it.
-            enemies = self._loc().get("enemies", [])
+            # If there's exactly one (visible) enemy here, fight it.
+            enemies = self._visible_here("enemies", "enemies")
             if len(enemies) == 1:
                 arg = enemies[0]
             else:
@@ -351,10 +387,9 @@ class Game:
             self.out("Learn what?")
             return
         tid = arg.strip().lower().replace(" ", "_")
-        # Find an NPC here who teaches this
-        loc = self._loc()
+        # Find an NPC here who teaches this (only visible ones).
         teacher = None
-        for nid in loc.get("npcs", []):
+        for nid in self._visible_here("npcs", "npcs"):
             n = self.world["npcs"].get(nid, {})
             if tid in (n.get("teaches") or []):
                 teacher = n
@@ -399,7 +434,7 @@ class Game:
             self.out("Buy what?")
             return
         iid = arg.strip().lower().replace(" ", "_")
-        for nid in self._loc().get("npcs", []):
+        for nid in self._visible_here("npcs", "npcs"):
             n = self.world["npcs"].get(nid, {})
             for cand in (n.get("sells") or []):
                 cname = self.world["items"].get(cand, {}).get("name", "").lower().replace(" ", "_")
@@ -578,7 +613,7 @@ class Game:
     def _crafters_here(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
         """crafter_npc_id -> {recipe_id: recipe} for each crafter at this location."""
         out: Dict[str, Dict[str, Dict[str, Any]]] = {}
-        for nid in self._loc().get("npcs", []):
+        for nid in self._visible_here("npcs", "npcs"):
             recs = self._recipes_at(nid)
             if recs:
                 out[nid] = recs
@@ -633,7 +668,7 @@ class Game:
             self.out(f"No such recipe: '{rid}'.")
             return
         crafter_id = recipe.get("crafter", "")
-        here = self._loc().get("npcs", [])
+        here = self._visible_here("npcs", "npcs")
         if crafter_id and crafter_id not in here:
             cname = self.world["npcs"].get(crafter_id, {}).get("name", crafter_id)
             cloc_id = None

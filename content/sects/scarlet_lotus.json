@@ -2,9 +2,9 @@
   "id": "scarlet_lotus_pavilion",
   "name": "Scarlet Lotus Pavilion",
   "alignment": "demonic",
-  "headquarters": null,
-  "description": "Beautiful and merciless, the Scarlet Lotus believe pain is the swiftest teacher. Their disciples wear robes the color of fresh blood.",
-  "signature_techniques": ["scarlet_lotus_palm"],
-  "elders": [],
+  "headquarters": "scarlet_lotus_shrine",
+  "description": "Beautiful and merciless, the Scarlet Lotus believe pain is the swiftest teacher. Their disciples wear robes the color of fresh blood. The Pavilion does not wage open war; it keeps a ledger, and calls in favours, and answers every insult — eventually, and in kind.",
+  "signature_techniques": ["scarlet_lotus_palm", "blood_lotus_palm", "heart_rending_claw"],
+  "elders": ["elder_red_feather"],
   "rivals": ["azure_cloud_sect"]
 }

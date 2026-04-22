@@ -1,0 +1,72 @@
+[
+  {
+    "id": "scarlet_lotus_assassin",
+    "name": "Scarlet Lotus Assassin",
+    "description": "A figure in black and crimson who has been following you for longer than you realise. A curved red-lacquered short-blade in each hand; a veil of dark red silk across the lower face. They do not speak: that is a courtesy they reserve for comrades.",
+    "realm": "qi_condensation",
+    "hp": 62, "atk": 10, "def": 4, "spd": 10,
+    "techniques": ["scarlet_chain_lash", "venom_strike"],
+    "requires_rep": { "azure_cloud_sect": 3 },
+    "ambush_text": "A crimson silk scarf flutters from a crow-perch as you pass. There is no bird.",
+    "drops": [
+      { "item": "spirit_stone_pouch", "chance": 0.55 },
+      { "item": "blood_lotus_petal", "chance": 0.35 },
+      { "item": "crimson_cinnabar_pill", "chance": 0.20 },
+      { "item": "venom_fanged_dagger", "chance": 0.10 }
+    ],
+    "xp": 52,
+    "tags": ["human", "cultivator", "scarlet_lotus", "ambush"]
+  },
+  {
+    "id": "scarlet_lotus_hunter",
+    "name": "Scarlet Lotus Hunter",
+    "description": "A heavyset woman in a red leather cuirass worked with lotus-scale plates, a single long steel hook in each hand. A contract sits folded in her sash; the corner that protrudes bears an azure wax seal, defaced.",
+    "realm": "foundation_establishment",
+    "hp": 110, "atk": 14, "def": 6, "spd": 8,
+    "techniques": ["crimson_tide_fist", "scarlet_chain_lash"],
+    "requires_rep": { "azure_cloud_sect": 5 },
+    "ambush_text": "The crowd at the market parts around a tall figure who has been reading your back for an hour. The contract in her sash bears a seal you recognise.",
+    "drops": [
+      { "item": "spirit_stone_pouch", "chance": 0.70 },
+      { "item": "blood_lotus_petal", "chance": 0.55 },
+      { "item": "crimson_cinnabar_pill", "chance": 0.35 },
+      { "item": "blood_petal_mantle", "chance": 0.08 }
+    ],
+    "xp": 95,
+    "tags": ["human", "cultivator", "scarlet_lotus", "ambush", "boss_lite"]
+  },
+  {
+    "id": "blood_sworn_cultivator",
+    "name": "Blood-Sworn Wretch",
+    "description": "A cultivator the Pavilion made and then forgot — eyes the colour of candle-wax, forearms scored with old self-cuttings that still weep faintly. They fight without strategy, because pain is not a thing they can feel any more.",
+    "realm": "qi_condensation",
+    "hp": 52, "atk": 9, "def": 2, "spd": 6,
+    "techniques": ["wild_swing", "crimson_tide_fist"],
+    "drops": [
+      { "item": "blood_lotus_petal", "chance": 0.40 },
+      { "item": "spirit_stone_pouch", "chance": 0.35 },
+      { "item": "antidote_pearl", "chance": 0.10 }
+    ],
+    "xp": 34,
+    "tags": ["human", "cultivator", "scarlet_lotus"]
+  },
+  {
+    "id": "scarlet_pavilion_guardian",
+    "name": "Scarlet Pavilion Guardian",
+    "description": "A veteran of the red-petal robes — broader than any outer disciple, and calmer. A pair of lotus-hilted hook-swords rest easily at the waist. The eyes are not cruel. That, somehow, is worse.",
+    "realm": "foundation_establishment",
+    "hp": 150, "atk": 16, "def": 7, "spd": 9,
+    "techniques": ["heart_rending_claw", "pond_veil_step", "crimson_tide_fist"],
+    "requires_rep_at_most": { "scarlet_lotus_pavilion": -1 },
+    "ambush_text": "The gallery darkens. A guardian steps between you and the bridge, not drawing yet — not having to.",
+    "drops": [
+      { "item": "spirit_stone_pouch", "chance": 0.80 },
+      { "item": "blood_lotus_petal", "chance": 0.80 },
+      { "item": "crimson_cinnabar_pill", "chance": 0.50 },
+      { "item": "blood_petal_mantle", "chance": 0.25 },
+      { "item": "scarlet_pavilion_token", "chance": 0.15 }
+    ],
+    "xp": 140,
+    "tags": ["human", "cultivator", "scarlet_lotus", "boss"]
+  }
+]

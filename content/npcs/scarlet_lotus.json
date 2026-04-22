@@ -1,0 +1,66 @@
+[
+  {
+    "id": "scarlet_scout_rulan",
+    "name": "Rulan the Thin-Smiling",
+    "title": "Outer Petal of the Scarlet Lotus",
+    "description": "A woman in plain travelling clothes the colour of old pine, with a single red silk knot at her throat. She leans against a milestone as if she has been waiting there a very long time. A faint scent of cinnabar lingers about her, and her smile does not reach her eyes until you look away.",
+    "dialogue": [
+      "Oh, don't stop on my account. I'm only taking the air.",
+      "The Scarlet Lotus Pavilion does not *recruit* — such a coarse word. We merely recognise our own when they pass us on a road.",
+      "There's a bend in the creek south of here. If you feel the weight of the sword-sects pressing on your breath, walk it. The elder there understands that a kindness owed is a blade sheathed."
+    ],
+    "gives_quest": "the_red_path",
+    "faction": "scarlet_lotus_pavilion",
+    "disposition": "neutral",
+    "requires_rep_at_most": { "scarlet_lotus_pavilion": 4 },
+    "rep_dialogue": {
+      "scarlet_lotus_pavilion": {
+        "2":  ["Your step is softer now, little petal. Elder Red Feather speaks your name when the censers dim."],
+        "-2": ["You still come to my milestone? Bold. The next who comes in your name will come armed, and they will not be me."]
+      },
+      "azure_cloud_sect": {
+        "3": ["A sword of the Azure Cloud, pausing at my stone. How curious. I wonder what I would fetch if I sold this meeting to your elder."]
+      }
+    }
+  },
+  {
+    "id": "elder_red_feather",
+    "name": "Elder Hong Yu, called Red Feather",
+    "title": "Fifth Elder of the Scarlet Lotus Pavilion",
+    "description": "A tall, spare woman whose hair falls loose to her waist in a single red streak. Her robes are layered scarlets; at her wrist is a small bronze knife no larger than a writing-brush, and her fingernails are lacquered the same shade as her hair. When she speaks, her mouth moves less than it should.",
+    "dialogue": [
+      "The pond knows everyone. The pond, you understand, does not gossip.",
+      "There is no such thing as a clean cultivator, wanderer. There are only those who admit the stain and those who hide it. We wear ours.",
+      "Pain is swift. Pain is a teacher who does not repeat himself. Come to us with honest wounds, and we will not waste them."
+    ],
+    "teaches": ["blood_lotus_palm", "heart_rending_claw"],
+    "sells": ["blood_petal_mantle"],
+    "faction": "scarlet_lotus_pavilion",
+    "disposition": "neutral",
+    "rep_dialogue": {
+      "scarlet_lotus_pavilion": {
+        "5":  ["The pond calls you home before I do. You need only ask, and we will carve your name into the gallery column."],
+        "2":  ["You are welcome here. More than welcome. Sit — drink — ask."],
+        "-2": ["You still walk my bridge. Bold. The disciples are not bold enough to stop you. I am."]
+      },
+      "azure_cloud_sect": {
+        "5": ["Azure Cloud's favoured sword, in my gallery. Tell me, does Baixu know you have come? Tell me true — the pond will check."]
+      }
+    }
+  },
+  {
+    "id": "apothecary_weilan",
+    "name": "Weilan of the Red Pestle",
+    "title": "Brewer of the Scarlet Basin",
+    "description": "A short, bright-eyed man in an apron so stained with cinnabar it looks freshly painted. His hands are perpetually in motion — grinding, folding, measuring powders with a small iron spoon. He hums old road-songs between words and seems to find the whole world faintly amusing.",
+    "dialogue": [
+      "Pill? Mantle? A whisper of what the pond actually eats? I have it all, for a price a sect can bear.",
+      "Do not swallow the Crimson Cinnabar on an empty stomach. Swallow it on an *angry* one; the sect gets better value that way.",
+      "Azure Cloud sells white pills. We sell red ones. The colour is the whole of the difference — and, of course, the effect."
+    ],
+    "teaches": ["crimson_tide_fist"],
+    "sells": ["crimson_cinnabar_pill", "scarlet_pavilion_token", "antidote_pearl"],
+    "faction": "scarlet_lotus_pavilion",
+    "disposition": "friendly"
+  }
+]

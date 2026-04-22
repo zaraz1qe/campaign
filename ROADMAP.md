@@ -14,15 +14,16 @@ A living checklist for what's been done and what to add next.
   Thousand Venom Valley Mouth, Venom Gorge, Hall of Five Poisons,
   Poisoner's Garden, Cloudroot Pass, Hanging Terraces of Jadestep,
   Thunderhead Ridge, Skyweaver's Cloister, Cragspine Shrine, Spirit-Gale
-  Plateau (21 total)
+  Plateau, Crimson Creek, Scarlet Lotus Hidden Shrine (23 total)
 - **Regions**: Southern Wilds, Azure Cloud Range, Thousand Venom Valley,
-  Sky-Spire Reach
-- **Sects**: Azure Cloud Sect (righteous), Scarlet Lotus Pavilion (demonic),
-  Five Poisons Sect (neutral/grey), Jadestep Sect Remnant (dead-but-haunted)
-- **Items**: 47 (26 equipment, pills, materials, treasures)
+  Sky-Spire Reach, Scarlet Lotus Reach
+- **Sects**: Azure Cloud Sect (righteous), Scarlet Lotus Pavilion (demonic
+  — now with HQ, elders, NPCs, techniques), Five Poisons Sect (neutral/grey),
+  Jadestep Sect Remnant (dead-but-haunted)
+- **Items**: 52 (equipment, pills, materials, treasures)
 - **Recipes**: 15 (Forge-Master Bo: 6, Pillmaster Lu: 4, Apothecary Qi: 5)
-- **Quests**: 7 (Kettle's Request, Study Sutra, Missing Disciple, Envoy's
-  Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace)
+- **Quests**: 8 (Kettle's Request, Study Sutra, Missing Disciple, Envoy's
+  Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace, Red Path)
 - **Realms**: 8 (Mortal → Ascendant Immortal)
 
 ## How to Add Content (the path of least resistance)
@@ -52,6 +53,7 @@ A living checklist for what's been done and what to add next.
 - [ ] Blood Moon Cult (demonic, body cultivation)
 - [ ] Heavenly Sword Tower (orthodox, sword-only, militant)
 - [x] Five Poisons Sect (neutral/grey, alchemy + venom)  **(s2)**
+- [x] Scarlet Lotus Pavilion (demonic, physical presence) **(s7)**
 - [ ] Wandering Cloud Pavilion (neutral, scholar-cultivators)
 - [ ] Iron Buddha Temple (righteous, body + qi monks)
 - [ ] Phantom Shadow Pavilion (assassins-for-hire, neutral)
@@ -107,7 +109,10 @@ A living checklist for what's been done and what to add next.
 - [x] **Equipment slots**: weapon, robe, accessory — affect stats (s3)
 - [x] **Reputation effects on dialogue**: NPCs respond differently (s6)
 - [x] **Reputation gates on items / techniques / recipes / quest offers** (s6)
-- [ ] **Faction war state**: world events triggered by player progression
+- [x] **Rep-triggered NPC/enemy spawns** — assassins appear after you anger
+      a sect; guardians drop their welcome when you fall below zero (s7)
+- [ ] **Faction war state**: more than spawns — sect patrols that pursue
+      between locations, trade embargoes, sect-tournament triggers
 - [ ] **Auto-respawn enemies** so locations don't go empty after one fight
 - [ ] **Multi-enemy combat** (1v many)
 - [ ] **Companions**: a fellow cultivator who fights with you
@@ -130,6 +135,25 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-22 (session 7)** — "The Red Path." The Scarlet Lotus Pavilion
+  finally walks the earth. New region (Scarlet Lotus Reach) with two
+  locations (Crimson Creek, Scarlet Lotus Hidden Shrine), three NPCs
+  (Rulan the Thin-Smiling, Elder Red Feather, Apothecary Weilan), four
+  enemies (Scarlet Lotus Assassin, Scarlet Lotus Hunter, Blood-Sworn
+  Wretch, Scarlet Pavilion Guardian — boss), five techniques (Blood
+  Lotus Palm, Crimson Tide Fist, Heart-Rending Claw + 2 enemy-only),
+  five items (blood lotus petal, crimson cinnabar pill, scarlet pavilion
+  token, blood-petal mantle, crimson registry fragment), one quest
+  (The Red Path — tribute of venoms), two lore entries, two events.
+  Engine: rep-triggered spawning. NPCs and enemies now support
+  `requires_rep` (floor) and `requires_rep_at_most` (ceiling) — they
+  appear/disappear based on the player's sect standing. Enemies can
+  carry `ambush_text`, an atmospheric sub-line shown under them in
+  `look`. Assassins spawn at Bandit Road once ACS rep ≥ 3, hunters at
+  Merchant's Crossing at ACS rep ≥ 5, guardians at the shrine at SL
+  rep ≤ -1, Rulan retreats above SL rep > 4. Elder Baixu now also has
+  a Scarlet-Lotus-rep warning line. Validator covers the new fields.
+  SCHEMAS.md updated. Save-compat preserved (no new Player fields).
 - **2026-04-22 (session 6)** — "The Weighing Scales." End-to-end reputation
   system. Every sect is now a live rep bucket (`Player.reputation`, already
   present, finally used). Ranks: reviled / enemy / distrusted / stranger /

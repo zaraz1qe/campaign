@@ -156,6 +156,9 @@
         "3":  ["The sect counts you among its own now. The courtyard's bells will ring when you next cross the gate — a small ringing, but it is yours.", "There are disciples who would call you senior. Do not correct them too quickly."],
         "1":  ["You walk the courtyard as a guest, not a stranger. That is rarer than it sounds."],
         "-2": ["You have stood too often with those who owe us blood. Do not mistake my courtesy for welcome.", "The sect's swords remember what my hands have forgiven. Tread carefully."]
+      },
+      "scarlet_lotus_pavilion": {
+        "2": ["A red silk knot at your sleeve, cultivator. Do not come to this pavilion again with it on. I warn you once as a courtesy; what comes next will come from younger hands."]
       }
     }
   }

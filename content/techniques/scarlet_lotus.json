@@ -1,0 +1,70 @@
+[
+  {
+    "id": "blood_lotus_palm",
+    "name": "Blood Lotus Palm",
+    "type": "martial",
+    "rank": "earth",
+    "description": "A palm strike that opens a petal of red qi against the opponent's flesh. The Pavilion's founding art — the qi torn from the wound returns, and knits the striker's own.",
+    "qi_cost": 14,
+    "damage": 16,
+    "effect": "heal",
+    "effect_power": 6,
+    "requires_realm": "qi_condensation",
+    "requires_rep": { "scarlet_lotus_pavilion": 1 },
+    "learn_cost": 90
+  },
+  {
+    "id": "crimson_tide_fist",
+    "name": "Crimson Tide Fist",
+    "type": "martial",
+    "rank": "earth",
+    "description": "A flurry of low fast punches that tear shallow crescents across a foe's meridians. The wounds do not cease — each beat of the heart lets a little more go.",
+    "qi_cost": 10,
+    "damage": 12,
+    "effect": "bleed",
+    "effect_power": 4,
+    "requires_realm": "qi_condensation",
+    "requires_rep": { "scarlet_lotus_pavilion": 0 },
+    "learn_cost": 60
+  },
+  {
+    "id": "heart_rending_claw",
+    "name": "Heart-Rending Claw",
+    "type": "martial",
+    "rank": "heaven",
+    "description": "A single claw-like strike to the chest that hooks behind a rib and pulls — not flesh, but breath. The victim spends the following seconds re-learning where their lungs are.",
+    "qi_cost": 16,
+    "damage": 10,
+    "effect": "stun",
+    "effect_power": 2,
+    "requires_realm": "foundation_establishment",
+    "requires_rep": { "scarlet_lotus_pavilion": 2 },
+    "learn_cost": 180
+  },
+  {
+    "id": "scarlet_chain_lash",
+    "name": "Scarlet Chain Lash",
+    "type": "martial",
+    "rank": "earth",
+    "description": "A whip-fast lash of qi shaped like a chain of red flowers. Enemy-only — disciples learn it under blood oath, and do not teach.",
+    "qi_cost": 6,
+    "damage": 10,
+    "effect": "bleed",
+    "effect_power": 2,
+    "requires_realm": "qi_condensation",
+    "learn_cost": 999
+  },
+  {
+    "id": "pond_veil_step",
+    "name": "Pond-Veil Step",
+    "type": "body",
+    "rank": "earth",
+    "description": "A footwork art of the Scarlet Pavilion guardians — each step scatters a red mist that blurs a pursuer's strike. Enemy-only.",
+    "qi_cost": 8,
+    "damage": 0,
+    "effect": "buff_def",
+    "effect_power": 3,
+    "requires_realm": "foundation_establishment",
+    "learn_cost": 999
+  }
+]

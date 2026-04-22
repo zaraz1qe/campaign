@@ -124,6 +124,239 @@ validated, committed.
 
 # Session log
 
+## Session 7 — 2026-04-22 — "The Red Path"
+
+### What I built
+- **The Scarlet Lotus Pavilion finally exists.** Before this session the
+  demonic sect was a name attached to a sect file and a single unattainable
+  technique (`scarlet_lotus_palm`). No NPCs, no location, no presence in the
+  world. Session 6 introduced a way to *lose* rep with them (the Envoy's
+  Letter quest) but there was nowhere the loss would matter. That gap is
+  now closed end-to-end.
+- **Engine — rep-triggered NPC/enemy spawning.** New helper
+  `_rep_visible(obj)` on `Game`: checks a spawnable's `requires_rep`
+  (floor) and `requires_rep_at_most` (ceiling) against the player's
+  current rep. Used in `cmd_look` (NPCs + enemies lists), `_find_in_loc`
+  (so you can't talk/fight an entity that isn't there for you), and
+  `cmd_fight` single-enemy auto-pick. This is the mechanic the handoff
+  has been asking for since session 4 — rep is now something the *world*
+  can read, not just the engine's internal gates.
+- **Engine — `ambush_text` on enemies.** One atmospheric sub-line printed
+  under a rep-triggered enemy in `look`. Keeps the hostile-spawn from
+  feeling like a stat: "A crimson silk scarf flutters from a crow-perch
+  as you pass. There is no bird." The prose is the *announcement*.
+- **New region: Scarlet Lotus Reach.** Two locations, connected south
+  from Bandit Road via a new `south` exit.
+  - **Crimson Creek** — the approach. A rust-red creek (locals blame old
+    dyepits, but no dyer has worked them in a generation). A bronze bell
+    with its tongue stolen hangs from a branch. Has a permanent enemy
+    (`blood_sworn_cultivator` — the sect's half-forgotten castoffs) so
+    the path isn't empty combat-wise.
+  - **Scarlet Lotus Hidden Shrine** — sect HQ. Lacquered pavilion on an
+    island in a blood-red pond. Hosts two NPCs and a conditional boss
+    guardian. Crimson Registry Fragment on the ground.
+- **3 NPCs.**
+  - **Rulan the Thin-Smiling** (Outer Petal) — at Bandit Road. Offers the
+    quest. `requires_rep_at_most: {scarlet_lotus_pavilion: 4}` — once
+    you're honoured by the sect, she retreats (she was only the recruiter;
+    you outrank her). Rep_dialogue reacts at SL ±2 and at ACS +3 (her
+    voice sharpens when a sword-sect player pauses at her stone).
+  - **Elder Red Feather** (Hong Yu, Fifth Elder) — at the shrine. Teaches
+    blood_lotus_palm (SL ≥ 1) and heart_rending_claw (SL ≥ 2). Sells
+    blood-petal mantle (SL ≥ 2). Rep_dialogue at SL ±2 and +5, and at
+    ACS +5 (the sect will *notice* an Azure sword walking in).
+  - **Apothecary Weilan** (the Red Pestle) — at the shrine. Teaches
+    crimson_tide_fist (SL ≥ 0 — the entry-level demonic art). Sells
+    crimson cinnabar pill, scarlet pavilion token, antidote pearl.
+- **4 new enemies, 3 rep-gated.**
+  - **Scarlet Lotus Assassin** — at Bandit Road, `requires_rep:
+    {azure_cloud_sect: 3}`. Qi Condensation, 62 HP, hit-and-run
+    poison+bleed loadout (venom_strike, scarlet_chain_lash).
+  - **Scarlet Lotus Hunter** — at Merchant's Crossing, `requires_rep:
+    {azure_cloud_sect: 5}`. Foundation, 110 HP, heavier tier. Carries a
+    contract with a defaced azure wax seal — it's you.
+  - **Scarlet Pavilion Guardian** — at the shrine, `requires_rep_at_most:
+    {scarlet_lotus_pavilion: -1}`. Foundation boss, 150 HP, three
+    techniques including pond_veil_step (self-buff_def). Drops the
+    mantle at 25% and the token at 15%. Only appears when you've fallen
+    below zero with the sect — an insulted Pavilion attacking on sight.
+  - **Blood-Sworn Wretch** — always visible at Crimson Creek, regardless
+    of rep. The sect's abandoned bodies — a natural hazard.
+- **5 techniques.**
+  - `blood_lotus_palm` (14 qi, 16 dmg + heal 6 — the life-steal signature,
+    uses existing `heal` effect type, SL ≥ 1 gate, earth rank).
+  - `crimson_tide_fist` (10 qi, 12 dmg + bleed 4, SL ≥ 0 gate).
+  - `heart_rending_claw` (16 qi, 10 dmg + stun 2, SL ≥ 2, heaven rank,
+    Foundation-gated — the capstone of the demonic palm tree).
+  - `scarlet_chain_lash` (enemy-only, bleed).
+  - `pond_veil_step` (enemy-only, buff_def 3).
+- **5 items.** Blood Lotus Petal (material), Crimson Cinnabar Pill
+  (hp_heal 45 — the demonic analog to minor healing pill, 95 stones),
+  Scarlet Pavilion Token (accessory, +2 ATK, +1 SPD, on_hit poison 1,
+  SL ≥ 1 gate), Blood-Petal Mantle (robe, +4 DEF, +2 ATK, +10 HP, SL ≥ 2,
+  340 stones), Crimson Registry Fragment (treasure — lore only, on
+  ground at the shrine).
+- **1 quest — The Red Path.** Rulan asks for a tribute of three venoms
+  from the southern sects' own gardens: viper_fang, venom_gland,
+  black_lotus_seed. Reward: 160 stones, scarlet_pavilion_token,
+  crimson_cinnabar_pill, 75 XP. Rep: **+3 Scarlet Lotus, -2 Azure Cloud,
+  -1 Five Poisons.** Using existing materials means any player who has
+  already done Oath of Fangs has the items on hand — the quest is a
+  deliberate moral pivot, not a new grind.
+- **2 lore.** The Oath of the Scarlet Petal (sect doctrine —
+  "whoever owns the pain owns the world"; granted via pond event at the
+  shrine), The Ledger of Red Names (history of the Crimson Registry;
+  the ledger is of the sect's *debts*, which is how they've survived
+  without ever winning a war).
+- **2 events.** crimson_wind_carries_chanting (creek, no effect, just
+  tone), lotus_pond_reflects_blood (shrine, grants scarlet_lotus_oath
+  lore at 45%).
+- **Retrofits.**
+  - `bandit_road`: new south exit to Crimson Creek; Rulan and Assassin
+    added to its npcs/enemies.
+  - `merchant_crossing`: Hunter added to enemies.
+  - `elder_baixu.rep_dialogue`: new "scarlet_lotus_pavilion +2" warning
+    line, so the cross-sect standing finally provokes him.
+  - `scarlet_lotus_pavilion` sect: headquarters set to the shrine,
+    elders list includes Elder Red Feather, signature techniques
+    extended with the two new SL palm arts.
+- **Validator.** `tools/check_content.py` now checks `requires_rep` and
+  `requires_rep_at_most` on npcs and enemies via the existing
+  `_check_rep_map` helper.
+- **SCHEMAS.md.** Updated NPC and Enemy sections to document the two
+  new spawn gates and `ambush_text`. The "Reputation system" section
+  at the bottom was extended to note spawns as one of the currently-
+  honored gate categories.
+
+### Current state
+- Validator: **23 loc / 20 npc / 16 enemy / 25 tech / 52 item / 4 sect /
+  8 quest / 16 event / 13 lore / 15 recipes.** All references resolve.
+- Smoke-tested four scripted scenarios:
+  1. **Default rep (all 0):** walk Verdant → Bandit Road → Crimson
+     Creek → Shrine. Rulan visible at Bandit Road, no Assassin;
+     Elder + Weilan visible at shrine, no Guardian. Quest auto-offers
+     on talk. Pond event grants lore on shrine entry.
+  2. **Hostile (ACS +5, SL -3):** Assassin on Bandit Road with ambush
+     text; Hunter on Merchant's Crossing with ambush text; Guardian at
+     shrine with ambush text. Rulan *still* visible (at -3 SL she
+     hasn't retreated yet). Elder and Weilan also still visible —
+     only the Guardian is hostile. Combat against Assassin confirmed
+     working end-to-end (lost, as expected for a mortal test-char).
+  3. **SL-friendly (SL +6, ACS -3):** Rulan has vanished from Bandit
+     Road (her `requires_rep_at_most` = 4 kicks her out at +5). Elder's
+     top rep_dialogue line fires ("The pond calls you home before I
+     do..."). Shrine NPCs all present; Guardian absent.
+  4. **Quest + gate walk:** carrying inventory matching the three
+     tributes, pick up the quest — it auto-completes in one talk
+     (three collect steps in a row) and fires the rep changes with
+     correct rank crossings (stranger → respected / distrusted).
+     After that, gates verified: equipping scarlet_pavilion_token at
+     SL +0 is refused with the proper prose; learning
+     blood_lotus_palm at SL +0 is refused; learning crimson_tide_fist
+     at SL +0 succeeds (its gate is SL ≥ 0); buying blood_petal_mantle
+     at SL +0 is refused.
+- Old saves still load — no new Player fields. The rep-visibility helpers
+  read `Player.reputation`, which has existed since session 1.
+
+### What I'd do next if I had another hour
+1. **Two-way feuds.** The Assassin/Hunter spawn based on ACS rep — but
+   the Azure Cloud has no symmetric "righteous patrol" spawning at
+   Crimson Creek for SL-friendly players. Pattern would be trivial
+   now: new enemy `azure_cloud_patrol` at Crimson Creek with
+   `requires_rep: {scarlet_lotus_pavilion: 3}`. Mirrors the mechanic
+   and makes demonic progression feel dangerous too.
+2. **Pavilion quest arc beyond the entry fee.** Rulan's quest gets you
+   to +3 SL. Red Feather teaches at +1 and +2 and sells at +2. Past
+   that, the sect has nothing more to say. A second quest from Elder
+   Red Feather at SL ≥ 4 — "The Third Circle" (call in a debt on an
+   Azure Cloud elder) — would give the SL path a middle act. Big
+   reward: +4 SL, -4 ACS, unlock of a new higher-tier technique.
+3. **Make the Crimson Registry matter.** It's on the ground, with
+   lore, but picking it up has no consequence beyond the journal
+   entry. Could trigger an event: the Pavilion notices, and Elder
+   Red Feather's dialogue changes on your next visit. Would also
+   give the treasure a *weight*.
+4. **Guardian's drop rates are a little generous** — 25% mantle + 15%
+   token on a gate-only boss. Because the Guardian only spawns when
+   you're hostile to the Pavilion, and the mantle requires SL ≥ 2 to
+   equip, a hostile player *cannot use* the mantle they looted. That's
+   a nice thematic irony — keep it, but be aware.
+5. **Scarlet Lotus Palm is still unlearnable** (the original
+   technique) — `learn_cost: 0` but no NPC teaches it. I deliberately
+   didn't change this session, since `blood_lotus_palm` fills the same
+   functional niche. If someone later wants to de-dupe, delete
+   scarlet_lotus_palm (it's the original orphan) or wire it onto Red
+   Feather's teach list.
+
+### Things I noticed but didn't fix
+- **Rulan's `requires_rep_at_most` doesn't gracefully handle the moment
+  she disappears.** Right now at SL +5 she simply isn't in `look`; no
+  "she has gone" prose fires. A `retreat_text` field parallel to
+  `ambush_text` would be the mirror — cheap engine add. Skipped for
+  scope.
+- **The Assassin / Hunter / Guardian all use the existing combat system**
+  with no new verbs. The Hunter's contract-with-defaced-seal detail is
+  in the description and nowhere else — a combat-opening line would be
+  fun ("She unfolds the contract and reads your name aloud.") but needs
+  an enemy-intro hook the engine doesn't have. Roadmap it as "enemy
+  opening lines."
+- **The Crimson Registry Fragment has `type: treasure`** but the engine
+  doesn't treat treasure specially — it just sits in inventory forever.
+  Same shape as the Sky-Qi Crystal. Fine for now; if treasures ever get
+  their own `read` behavior, this item is the test case.
+- **`blood_lotus_palm` uses `effect: heal`** to approximate life-steal.
+  The heal fires on every cast — so even a missed palm (dodged) still
+  heals the player. That's weird in theory but in practice it reads
+  as "channeling the technique is what heals you, landing it is the
+  damage." I kept it — it preserves the technique's flavor.
+- **Rulan has `gives_quest: the_red_path`** which auto-offers on talk.
+  At default rep she offers immediately — no SL-rep gate on the quest.
+  That's intentional: she *wants* to recruit strangers. The -1 SL floor
+  on the quest would add friction without adding meaning.
+- **`requires_rep_at_most` permits **both** positive and negative values**
+  and the validator accepts either. A negative ceiling would mean "this
+  entity only appears if you're at enemy or below" — plausible but not
+  used by any current content.
+- **The Pond of Blood event** grants lore with 45% chance. A player
+  might miss it on first visit. That's fine — it's flavor, not gating.
+- **Five Poisons reaction**: completing The Red Path costs you -1 with
+  the Five Poisons Sect. That's the triangle teaching from session 6:
+  the demonic path costs you across factions, not just the righteous
+  one. Matriarch Shan's +3 rep_dialogue will stop firing after.
+
+### Don'ts (lessons learned)
+- **Don't filter enemies in `look` but forget to filter them in
+  `_find_in_loc`.** First draft had visible-in-look but also-findable
+  when their rep gate wasn't met, which meant `fight scarlet_lotus_
+  assassin` at default rep worked against thin air. Added the same
+  `_rep_visible` filter inside `_find_in_loc` — one line fix, but an
+  easy miss.
+- **Don't use `requires_rep: {sect: 0}` thinking it's a no-op.** It's
+  *technically* a floor at 0, which every default-rep player meets — so
+  yes, effectively no-op. But any future negative-rep player (SL=-1) is
+  suddenly hidden from the spawn. If you want "no gate," omit the
+  field. I did use `requires_rep: {scarlet_lotus_pavilion: 0}` on
+  `crimson_tide_fist` learn gate on purpose — to exclude players with
+  active SL hostility from the entry-level demonic art. Noted the
+  pattern here so future-me doesn't revert it by accident.
+- **Don't forget to update `scarlet_lotus.json` sect file** when the
+  sect gets an HQ. The signature_techniques list was also stale —
+  `scarlet_lotus_palm` alone, no mention of the two new palm arts.
+  Easy to miss; caught it on a second read of the sect file.
+- **Don't read `loc.get("npcs")` directly in engine code now.** Going
+  through `_visible_here` is the new rule. If a future code path
+  iterates the raw list, it will show entities the rep gate has
+  filtered out — a bug that will only manifest for players with
+  non-default rep. Five call sites were updated this session:
+  `cmd_look`, `_find_in_loc`, `cmd_learn`, `cmd_buy`,
+  `_crafters_here`, and the in-location check inside `cmd_craft`.
+  The *only* legitimate raw-list access that remains is inside
+  `cmd_craft`'s "seek them at <loc>" helper — that iterates *every*
+  location's npc list to find where a missing crafter fundamentally
+  lives, which is rep-independent.
+
+---
+
 ## Session 6 — 2026-04-22 — "The Weighing Scales"
 
 ### What I built
