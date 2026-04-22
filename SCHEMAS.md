@@ -79,7 +79,14 @@ Optional fields can be omitted. Unknown fields are ignored (forward-compatible).
     "hp":      58,
     "atk":     9, "def": 3, "spd": 7,
     "qi":      20, "max_qi": 40,
-    "techniques": ["white_crane_sword", "azure_cloud_palm"]
+    "techniques": ["white_crane_sword", "azure_cloud_palm"],
+    // Optional per-location barks — a one-line reaction printed under `look`
+    // when the player walks this companion into a specific place. Fires once
+    // per arrival; re-looking does not re-bark. Used for flavor when a
+    // companion has history (positive or negative) with a location.
+    "location_barks": {
+      "scarlet_lotus_shrine": "Meilin breathes out slowly, once. 'If she moves, I will.'"
+    }
   }
 }
 ```
@@ -333,6 +340,41 @@ Gates on recruitment are all optional: `requires_realm`, `requires_rep`,
 and `requires_quest` (must be in `Player.completed_quests`). The
 `recruit_dialogue` / `decline_dialogue` strings let each companion
 speak in their own voice at bind-time.
+
+### Affinity (the bond that deepens)
+
+Each companion tracks an **affinity** score with the player in
+`Player.companion_affinity: {npc_id -> int}`. Affinity grows with
+shared experience and persists across dismiss/recruit cycles — a bond
+once earned is not lost by a temporary parting.
+
+Gains:
+- **+1** per combat victory while the companion is active and still
+  standing at the final blow (downed companions get nothing; the win
+  is not yours alone, and not theirs if they fell first);
+- **+2** on quest completion while a companion is active (downed does
+  not disqualify — they walked the road).
+
+Tiers (and the flat stat bonuses each grants at fight start):
+| Affinity | Tier        | Bonus                  |
+|----------|-------------|------------------------|
+| 0–4      | bonded      | —                      |
+| 5–11     | trusted     | +1 ATK                 |
+| 12–24    | steadfast   | +1 ATK, +1 DEF         |
+| 25+      | soul-sworn  | +2 ATK, +1 DEF, +1 SPD |
+
+Tier crossings (either direction) print a prose beat. The runtime
+bonus applies only during combat — base stats stored on
+`Player.companion` are never mutated by affinity.
+
+### Location barks
+
+An optional `location_barks: {loc_id: "line"}` on the companion block
+lets each ally react to arriving at specific places. The line fires
+once per arrival under `look`; re-looking in place does not re-bark.
+Walking away and returning re-arms the bark. Used for flavor when a
+companion has stakes at a location — a sword of the Azure Cloud at
+the Scarlet shrine; a demon-path prodigal at the sect he left.
 
 
 ## lore/  — `Lore`

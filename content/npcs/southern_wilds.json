@@ -133,7 +133,14 @@
       "spd": 7,
       "qi": 20,
       "max_qi": 40,
-      "techniques": ["white_crane_sword", "azure_cloud_palm", "calming_breath"]
+      "techniques": ["white_crane_sword", "azure_cloud_palm", "calming_breath"],
+      "location_barks": {
+        "crimson_creek": "Meilin's hand goes to her scabbard without thought. 'The creek runs red for a reason. Keep walking. Do not drink.'",
+        "scarlet_lotus_shrine": "Meilin breathes out slowly, once. 'If Red Feather speaks, I will not answer. If she moves, I will. Decide which you want before we cross the bridge.'",
+        "poisoners_garden": "Meilin covers her mouth with her sleeve. 'Half of what grows here is forbidden in our texts. The other half is only unnamed.'",
+        "five_poisons_hall": "Meilin keeps three paces back from the matriarch's seat. 'Azure rides beside you. Do not let them forget that, and do not test them.'",
+        "bandit_road": "Meilin's eyes track the crow-perches. 'An Azure sword on this stretch invites a price on both of us. Eyes up.'"
+      }
     }
   },
   {

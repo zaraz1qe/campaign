@@ -124,6 +124,196 @@ validated, committed.
 
 # Session log
 
+## Session 9 — 2026-04-22 — "The Blood-Sworn"
+
+### What I built
+- **The third companion — Blood-Sworn Jin, at Crimson Creek.** Previous
+  handoff's first "if I had another hour" item: the demonic path was
+  missing its walking partner. Now it has one. Jin Wuxin is a lapsed
+  Azure Cloud inner disciple who burned his sash after an uncle's
+  exile and fell into the Pavilion's orbit without ever being fully
+  welcomed. Three dialogue lines; NPC rep_dialogue reacts to ACS +3
+  (hostile), ACS -3 (kindred-bitter), and SL +5 (below his, by design).
+  Combat shape is the sledgehammer the old handoff asked for: HP 48,
+  ATK 11, DEF 2, SPD 6, qi 20/40. Techniques: crimson_tide_fist,
+  blood_lotus_palm (life-steal), heart_rending_claw. Gates: completed
+  `the_red_path` + SL rep +3 + qi_condensation. NPC itself carries
+  `requires_rep: {scarlet_lotus_pavilion: 3}` so he's *invisible* below
+  the gate — the player can't even see him before they've walked the
+  red path. This matters: it means Jin appears as a consequence of
+  choice, not as a universal passive feature.
+- **Companion affinity — a bond that persists.** The old handoff named
+  this "the obvious next mechanical layer." New `Player.companion_affinity:
+  Dict[str, int]` maps npc_id -> score. +1 on any shared combat victory
+  (but only if the companion is still standing at the final blow —
+  downed companions get nothing, and neither do you if they fell);
+  +2 on any quest completion while a companion is bound (downed is
+  forgiven here — they walked the road). Four tiers: **bonded** (0–4),
+  **trusted** (5–11), **steadfast** (12–24), **soul-sworn** (25+).
+  Each tier grants flat stat bonuses applied at fight start (up to
+  +2 ATK, +1 DEF, +1 SPD at soul-sworn). Crossings print a prose beat.
+  Affinity persists across dismiss/recruit — a bond once earned isn't
+  undone by a temporary parting. Recruit screen tells you if you're
+  resuming an existing bond and shows the tier.
+- **Location barks.** Each companion block can carry `location_barks:
+  {loc_id: "line"}`. On `look`, if the bark loc differs from the
+  companion's `last_bark_loc` (stored on the runtime companion, saved
+  across sessions), the line fires and the loc is remembered. Walking
+  away and returning re-arms the bark. Shipped barks for all three
+  companions at the locations where they *have stakes* — Meilin at
+  Scarlet shrine / creek / poisoner's garden / venom hall / bandit
+  road (5 sites); Bai at Azure outer gate / inner courtyard / Scarlet
+  shrine / Crimson Creek / Bandit Road (5); Jin at his former sect's
+  gate / courtyard / Baixu's pavilion / library / venom valley mouth /
+  the Scarlet shrine he refuses to cross into (6 — his barks are the
+  most bitter, and they should be). Bark prose is short and first-
+  person-voice; no floating narrator.
+- **Engine plumbing.**
+  - `state.py`: `companion_affinity` field (default `{}`, backfilled on
+    legacy load); helpers `affinity()` / `adjust_affinity()`; shared
+    `AFFINITY_TIERS`, `affinity_tier()`, `affinity_bonus()`.
+  - `combat.py`: fight-start snapshots the affinity bonus into the
+    runtime companion's stats (so base stats on Player never mutate);
+    victory grants +1 affinity if companion still standing, with tier-
+    cross messaging.
+  - `quests.py`: +2 affinity on quest completion if any companion is
+    bound, with a Bond note in the quest-complete spray.
+  - `engine.py`: `cmd_look` calls `_maybe_companion_bark()` after
+    exits; bark gated by `last_bark_loc` on the runtime companion.
+    `cmd_companion` shows effective stats with (base+bonus) breakdown
+    and tier line. `cmd_status` adds a bond suffix. `cmd_recruit`
+    restores pre-existing bond tier on re-recruit.
+- **Validator.** Checks `companion.location_barks` for valid location
+  ids and non-empty strings. All existing checks still green.
+- **SCHEMAS.md.** NPC companion block gains `location_barks` example;
+  the Companions section gains an Affinity sub-section with the full
+  tier table and a Barks sub-section.
+- **Smoke tests.** New `tools/smoke_affinity.py` — 9 scenarios: Jin
+  invisibility below gate; gate-met recruit; affinity 0 display;
+  combat +1; tier bonus doesn't corrupt stored base stats; persistence
+  across dismiss; bark fires once, doesn't re-fire on re-look; save/load
+  of companion_affinity (and legacy default); quest-completion +2 bond
+  with note. Prior session-8 smoke tests still green.
+
+### Current state
+- Validator: **23 loc / 22 npc / 16 enemy / 25 tech / 52 item / 4 sect /
+  8 quest / 16 event / 13 lore / 15 recipe.** (+1 npc: blood_sworn_jin.)
+- `python3 play.py` boots; `status`, `companion`, and combat all surface
+  the bond. Fresh player sees `bonded (+0)` on their first companion;
+  earning +5 through fights/quests moves them to `trusted` with a +1
+  ATK stat line in the combat prelude.
+- All prior saves load. The only new Player field is
+  `companion_affinity`, backfilled to `{}`. The new bark-tracker is
+  stored inside `companion` (`last_bark_loc`), which already lives in
+  a dict we lazy-read, so legacy companion dicts without that key just
+  bark on first look at every location — harmless.
+- Combat math unchanged for solo players. For companion-bearing players
+  the only change is a one-line "Your bond is X — +Y STAT" prelude on
+  fight start, and an occasional tier-up beat on victory.
+
+### What I'd do next if I had another hour
+1. **Affinity barks.** Right now barks are location-tied. An adjacent
+   layer: tier-up barks. When Meilin first reaches `trusted`, she says
+   something Meilin-specific the next time you `look`. Only once per
+   tier. The hook is cheap (store `last_bark_tier` on the companion
+   runtime dict, same as `last_bark_loc`). The work is in the content
+   — 4 lines × 3 companions × tiers above bonded = 12 lines. Could do
+   it in 20 minutes.
+2. **Companion banter at landmarks.** An NPC dialogue line could gain
+   a `companion_reply: {npc_id: "line"}`. When the player talks to
+   Elder Baixu with Jin at their shoulder, Baixu should *see* him and
+   say something. Same for Red Feather / Meilin. This is a real
+   piece of writing and would be a whole session of content, but it's
+   where the companion system wants to grow next.
+3. **Shared cultivation as a bond grower.** `cmd_cultivate` currently
+   revives downed companions. Letting it also tick affinity +1 (with
+   a per-session cap, or only at qi_density ≥ 5 locations) would give
+   the player an explicit non-combat path to grow trust. Small; adds
+   a reason to meditate somewhere beautiful *with* your companion.
+4. **Teach the companion.** Same idea the session 8 handoff raised;
+   still open. `teach <technique> to companion` command. Would need
+   save-compat thinking — the companion's technique list would need
+   to become mutable per-recruitment-session; probably a
+   `Player.companion["learned_techniques"]` list additive to the
+   content-defined ones.
+5. **A demonic-path quest arc.** Now that there's a demonic companion,
+   the Scarlet Lotus feels more playable. The obvious next quest:
+   Red Feather sends the player (with Jin, if present) on a second
+   errand — e.g., retrieve a Pavilion relic from the Jadestep ruins.
+   If Jin is present there's unique dialogue or a branching step. This
+   is where story arcs begin.
+6. **Sect Conference / Tournament** — the top unchecked quest in the
+   roadmap. A substantial session in its own right. Would naturally
+   use companions (you bring yours to fight). Deferred.
+7. **Make the prompt show the companion.** `[HP 30/30 Qi 0/50 | Jin 48/48] >`
+   would be a nice "the bond is visible" touch. One-liner in
+   `_prompt()`. Didn't do it because the prompt is already crowded
+   and I didn't want to commit the shape before hearing it tested.
+
+### Things I noticed but didn't fix
+- **Affinity has no ceiling.** A dedicated player could push Meilin
+  to affinity 50+ and nothing happens above soul-sworn (25). Fine for
+  now — the bonuses cap; further numbers are just flavor. But if a
+  future session wants prestige tiers ("name-bearing" at 50, "twin-
+  blade" at 100), the `AFFINITY_TIERS` table in state.py is the only
+  place to edit.
+- **Affinity has no way to drop.** Dismissing doesn't lose any. Taking
+  an action the companion would hate (e.g., Meilin present when the
+  player completes the_red_path, gaining -2 ACS) doesn't cost bond.
+  Dropping affinity is a whole mechanical layer I deliberately punted.
+- **Jin's first dialogue line mentions his uncle**, but there's no
+  lore entry about who the uncle was. Future flavor: a lore entry
+  about the Azure Cloud succession dispute would anchor that line.
+- **Barks don't fire in `go`** — they fire in `look`, which `go`
+  calls. Works fine *if* the player doesn't use `map` to navigate
+  blindly. Direct-go after a map check will trigger a look; bark
+  fires. OK.
+- **The bond message at fight start only prints if a bonus is
+  non-zero.** A bonded (+0) companion shows no prelude. I think that's
+  right — zero-bonus is the "normal" state and doesn't deserve a line.
+- **Backwards-compat note for future me**: the runtime companion dict
+  does NOT store affinity as a field; affinity lives on Player, looked
+  up per-fight. I started with it inline and ripped it out — single
+  source of truth, dismiss/recruit just works.
+- **Save files from before session 8** (no `companion` field) still
+  load cleanly via the `setdefault` in `from_json`. Tested.
+
+### Don'ts (lessons learned)
+- **Don't apply affinity bonuses to stored base stats.** My first
+  draft mutated `player.companion["atk"] += aff_bonus["atk"]` at fight
+  start, with a matching subtraction at fight end. It worked *once*;
+  on a save-mid-fight-reload the subtraction would never run and the
+  next fight would double-count. Right answer: snapshot base → runtime
+  comp at fight start (already happening for hp/qi), add the bonus to
+  the runtime only, never touch stored base. Writeback only restores
+  hp/qi/downed.
+- **Don't print the bark from `cmd_go`.** `go` already calls `look`,
+  which is where the bark belongs. Double-hooking produced two barks
+  per arrival in early testing.
+- **Don't gate Jin on the quest *alone*.** My first gate was
+  `requires_quest: the_red_path`, no rep. If the player did the quest
+  and then killed Red Feather (losing SL rep), Jin should not walk
+  with them — his entire backstory says he bends toward whoever the
+  Pavilion favours at the moment. Adding `requires_rep: {SL: 3}`
+  fixed that without requiring a second quest.
+- **Don't forget to add the new NPC id to the location file.**
+  Standard validator catch, standard fix — but the first run of the
+  validator after adding Jin said "all references resolve" and I
+  caught myself about to commit without the link, because Jin existed
+  but wasn't referenced from anywhere. The `look` smoke-test is what
+  exposed it — no NPC listed at crimson_creek.
+- **Don't let the quest bond-bump announce tier changes when
+  tier didn't change.** The progress_quests bond note compares
+  old_tier to new_tier; if same, print the "deepens (+2)" line, not
+  the "raises to X" line. Subtle, but having "raises to bonded" print
+  when you were already bonded reads wrong.
+- **Don't write barks longer than one short paragraph.** The feel is
+  "the companion mutters / tightens up / glances at a thing"; two
+  sentences max. Longer and it competes with the room description
+  for the player's eye.
+
+---
+
 ## Session 8 — 2026-04-22 — "The Sworn Oath"
 
 ### What I built

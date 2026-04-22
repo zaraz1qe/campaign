@@ -62,5 +62,57 @@
     "sells": ["crimson_cinnabar_pill", "scarlet_pavilion_token", "antidote_pearl"],
     "faction": "scarlet_lotus_pavilion",
     "disposition": "friendly"
+  },
+  {
+    "id": "blood_sworn_jin",
+    "name": "Blood-Sworn Jin",
+    "title": "Prodigal of the Red Path",
+    "description": "A lean, long-boned man crouched by the creek with a strip of crimson silk tied above his left elbow — higher than a sash, lower than a captain's scarf. His hair is cut short in the way of a sect that no longer claims him. When he works a river-stone over a blade, he does it left-handed; his right hand sits open on his thigh, fingers slightly curled, as though it is remembering how to hold something.",
+    "dialogue": [
+      "I was azure once. The cranes on the banners remember me. I remember them. It is a short conversation.",
+      "The Pavilion feeds me. The Pavilion does not know my name, and prefers it so. I do not argue.",
+      "If you walk into the shrine alongside me, do not speak of my uncle. Red Feather will smile. I will do worse."
+    ],
+    "faction": "scarlet_lotus_pavilion",
+    "disposition": "neutral",
+    "requires_rep": { "scarlet_lotus_pavilion": 3 },
+    "rep_dialogue": {
+      "scarlet_lotus_pavilion": {
+        "5": [
+          "So. You stand higher with the pond than I do. Fitting. You had further to fall to reach it."
+        ]
+      },
+      "azure_cloud_sect": {
+        "3": [
+          "An Azure sword, here. Do not ask me to bow to it. I have been bowing to mine since I was twelve; the wrist is tired.",
+          "If Baixu still names my uncle a traitor — and he does — then your sword and I will not drink from the same cup. Walk carefully around me, friend."
+        ],
+        "-3": [
+          "So the cranes have reason to hate you too. Good. Sit. We will drink the bitter tea together."
+        ]
+      }
+    },
+    "companion": {
+      "recruit_dialogue": "Jin stands slowly, the river-stone still in his fist. 'A road, you say. Mine is short — the length of what's left of my qi, and no further. You want that length? Then take it. But know whose wrist it came off of.'",
+      "decline_dialogue": "Jin goes on grinding the blade. 'The pond has not washed you red enough yet. Come back when Red Feather knows your breath. She will tell me.'",
+      "requires_quest": "the_red_path",
+      "requires_rep": { "scarlet_lotus_pavilion": 3 },
+      "requires_realm": "qi_condensation",
+      "hp": 48,
+      "atk": 11,
+      "def": 2,
+      "spd": 6,
+      "qi": 20,
+      "max_qi": 40,
+      "techniques": ["crimson_tide_fist", "blood_lotus_palm", "heart_rending_claw"],
+      "location_barks": {
+        "azure_cloud_outer_gate": "Jin stops a pace behind you, staring at the cranes. 'They used to know my face. I could ask if they still do. They would ask me nothing.'",
+        "azure_cloud_inner_courtyard": "Jin keeps his hood pulled low. His right hand stays loose at his side — empty on purpose. 'Do not introduce me. I was somebody's junior brother here. He is dead. We do not need to meet him twice.'",
+        "elder_baixus_pavilion": "Jin does not cross the threshold. From the step, quietly: 'If he turns his head, I am leaving. Finish what you came for. Do not be long.'",
+        "azure_cloud_library": "Jin glances at the scroll-racks. 'There is a copy of my family's rolls in there. Do not find it for me. I am not ready.'",
+        "thousand_venom_valley_mouth": "Jin sniffs the air. 'The valley is clean, in its way. It kills you in one direction. The Pavilion kills you in all of them.'",
+        "scarlet_lotus_shrine": "Jin stops at the bridge. 'I go no further. The pond knows my face and still does not name me. You go. Walk for both of us.'"
+      }
+    }
   }
 ]

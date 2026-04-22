@@ -20,8 +20,9 @@ A living checklist for what's been done and what to add next.
 - **Sects**: Azure Cloud Sect (righteous), Scarlet Lotus Pavilion (demonic
   — now with HQ, elders, NPCs, techniques), Five Poisons Sect (neutral/grey),
   Jadestep Sect Remnant (dead-but-haunted)
-- **Companions** (2): Disciple Meilin (Azure Cloud), Venom-Handler Bai
-  (Five Poisons). Demonic slot open.
+- **Companions** (3): Disciple Meilin (Azure Cloud), Venom-Handler Bai
+  (Five Poisons), Blood-Sworn Jin (Scarlet Lotus). Affinity/bond system
+  active across all three.
 - **Items**: 52 (equipment, pills, materials, treasures)
 - **Recipes**: 15 (Forge-Master Bo: 6, Pillmaster Lu: 4, Apothecary Qi: 5)
 - **Quests**: 8 (Kettle's Request, Study Sutra, Missing Disciple, Envoy's
@@ -115,10 +116,13 @@ A living checklist for what's been done and what to add next.
       a sect; guardians drop their welcome when you fall below zero (s7)
 - [x] **Companions**: a fellow cultivator who fights with you — recruit,
       dismiss, split targeting, downed state, save/load (s8)
-- [ ] **Third companion (demonic)** — Scarlet Lotus path is still missing
-      an ally; shape is ready, content isn't
-- [ ] **Companion affinity / loyalty system** — bond that grows with shared
-      quests, shrinks with dismissal
+- [x] **Third companion (demonic)** — Blood-Sworn Jin, at Crimson Creek,
+      gated by The Red Path + SL rep +3 + qi_condensation (s9)
+- [x] **Companion affinity / loyalty system** — bond that grows with
+      shared victories and quests; four tiers with stat bonuses; persists
+      across dismiss/recruit (s9)
+- [x] **Companion location barks** — one-line reactions when a companion
+      walks into a place that matters to them (s9)
 - [ ] **Faction war state**: more than spawns — sect patrols that pursue
       between locations, trade embargoes, sect-tournament triggers
 - [ ] **Auto-respawn enemies** so locations don't go empty after one fight
@@ -142,6 +146,27 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-22 (session 9)** — "The Blood-Sworn." Completes the
+  companion triangle and adds a persistent bond layer on top. New
+  companion **Blood-Sworn Jin** (Prodigal of the Red Path) at Crimson
+  Creek, gated by the Red Path + SL rep +3 + qi_condensation. Sledge-
+  hammer shape: HP 48, ATK 11, DEF 2, SPD 6, techniques crimson_tide_fist
+  + blood_lotus_palm + heart_rending_claw (self-heal palm and stun claw).
+  **Affinity system**: each NPC tracks a bond score in a new
+  `Player.companion_affinity` map; +1 per shared combat win (if still
+  standing), +2 per quest completion while active. Four tiers (bonded /
+  trusted / steadfast / soul-sworn) with flat stat bonuses applied at
+  fight start (up to +2 ATK, +1 DEF, +1 SPD). Bond persists across
+  dismiss/recruit. Tier crossings print a prose beat; `companion`
+  / `status` surface the current bond. **Location barks**: optional
+  `companion.location_barks: {loc_id: line}` fires once per arrival under
+  `look`. Shipped barks for Meilin (5 sites — hostile-sect locations),
+  Bai (5 sites), Jin (6 sites — his former sect + the Pavilion). New
+  rep_dialogue on Jin for ACS ±3 and SL +5. Validator checks bark
+  locations + strings. Smoke test `tools/smoke_affinity.py` covers the
+  gate, tier math, persistence across dismiss, bark once-per-arrival,
+  and save/load round-trip. Save-compat: `companion_affinity` backfills
+  to `{}`, `last_bark_loc` defaults to None.
 - **2026-04-22 (session 8)** — "The Sworn Oath." End-to-end companion
   system. A recruitable NPC can walk at the player's side: combat gains
   an ally turn after the player, the enemy splits fire (~35% at the

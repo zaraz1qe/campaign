@@ -15,7 +15,7 @@ from __future__ import annotations
 from typing import Dict, Any, List, Optional
 import random
 
-from .state import Player
+from .state import Player, affinity_bonus, affinity_tier
 
 
 # ---------------------------------------------------------------------------
@@ -207,22 +207,26 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
 
     # Companion setup — snapshot into a runtime dict; written back at end.
     comp: Optional[Dict[str, Any]] = None
+    comp_aff_bonus = {"atk": 0, "def": 0, "spd": 0}
     if player.companion and not player.companion.get("downed"):
         c = player.companion
         c_name = world["npcs"].get(c.get("id", ""), {}).get("name", c.get("id", "Companion"))
+        aff = player.affinity(c.get("id", ""))
+        comp_aff_bonus = affinity_bonus(aff)
         comp = {
             "id": c.get("id", ""),
             "name": c_name,
             "hp": int(c.get("hp", c.get("max_hp", 40))),
             "max_hp": int(c.get("max_hp", 40)),
-            "atk": int(c.get("atk", 5)),
-            "def": int(c.get("def", 2)),
-            "spd": int(c.get("spd", 5)),
+            "atk": int(c.get("atk", 5)) + comp_aff_bonus["atk"],
+            "def": int(c.get("def", 2)) + comp_aff_bonus["def"],
+            "spd": int(c.get("spd", 5)) + comp_aff_bonus["spd"],
             "qi": int(c.get("qi", 0)),
             "max_qi": int(c.get("max_qi", 0)),
             "techniques": list(c.get("techniques", [])),
             "status": [],
             "downed": False,
+            "affinity": aff,
         }
 
     # Freeze effective player stats for this encounter. Changing gear mid-fight
@@ -248,6 +252,13 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
         io.out(f"(You draw {weapon_name}.)")
     if comp:
         io.out(f"({comp['name']} steps in at your side.)")
+        if comp_aff_bonus["atk"] or comp_aff_bonus["def"] or comp_aff_bonus["spd"]:
+            tier = affinity_tier(comp["affinity"])
+            parts = []
+            for k in ("atk", "def", "spd"):
+                if comp_aff_bonus[k]:
+                    parts.append(f"+{comp_aff_bonus[k]} {k.upper()}")
+            io.out(f"  (Your bond is {tier} — {', '.join(parts)}.)")
 
     def _player_take(dmg: int) -> None:
         player.hp -= dmg
@@ -303,6 +314,15 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
                 iname = world["items"].get(iid, {}).get("name", iid)
                 io.out(f"You loot: {iname}")
         player.defeated[enemy_id] = player.defeated.get(enemy_id, 0) + 1
+        # Affinity: a shared victory deepens the bond. Only if the companion
+        # was still standing at the end — you win *together*, not despite.
+        if comp and not comp["downed"]:
+            old_tier = affinity_tier(player.affinity(comp["id"]))
+            new_aff = player.adjust_affinity(comp["id"], 1)
+            new_tier = affinity_tier(new_aff)
+            if new_tier != old_tier:
+                io.out(f"({comp['name']} looks at you differently now. "
+                       f"Your bond has risen to {new_tier}.)")
         _writeback_companion(True)
         return "victory"
 

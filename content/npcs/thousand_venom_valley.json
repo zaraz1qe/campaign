@@ -99,7 +99,14 @@
       "spd": 8,
       "qi": 18,
       "max_qi": 36,
-      "techniques": ["serpent_strike", "venom_strike", "centipede_stance"]
+      "techniques": ["serpent_strike", "venom_strike", "centipede_stance"],
+      "location_barks": {
+        "azure_cloud_outer_gate": "Bai pulls her sleeves down over the wrist-scars. 'Sword-folk read scars for sins. Walk ahead of me; let them read yours first.'",
+        "azure_cloud_inner_courtyard": "Bai stays near the pillars, eyes on the courtyard. 'Too many hands here, and every one of them clean. Do not make me speak unless you must.'",
+        "scarlet_lotus_shrine": "Bai sniffs once, sharp. 'Their venom is not ours. They use the pain; we use the weight. Still — I would not drink here.'",
+        "crimson_creek": "Bai dips a finger into the creek and touches it to her tongue, then spits. 'Cinnabar and old sorrow. The valley would never have let this water stand.'",
+        "bandit_road": "Bai walks slightly ahead on the open road. 'If you are bitten on this stretch, hold the wound open. Do not close it. I will come.'"
+      }
     }
   }
 ]

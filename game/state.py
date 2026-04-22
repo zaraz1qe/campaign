@@ -32,6 +32,38 @@ def rep_rank(value: int) -> str:
     return "reviled"
 
 
+# Companion affinity tiers. A companion's affinity grows with shared combat
+# victories and completed quests. The tier both names the bond and grants
+# flat stat bonuses at fight-start.
+AFFINITY_TIERS = (
+    (25, "soul-sworn"),
+    (12, "steadfast"),
+    (5,  "trusted"),
+    (0,  "bonded"),
+    (-99, "strained"),
+)
+
+
+def affinity_tier(value: int) -> str:
+    for floor, name in AFFINITY_TIERS:
+        if value >= floor:
+            return name
+    return "strained"
+
+
+def affinity_bonus(value: int) -> Dict[str, int]:
+    """Flat stat bonuses granted to a companion by their affinity with the
+    player. Applied once at fight start when snapshotting the companion into
+    combat-runtime state."""
+    if value >= 25:
+        return {"atk": 2, "def": 1, "spd": 1}
+    if value >= 12:
+        return {"atk": 1, "def": 1, "spd": 0}
+    if value >= 5:
+        return {"atk": 1, "def": 0, "spd": 0}
+    return {"atk": 0, "def": 0, "spd": 0}
+
+
 @dataclass
 class Player:
     name: str = "Wanderer"
@@ -77,9 +109,14 @@ class Player:
     # block plus live fields:
     #   { "id": npc_id, "hp": int, "max_hp": int, "atk": int, "def": int,
     #     "spd": int, "qi": int, "max_qi": int, "techniques": [tid, ...],
-    #     "downed": bool }
+    #     "downed": bool, "last_bark_loc": str|None }
     # None means no companion. At most one is active at a time.
     companion: Optional[Dict[str, Any]] = None
+
+    # Per-companion affinity — bond with each NPC the player has ever
+    # recruited. Persists across dismiss/recruit cycles so that trust earned
+    # is not lost by a temporary parting. npc_id -> int.
+    companion_affinity: Dict[str, int] = field(default_factory=dict)
 
     # ------------------------------------------------------------------
     def add_item(self, item_id: str, count: int = 1) -> None:
@@ -103,6 +140,14 @@ class Player:
 
     def rep(self, sect_id: str) -> int:
         return int(self.reputation.get(sect_id, 0))
+
+    def affinity(self, npc_id: str) -> int:
+        return int(self.companion_affinity.get(npc_id, 0))
+
+    def adjust_affinity(self, npc_id: str, delta: int) -> int:
+        new_val = self.affinity(npc_id) + int(delta)
+        self.companion_affinity[npc_id] = new_val
+        return new_val
 
     def meets_rep(self, requires: Dict[str, int]) -> bool:
         """True iff the player's rep meets every sect threshold in `requires`."""
@@ -175,4 +220,8 @@ class Player:
         d["equipped"] = {s: eq.get(s, "") for s in EQUIP_SLOTS}
         # Backfill companion for pre-session-8 saves (default: none).
         d.setdefault("companion", None)
+        # Backfill companion_affinity for pre-session-9 saves (default: empty).
+        d.setdefault("companion_affinity", {})
+        if not isinstance(d["companion_affinity"], dict):
+            d["companion_affinity"] = {}
         return cls(**d)

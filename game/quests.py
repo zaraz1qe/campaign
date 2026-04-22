@@ -2,7 +2,7 @@
 from __future__ import annotations
 from typing import Dict, Any, List
 
-from .state import Player, rep_rank
+from .state import Player, rep_rank, affinity_tier
 
 
 def _step_satisfied(step: Dict[str, Any], player: Player) -> bool:
@@ -75,6 +75,22 @@ def progress_quests(world: Dict[str, Dict[str, Any]], player: Player) -> List[st
                 r_parts.append("items: " + ", ".join(names))
             rwd = ", ".join(r_parts) or "(no reward)"
             notes.append(f"[QUEST COMPLETE] {q['name']} — reward: {rwd}")
+            # Affinity: if a companion stood with you through this trial,
+            # the shared quest deepens the bond. Downed doesn't disqualify
+            # — they walked the road even if they fell at its end.
+            if player.companion:
+                cid = player.companion.get("id", "")
+                if cid:
+                    old_tier = affinity_tier(player.affinity(cid))
+                    new_aff = player.adjust_affinity(cid, 2)
+                    new_tier = affinity_tier(new_aff)
+                    cname = world["npcs"].get(cid, {}).get("name", "your companion")
+                    if new_tier != old_tier:
+                        notes.append(f"  [Bond] {cname} — the shared trial "
+                                     f"raises your oath to {new_tier}.")
+                    else:
+                        notes.append(f"  [Bond] {cname} — the oath between "
+                                     f"you deepens (+2 affinity).")
             # Apply reputation changes. Show old->new rank when the change
             # crosses a threshold so the player feels it.
             rep_changes = q.get("rep_change") or {}

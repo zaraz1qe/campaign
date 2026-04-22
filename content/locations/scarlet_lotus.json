@@ -6,7 +6,7 @@
     "description": "The creek runs slow and rust-red between pale boulders — the colour, the locals tell no one, comes from the dye-pits further upstream, though no dyer has worked them in a generation. A stand of red lotuses pushes up through the stones in spite of the season; their petals are thick as lacquer. A narrow path bends east into a cleft that ought to lead nowhere.",
     "first_visit_text": "A bronze bell hangs from a branch at the path's edge. Its tongue has been stolen — or removed — and nothing remains but the mouth. When the wind tugs it, it still seems to toll, somewhere further in.",
     "exits": { "north": "bandit_road", "east": "scarlet_lotus_shrine" },
-    "npcs": [],
+    "npcs": ["blood_sworn_jin"],
     "enemies": ["blood_sworn_cultivator"],
     "events": ["crimson_wind_carries_chanting"],
     "items_on_ground": [],

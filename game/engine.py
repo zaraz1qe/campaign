@@ -8,7 +8,7 @@ import textwrap
 import shlex
 
 from . import loader, cultivation, combat, quests
-from .state import Player, EQUIP_SLOTS, rep_rank
+from .state import Player, EQUIP_SLOTS, rep_rank, affinity_tier, affinity_bonus
 
 
 SAVE_DIR = Path(__file__).resolve().parent.parent / "saves"
@@ -176,10 +176,33 @@ class Game:
         exits = loc.get("exits", {})
         if exits:
             self.out("Exits: " + ", ".join(f"{d}->{t}" for d, t in exits.items()))
+        # A companion may have something to say about this particular place.
+        self._maybe_companion_bark()
         # Trigger random event
         self._maybe_event(loc)
         # Quest progression triggers from visiting
         self._note_quests()
+
+    def _maybe_companion_bark(self) -> None:
+        """Print the companion's location-specific bark once per arrival.
+        Barks are tracked per-companion via the runtime `last_bark_loc` — stays
+        in the player save across sessions, so you hear the line once when you
+        walk a companion into a place that matters to them."""
+        comp = self.player.companion
+        if not comp or comp.get("downed"):
+            return
+        npc = self.world["npcs"].get(comp.get("id", ""), {})
+        barks = (npc.get("companion") or {}).get("location_barks") or {}
+        loc_id = self.player.location
+        line = barks.get(loc_id)
+        if not line:
+            return
+        if comp.get("last_bark_loc") == loc_id:
+            return
+        comp["last_bark_loc"] = loc_id
+        cname = npc.get("name", comp.get("id", "Companion"))
+        self.out("")
+        self.out(_wrap(f"  [{cname}] {line}"))
 
     def _note_quests(self) -> None:
         for note in quests.progress_quests(self.world, self.player):
@@ -830,7 +853,9 @@ class Game:
             cname = self.world["npcs"].get(comp.get("id", ""), {}).get("name",
                                                                         comp.get("id", "Companion"))
             tag = " [DOWNED]" if comp.get("downed") else ""
-            self.out(f"Companion: {cname} ({comp.get('hp',0)}/{comp.get('max_hp',0)} HP){tag}")
+            aff = self.player.affinity(comp.get("id", ""))
+            self.out(f"Companion: {cname} ({comp.get('hp',0)}/{comp.get('max_hp',0)} HP){tag}  "
+                     f"— bond: {affinity_tier(aff)} ({aff:+d})")
 
     def cmd_quest(self, _arg: str) -> None:
         self.out(quests.quest_status(self.world, self.player))
@@ -892,12 +917,16 @@ class Game:
             "max_qi": int(comp_def.get("max_qi", comp_def.get("qi", 0))),
             "techniques": list(comp_def.get("techniques", [])),
             "downed": False,
+            "last_bark_loc": None,
         }
         line = comp_def.get("recruit_dialogue") or \
                f"{n['name']} nods once. 'Lead. I will stand at your shoulder.'"
         self.out("")
         self.out(_wrap(f'  "{line}"'))
         self.out(f"({n['name']} now walks at your side.)")
+        aff = self.player.affinity(npc_id)
+        if aff > 0:
+            self.out(f"  (Your bond resumes where it left off — {affinity_tier(aff)}, {aff:+d}.)")
 
     def cmd_dismiss(self, _arg: str) -> None:
         comp = self.player.companion
@@ -923,7 +952,21 @@ class Game:
         self.out(f"  HP: {comp.get('hp',0)}/{comp.get('max_hp',0)}{status_tag}")
         if comp.get("max_qi"):
             self.out(f"  Qi: {comp.get('qi',0)}/{comp.get('max_qi',0)}")
-        self.out(f"  ATK {comp.get('atk',0)}   DEF {comp.get('def',0)}   SPD {comp.get('spd',0)}")
+        base_atk = comp.get("atk", 0)
+        base_def = comp.get("def", 0)
+        base_spd = comp.get("spd", 0)
+        aff = self.player.affinity(comp.get("id", ""))
+        ab = affinity_bonus(aff)
+        def _stat(label: str, base: int, bonus: int) -> str:
+            if bonus:
+                return f"{label} {base + bonus} ({base}+{bonus})"
+            return f"{label} {base}"
+        self.out("  " + "   ".join([
+            _stat("ATK", base_atk, ab["atk"]),
+            _stat("DEF", base_def, ab["def"]),
+            _stat("SPD", base_spd, ab["spd"]),
+        ]))
+        self.out(f"  Bond: {affinity_tier(aff)} ({aff:+d})")
         techs = comp.get("techniques") or []
         if techs:
             tnames = [self.world["techniques"].get(t, {}).get("name", t) for t in techs]

@@ -203,6 +203,17 @@ def main() -> int:
                     errors.append(f"npc '{nid}' companion requires unknown quest '{rq}'")
                 _check_rep_map(f"npc '{nid}' companion",
                                "requires_rep", comp.get("requires_rep"))
+                # Location barks: {loc_id: "line"} — loc_id must exist.
+                barks = comp.get("location_barks")
+                if barks is not None:
+                    if not isinstance(barks, dict):
+                        errors.append(f"npc '{nid}' companion.location_barks must be an object")
+                    else:
+                        for lid, line in barks.items():
+                            if lid not in locs:
+                                errors.append(f"npc '{nid}' companion.location_barks references unknown location '{lid}'")
+                            if not isinstance(line, str) or not line.strip():
+                                errors.append(f"npc '{nid}' companion.location_barks[{lid}] must be a non-empty string")
     for eid, e in world["enemies"].items():
         _check_rep_map(f"enemy '{eid}'", "requires_rep", e.get("requires_rep"))
         _check_rep_map(f"enemy '{eid}'", "requires_rep_at_most", e.get("requires_rep_at_most"))
