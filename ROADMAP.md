@@ -10,10 +10,12 @@ A living checklist for what's been done and what to add next.
 
 - **Locations**: Verdant Bamboo Sea, Old Hermit's Hut, River of Swords,
   Merchant's Crossing, Bandit Road, Azure Cloud Foothills, Outer Gate,
-  Inner Courtyard, Library, Elder Baixu's Pavilion (10 total)
-- **Regions**: Southern Wilds, Azure Cloud Range
-- **Sects**: Azure Cloud Sect (righteous), Scarlet Lotus Pavilion (demonic)
-- **Quests**: 3 starter quests
+  Inner Courtyard, Library, Elder Baixu's Pavilion, Thousand Venom Valley
+  Mouth, Venom Gorge, Hall of Five Poisons, Poisoner's Garden (14 total)
+- **Regions**: Southern Wilds, Azure Cloud Range, Thousand Venom Valley
+- **Sects**: Azure Cloud Sect (righteous), Scarlet Lotus Pavilion (demonic),
+  Five Poisons Sect (neutral/grey)
+- **Quests**: 4 (including the Oath of Fangs)
 - **Realms**: 8 (Mortal → Ascendant Immortal)
 
 ## How to Add Content (the path of least resistance)
@@ -41,7 +43,7 @@ A living checklist for what's been done and what to add next.
 - [ ] Frozen Mirror Palace (orthodox, ice/water, righteous)
 - [ ] Blood Moon Cult (demonic, body cultivation)
 - [ ] Heavenly Sword Tower (orthodox, sword-only, militant)
-- [ ] Five Poisons Sect (neutral/grey, alchemy + venom)
+- [x] Five Poisons Sect (neutral/grey, alchemy + venom)  **(s2)**
 - [ ] Wandering Cloud Pavilion (neutral, scholar-cultivators)
 - [ ] Iron Buddha Temple (righteous, body + qi monks)
 - [ ] Phantom Shadow Pavilion (assassins-for-hire, neutral)
@@ -116,6 +118,15 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-22 (session 2)** — "Venom in the Veins." Wired up status effects
+  end-to-end in combat (poison, bleed, buff_atk, buff_def, and a new
+  `cleanse` pill effect); added critical hits and SPD-based dodge; put
+  HP/Qi in the persistent REPL prompt. Shipped the Five Poisons Sect as a
+  neutral/grey faction to showcase the new mechanics: Thousand Venom Valley
+  region (4 locations), 3 NPCs, 6 new techniques, 2 enemies, 5 items, 1
+  quest ("Oath of Fangs"), 2 lore entries, 3 events. Connected the valley
+  east of Bandit Road; Pillmaster Lu now stocks Antidote Pearl too.
+  SCHEMAS.md updated to document the effect semantics.
 - **2026-04-21 (session 1)** — Initial commit. Built engine, seeded
   Southern Wilds + Azure Cloud Range starter regions, 2 sects, 3 quests,
   9 techniques, 13 items, 5 enemies, 8 realms, 7 events, 5 lore. Smoke-tested

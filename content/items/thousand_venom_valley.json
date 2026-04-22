@@ -1,0 +1,52 @@
+[
+  {
+    "id": "antidote_pearl",
+    "name": "Antidote Pearl",
+    "type": "pill",
+    "description": "A small pearl of compressed herbs, swallowed whole. Purges toxins already at work in the meridians.",
+    "effect": "cleanse",
+    "power": 0,
+    "value": 40,
+    "tags": ["consumable"]
+  },
+  {
+    "id": "nine_serpents_pill",
+    "name": "Nine Serpents Pill",
+    "type": "pill",
+    "description": "A dark ochre pill wound with nine faint rings — each, they say, the print of a different snake. Floods the meridians with raw qi.",
+    "effect": "qi_gain",
+    "power": 50,
+    "value": 80,
+    "tags": ["consumable", "rare"]
+  },
+  {
+    "id": "venom_gland",
+    "name": "Venom Gland",
+    "type": "material",
+    "description": "A pulsing sac of dark fluid, still warm. The raw material of a dozen poisons.",
+    "effect": null,
+    "power": 0,
+    "value": 14,
+    "tags": ["material", "five_poisons"]
+  },
+  {
+    "id": "centipede_shell",
+    "name": "Centipede Carapace Plate",
+    "type": "material",
+    "description": "A curved plate of black chitin, harder than it has any business being. Alchemists grind it fine.",
+    "effect": null,
+    "power": 0,
+    "value": 18,
+    "tags": ["material", "five_poisons"]
+  },
+  {
+    "id": "black_lotus_seed",
+    "name": "Black Lotus Seed",
+    "type": "material",
+    "description": "A teardrop seed the color of wet coal. It is cold in the palm, and heavier than seed has any right to be.",
+    "effect": null,
+    "power": 0,
+    "value": 35,
+    "tags": ["material", "rare", "five_poisons"]
+  }
+]

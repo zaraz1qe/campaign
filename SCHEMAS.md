@@ -74,12 +74,24 @@ Optional fields can be omitted. Unknown fields are ignored (forward-compatible).
   "description": "A palm strike imitating the dragon's roar.",
   "qi_cost": 8,
   "damage": 14,
-  "effect": null,                   // optional: "stun" | "bleed" | "poison" | "heal" | "buff_atk"
+  "effect": null,                   // see "Effects" below
   "effect_power": 0,
   "requires_realm": "foundation_establishment",
   "learn_cost": 50                  // spirit stones
 }
 ```
+
+### Technique effects (in combat)
+Set `effect` to one of:
+- `"heal"` — attacker heals `effect_power` HP immediately.
+- `"poison"` — inflicts poison on the defender: `effect_power` dmg/turn, 3 turns. Refreshes on reapply.
+- `"bleed"` — inflicts bleed on the defender: `effect_power` dmg/turn, 3 turns.
+- `"stun"` — stuns the defender for `effect_power` turns (min 1). They skip their action.
+- `"buff_atk"` — attacker gains `+effect_power` ATK for 3 turns (combat-local).
+- `"buff_def"` — attacker gains `+effect_power` DEF for 3 turns (combat-local).
+
+Offensive effects (poison/bleed/stun) are cancelled if the attack is dodged.
+Self-effects (heal/buff_atk/buff_def) always fire when the technique is used.
 
 ## items/  — `Item`
 ```jsonc
@@ -88,7 +100,7 @@ Optional fields can be omitted. Unknown fields are ignored (forward-compatible).
   "name": "Spirit Gathering Pill",
   "type": "pill",                   // pill | weapon | armor | material | treasure | manual
   "description": "A jade-green pill smelling of pine.",
-  "effect": "qi_gain",              // qi_gain | hp_heal | atk_buff | unlock_technique | breakthrough_aid
+  "effect": "qi_gain",              // qi_gain | hp_heal | atk_buff | cleanse | unlock_technique | breakthrough_aid
   "power": 25,
   "value": 30,                      // sell price in spirit stones
   "tags": ["consumable"]

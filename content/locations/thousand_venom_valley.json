@@ -1,0 +1,60 @@
+[
+  {
+    "id": "thousand_venom_valley_mouth",
+    "name": "Thousand Venom Valley — Mouth",
+    "region": "Thousand Venom Valley",
+    "description": "The road narrows into a cleft between gray cliffs. Seven black steles stand unevenly where travellers are meant to turn back. Mist coils along the ground, and the air itself tastes faintly of copper. A low chanting — or is it only the wind? — drifts from deeper in.",
+    "first_visit_text": "The steles are old. The oldest warns, in a script carved by no hand the empire teaches:  'Beyond this stone, only the welcome and the dying pass.' The second has been defaced, recently — by someone with a clean sword and an uncertain grip.",
+    "exits": { "west": "bandit_road", "east": "venom_gorge" },
+    "npcs": ["gatekeeper_wuwei"],
+    "enemies": [],
+    "events": ["mist_curls_closer"],
+    "items_on_ground": [],
+    "qi_density": 2,
+    "sect": "five_poisons_sect",
+    "tags": ["valley", "liminal", "five_poisons"]
+  },
+  {
+    "id": "venom_gorge",
+    "name": "Venom Gorge",
+    "region": "Thousand Venom Valley",
+    "description": "Cliff walls close overhead in a green half-light. Water drips from vine to stone with a sound like clocks. Spiders the size of a child's fist tend their webs in silence, and from the rocks a chorus of unseen frogs keeps time. The path forks: east into deeper stone; north along a ladder of roots.",
+    "exits": { "west": "thousand_venom_valley_mouth", "east": "five_poisons_hall", "north": "poisoners_garden" },
+    "npcs": [],
+    "enemies": ["giant_centipede", "poison_cultivator"],
+    "events": ["frog_chorus_dims"],
+    "items_on_ground": [],
+    "qi_density": 3,
+    "sect": "five_poisons_sect",
+    "tags": ["gorge", "dangerous", "five_poisons"]
+  },
+  {
+    "id": "five_poisons_hall",
+    "name": "Hall of Five Poisons",
+    "region": "Thousand Venom Valley",
+    "description": "A hall carved into the living cliff, its pillars wound with living vines. Five bronze basins ring the central floor — each holds a living thing: viper, centipede, toad, scorpion, spider — and each, in turn, drinks a ladle of dark wine from an attendant in grey. In a chair of lacquered bone, the Matriarch receives all who are brave enough to be received.",
+    "first_visit_text": "No one stops you at the door. No one, you realise, is going to. The attendant with the ladle raises their head and — without hurry — smiles. In this hall, the courtesy is yours to keep.",
+    "exits": { "west": "venom_gorge" },
+    "npcs": ["matriarch_shan", "poisoner_qi"],
+    "enemies": [],
+    "events": [],
+    "items_on_ground": [],
+    "qi_density": 6,
+    "sect": "five_poisons_sect",
+    "tags": ["sect_inner", "five_poisons"]
+  },
+  {
+    "id": "poisoners_garden",
+    "name": "The Poisoner's Garden",
+    "region": "Thousand Venom Valley",
+    "description": "A terraced garden cut into the gorge wall, walled by iron-black lattice. Every plant is a killer, beautifully arranged: oleander by monkshood, datura by black lotus. A small bronze censer breathes a sweet-sour smoke. Cultivating here is a test of the lungs as much as the dantian.",
+    "exits": { "south": "venom_gorge" },
+    "npcs": [],
+    "enemies": [],
+    "events": ["black_lotus_opens"],
+    "items_on_ground": ["black_lotus_seed"],
+    "qi_density": 7,
+    "sect": "five_poisons_sect",
+    "tags": ["garden", "dangerous", "five_poisons"]
+  }
+]

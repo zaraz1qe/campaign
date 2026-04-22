@@ -1,0 +1,31 @@
+[
+  {
+    "id": "giant_centipede",
+    "name": "Spirit-Armored Centipede",
+    "description": "A segmented horror the length of a tall man, armor-plated in glistening black. Its pincers open and close with a small patient sound, like scissors waiting for silk.",
+    "realm": "qi_condensation",
+    "hp": 55, "atk": 9, "def": 4, "spd": 7,
+    "techniques": ["bleeding_pincers"],
+    "drops": [
+      { "item": "centipede_shell", "chance": 0.7 },
+      { "item": "antidote_pearl", "chance": 0.2 }
+    ],
+    "xp": 38,
+    "tags": ["beast", "five_poisons"]
+  },
+  {
+    "id": "poison_cultivator",
+    "name": "Grey Disciple",
+    "description": "A lean cultivator in dust-colored robes. Ink-dark tattoos of creeping insects cover his forearms, and when he breathes, a sweet-sour tang rides the air.",
+    "realm": "qi_condensation",
+    "hp": 48, "atk": 8, "def": 3, "spd": 7,
+    "techniques": ["serpent_strike", "toad_breath"],
+    "drops": [
+      { "item": "venom_gland", "chance": 0.6 },
+      { "item": "spirit_stone_pouch", "chance": 0.5 },
+      { "item": "nine_serpents_pill", "chance": 0.15 }
+    ],
+    "xp": 34,
+    "tags": ["human", "cultivator", "five_poisons"]
+  }
+]

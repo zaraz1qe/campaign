@@ -544,11 +544,17 @@ class Game:
             return
         getattr(self, method)(arg)
 
+    def _prompt(self) -> str:
+        cr = cultivation.current_realm(self.world, self.player)
+        qi_cap = cr.get("qi_required", self.player.max_qi)
+        return (f"[HP {self.player.hp}/{self.player.max_hp}  "
+                f"Qi {self.player.qi}/{qi_cap}] > ")
+
     def repl(self) -> None:
         self.banner()
         while True:
             try:
-                line = self.io.ask("\n> ")
+                line = self.io.ask("\n" + self._prompt())
             except (EOFError, KeyboardInterrupt):
                 self.out("")
                 self.out("The wind carries you away. Farewell.")

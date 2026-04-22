@@ -87,6 +87,105 @@ validated, committed.
 
 # Session log
 
+## Session 2 — 2026-04-22 — "Venom in the Veins"
+
+### What I built
+- **Combat depth, end-to-end.** Status effects that were silently
+  ignored in the old engine now actually fire: `poison` and `bleed` tick
+  each of the target's turns for 3 turns, `buff_atk`/`buff_def` give the
+  attacker a 3-turn boost, `stun` skips the victim's action for N turns,
+  `heal` heals the attacker. Added a new `cleanse` pill effect that
+  purges poison/bleed/stun (flavored no-op outside combat).
+- **Crits & dodge.** Both sides now roll for crits (5%+ scaled by SPD
+  diff, capped 30%, 1.7× damage, prose flourish) and for dodges (up to
+  20% based on SPD diff, cancels offensive riders like poison).
+- **Prose variety.** Attack verbs rotate (strike/cut at/batter/lance
+  into…), dodges have four flavor lines, crits have four. Combat reads
+  less like a spreadsheet.
+- **Persistent prompt.** Main REPL prompt is now
+  `[HP 28/30  Qi 5/50] > `. The cultivation loop is finally visible.
+- **New sect: Five Poisons Sect.** Neutral/grey faction, showcases the
+  new status mechanics. Deliverables:
+  - Region: **Thousand Venom Valley** (4 locations: Valley Mouth,
+    Venom Gorge, Hall of Five Poisons, Poisoner's Garden).
+  - 3 NPCs: Gatekeeper Wuwei, Matriarch Shan, Apothecary Qi.
+  - 6 techniques: Serpent Strike (poison 3), Five Poisons Palm (poison
+    6, heaven rank), Centipede Stance (buff_def 4), Web of Silk (stun),
+    Bleeding Pincers and Toad's Breath (enemy-only).
+  - 2 enemies: Spirit-Armored Centipede (bleeds), Grey Disciple.
+  - 5 items including Antidote Pearl (cleanse) and Nine Serpents Pill.
+  - 1 quest: The Oath of Fangs (collect-three scavenger arc that
+    touches existing content — viper fang, venom gland, wolf fang).
+  - 2 lore entries, 3 events.
+  - Connected east of Bandit Road. Pillmaster Lu now sells Antidote
+    Pearl so players can deal with poison before reaching the valley.
+- Updated `SCHEMAS.md` to document every `effect` string and its
+  semantics (this was previously only implicit in code).
+
+### Current state
+- Validator passes: 14 loc / 12 npc / 7 enemy / 15 tech / 18 item /
+  3 sect / 4 quest / 10 event / 7 lore.
+- Scripted smoke tests exercised: fight-with-poison, fight-with-bleed,
+  centipede-stance buff, antidote-pearl cleanse (both with and without
+  active poison), use-pill outside combat, prompt bar, full traversal
+  Verdant → Bandit Road → Valley Mouth → Gorge → Hall → Garden.
+- Old save format still loads cleanly — no new Player fields.
+
+### What I'd do next if I had another hour
+1. **Reputation that matters.** The `reputation` dict is still never
+   written to nor read from. Low-hanging fruit: offering/taking certain
+   quests adjusts rep; NPC greeting lines swap to hostile/friendly
+   variants based on rep; Five Poisons disciples stop respawning as
+   enemies in the Gorge if Five Poisons rep ≥ 2.
+2. **Fix the enemy-respawn feeling.** Currently enemies persist at
+   their location after being defeated. Simplest player-felt fix: add a
+   `player.cleared` per-location map with a turn counter, and hide the
+   enemy until `go`-actions elapse. A cooldown of ~10 player actions
+   feels right. Would make exploration feel consequential.
+3. **Endgame breath.** Realms above Qi Condensation are effectively
+   unreachable — no content gates on them, no enemies scale up. One
+   new region with Foundation-tier enemies and a Core-Formation boss
+   would let the realm ladder actually matter. Sky-Spire foothills is
+   the obvious candidate.
+4. **Alchemy at Pillmaster Lu.** He already exists. With the new
+   materials (venom_gland, centipede_shell, viper_fang, frost_pelt,
+   black_lotus_seed, etc.), a one-command `brew <recipe>` against a
+   small recipe list would light up the crafting branch of the roadmap
+   without an engine rewrite.
+
+### Things I noticed but didn't fix
+- **"across" as a direction** — not in the DIR_SHORTCUTS set, so you
+  have to type `go across` (both at the river and elsewhere). Same for
+  `in`/`out`. Not a bug, just a friction point.
+- **Quest completion doesn't consume items.** `collect` steps check
+  `has_item` but don't remove them. The Oath of Fangs lets you keep
+  all three fangs/glands after handing them in. Might be intentional
+  ("show me your proofs") but worth a design call.
+- **Enemy self-heal / enemy self-buff never triggers.** No enemy in the
+  game uses those effects. The `_apply_tech_effect` branch is ready for
+  it; just needs an enemy to hold such a technique.
+- **First-visit text** is still only on 2 locations (bamboo sea, valley
+  mouth, and the Hall of Five Poisons). Easy polish across the rest.
+- **Fleeing balance.** Flee chance now scales with SPD diff; the base is
+  0.5 + 0.05 per SPD advantage, capped 0.9. Untested against higher-tier
+  enemies — keep an eye on it.
+- **Combat `continue`** after a cancelled menu still re-runs the loop
+  from the top *including* the DoT tick, which means poison ticks on
+  both the cancelled turn and the real turn. Player-felt, but mild —
+  noted it in the code comment for later.
+
+### Don'ts (lessons learned)
+- Don't carry `continue` semantics across status ticks without thinking
+  about re-entry: the first refactor had dodge-with-tech-effect applying
+  the effect anyway. Wrote it twice before it came out right.
+- Don't assume pronoun "You" reads naturally as a noun; building a
+  separate `is_player` branch beat trying to retrofit grammar.
+- Don't forget: combat's `_apply_pill` is reached both from inside a
+  fight and from `cmd_use` outside — any new side effect needs to be
+  defined for both paths (hence the optional `status_list`).
+
+---
+
 ## Session 1 — 2026-04-21 — "Initial scaffold"
 
 ### What I built

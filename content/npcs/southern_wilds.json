@@ -47,7 +47,7 @@
       "Fresh pills! Fresh pills! Tested on three apprentices and one stubborn dog!",
       "You look pale. Half-price on the qi-gathering pills today only. Today only, mind."
     ],
-    "sells": ["spirit_gathering_pill", "minor_healing_pill", "iron_skin_pill"],
+    "sells": ["spirit_gathering_pill", "minor_healing_pill", "iron_skin_pill", "antidote_pearl"],
     "disposition": "friendly"
   },
   {

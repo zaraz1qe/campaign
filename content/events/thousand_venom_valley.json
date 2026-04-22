@@ -1,0 +1,23 @@
+[
+  {
+    "id": "mist_curls_closer",
+    "location": "thousand_venom_valley_mouth",
+    "chance": 0.4,
+    "text": "The mist thickens around your ankles, then — without hurry — draws back. Somewhere in the valley, a chime sounds once; you have been noticed.",
+    "effect": {}
+  },
+  {
+    "id": "frog_chorus_dims",
+    "location": "venom_gorge",
+    "chance": 0.3,
+    "text": "The hidden frogs fall silent in a ragged wave. Something large is moving in the rocks above. Then, one by one, the frogs begin again, louder than before.",
+    "effect": {}
+  },
+  {
+    "id": "black_lotus_opens",
+    "location": "poisoners_garden",
+    "chance": 0.25,
+    "text": "A black lotus unfurls at your passing, its petals slick as wet glass. It breathes out once — a cold, sweet breath — and you feel a small gate open somewhere beneath your ribs.",
+    "effect": { "qi": 8 }
+  }
+]

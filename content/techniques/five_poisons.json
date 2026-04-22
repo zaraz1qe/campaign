@@ -1,0 +1,80 @@
+[
+  {
+    "id": "serpent_strike",
+    "name": "Serpent Strike",
+    "type": "martial",
+    "rank": "earth",
+    "description": "A low, flicking jab that seeks a meridian gap. The qi that rides the blow is faintly green and hungry.",
+    "qi_cost": 6,
+    "damage": 8,
+    "effect": "poison",
+    "effect_power": 3,
+    "requires_realm": "qi_condensation",
+    "learn_cost": 40
+  },
+  {
+    "id": "five_poisons_palm",
+    "name": "Five Poisons Palm",
+    "type": "martial",
+    "rank": "heaven",
+    "description": "The signature art of the Five Poisons Sect. Five venoms — viper, centipede, toad, spider, scorpion — ride a single palm strike. The target's qi meets five small wars at once.",
+    "qi_cost": 14,
+    "damage": 20,
+    "effect": "poison",
+    "effect_power": 6,
+    "requires_realm": "foundation_establishment",
+    "learn_cost": 150
+  },
+  {
+    "id": "centipede_stance",
+    "name": "Centipede Stance",
+    "type": "body",
+    "rank": "earth",
+    "description": "A low stance that mimics the rippling footwork of the centipede. The body becomes plates; a blow that lands draws blood from the striker in return.",
+    "qi_cost": 8,
+    "damage": 0,
+    "effect": "buff_def",
+    "effect_power": 4,
+    "requires_realm": "qi_condensation",
+    "learn_cost": 60
+  },
+  {
+    "id": "web_of_silk",
+    "name": "Web of Silk",
+    "type": "mental",
+    "rank": "earth",
+    "description": "A spidering lattice of qi cast across the opponent's senses. For a breath, they cannot tell left from right, nor heart from hand.",
+    "qi_cost": 10,
+    "damage": 4,
+    "effect": "stun",
+    "effect_power": 1,
+    "requires_realm": "qi_condensation",
+    "learn_cost": 70
+  },
+  {
+    "id": "bleeding_pincers",
+    "name": "Bleeding Pincers",
+    "type": "martial",
+    "rank": "mortal",
+    "description": "The scissoring bite of great pincers; the wound it leaves does not easily close.",
+    "qi_cost": 0,
+    "damage": 7,
+    "effect": "bleed",
+    "effect_power": 3,
+    "requires_realm": "mortal",
+    "learn_cost": 999
+  },
+  {
+    "id": "toad_breath",
+    "name": "Toad's Breath",
+    "type": "qi",
+    "rank": "mortal",
+    "description": "A puffing cloud of sickly yellow vapor. Crude — but effective.",
+    "qi_cost": 0,
+    "damage": 3,
+    "effect": "poison",
+    "effect_power": 2,
+    "requires_realm": "mortal",
+    "learn_cost": 999
+  }
+]

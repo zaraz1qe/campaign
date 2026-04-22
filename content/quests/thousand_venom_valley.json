@@ -1,0 +1,15 @@
+[
+  {
+    "id": "oath_of_fangs",
+    "name": "The Oath of Fangs",
+    "giver": "matriarch_shan",
+    "description": "Matriarch Shan will test your worth before teaching the Five Poisons Palm. She asks three proofs: a viper fang from the bamboo sea, a venom gland from the valley's own disciples, and a frost-wolf fang from the foothills. Bring all three to her hall.",
+    "steps": [
+      { "type": "collect", "target": "viper_fang" },
+      { "type": "collect", "target": "venom_gland" },
+      { "type": "collect", "target": "wolf_fang" },
+      { "type": "talk",    "target": "matriarch_shan" }
+    ],
+    "reward": { "spirit_stones": 150, "items": ["nine_serpents_pill", "antidote_pearl"], "xp": 80 }
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "id": "five_poisons_sect",
+  "name": "Five Poisons Sect",
+  "alignment": "neutral",
+  "headquarters": "five_poisons_hall",
+  "description": "Feared but not hated, the Five Poisons keep their valley and their peace. They refuse no student whose heart is steady, and they refuse no coin whose owner is clear-eyed. Their arts ride five venoms — viper, centipede, spider, toad, scorpion — and their first vow is the same as their last: 'We do not strike in anger; we do not apologise for the strike.'",
+  "signature_techniques": ["five_poisons_palm", "serpent_strike", "centipede_stance", "web_of_silk"],
+  "elders": ["matriarch_shan"],
+  "rivals": ["azure_cloud_sect"]
+}

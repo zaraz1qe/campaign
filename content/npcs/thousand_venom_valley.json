@@ -1,0 +1,45 @@
+[
+  {
+    "id": "gatekeeper_wuwei",
+    "name": "Gatekeeper Wuwei",
+    "title": "Warden of the Seven Steles",
+    "description": "A gaunt man in grey, one cheek webbed with an old burn scar. A long hooked staff leans at his elbow; a sleeping black scorpion rides on his collar as if it were a brooch.",
+    "dialogue": [
+      "Few come this way by accident, cultivator. Say what you came to say.",
+      "Beyond these stones, the sect does not hate; nor does it love. It weighs.",
+      "Antidote is a courtesy. Venom is the honest speech. Remember which is which."
+    ],
+    "faction": "five_poisons_sect",
+    "disposition": "neutral"
+  },
+  {
+    "id": "matriarch_shan",
+    "name": "Matriarch Shan",
+    "title": "Hand of the Five Poisons",
+    "description": "A woman of middling age, her hair coiled with silver pins shaped as centipede legs. Her robes are dust-grey; her eyes are the pale yellow of old amber. She does not seem dangerous until you realise she has not blinked.",
+    "dialogue": [
+      "Sit. The serpent listens first, the scorpion second. I, last.",
+      "We are not the Scarlet Lotus. We do not love cruelty; we only refuse the lie that cruelty is the only evil.",
+      "Bring me three proofs — venom of valley, venom of road, venom of snow — and we will speak of the palm that empties the heart."
+    ],
+    "teaches": ["five_poisons_palm", "centipede_stance"],
+    "gives_quest": "oath_of_fangs",
+    "faction": "five_poisons_sect",
+    "disposition": "neutral"
+  },
+  {
+    "id": "poisoner_qi",
+    "name": "Apothecary Qi",
+    "title": "Keeper of the Five Basins",
+    "description": "A small, round, ink-stained woman who always seems to be mid-sentence with someone who is not in the room. Her sleeves jingle faintly: vials, or teeth.",
+    "dialogue": [
+      "Pearl? Pill? Pollen? I have them all and none of them are a bargain. Choose bravely.",
+      "A poison that cannot be cured is only an accident. We sell the cure and the cause both — it is only fair.",
+      "The Nine Serpents Pill is a guest in the dantian. Welcome it; do not bow to it."
+    ],
+    "teaches": ["serpent_strike", "web_of_silk"],
+    "sells": ["antidote_pearl", "nine_serpents_pill", "minor_healing_pill"],
+    "faction": "five_poisons_sect",
+    "disposition": "friendly"
+  }
+]
