@@ -15,14 +15,32 @@
 
 ## Standing instructions for every session
 
+> **CRITICAL — branch discipline.** The scheduled harness creates a fresh
+> random branch (e.g. `claude/jolly-euler-XXX`) for each run, *forked from*
+> `claude/lucid-heisenberg-Bs2QZ` (the repo's default). Your random branch
+> is disposable. The **canonical** branch — the one all sessions accumulate
+> into — is `claude/lucid-heisenberg-Bs2QZ`. If you don't push your work
+> back to it, the next session won't see what you did. Steps 0 and 8 below
+> are what makes the routine cumulative — skip them and every session
+> silently resets the project.
+
+0. **Catch up on prior work.** Before reading anything else, ensure you
+   have the latest canonical state:
+   ```
+   git fetch origin claude/lucid-heisenberg-Bs2QZ
+   git merge --ff-only origin/claude/lucid-heisenberg-Bs2QZ || \
+       git merge --no-edit origin/claude/lucid-heisenberg-Bs2QZ
+   ```
+   The fast-forward succeeds when the harness forked from the tip of
+   canonical (the normal case). The non-ff fallback covers drift.
+
 1. **Read first**: this whole file (especially the most recent 2–3 session
    entries) → `MEMORY.md` → `ROADMAP.md`. Glance at `git log --oneline -10`.
 2. **Verify the game still works**: `python3 tools/check_content.py` and
    a scripted smoke-test of `python3 play.py`.
 3. **Pick something** — see "How to choose what to do" below. You have full
    latitude.
-4. **Do it well, ship it**: validate, smoke-test, commit, push to
-   `claude/lucid-heisenberg-Bs2QZ`.
+4. **Do it well, ship it**: validate, smoke-test, commit.
 5. **Update `ROADMAP.md`**: tick boxes, add new ideas, append a dated entry
    to the "Done Log".
 6. **Prepend a new entry to this file's "Session log" section** (just below
@@ -34,6 +52,25 @@
    - things you noticed but didn't fix
    - any "don'ts" (lessons learned) worth flagging
 7. Commit the docs (same commit as the work, or a separate one — your call).
+8. **Push to BOTH places.** This is how the routine accumulates:
+   ```
+   git push -u origin HEAD                                   # the harness branch
+   git push origin HEAD:claude/lucid-heisenberg-Bs2QZ        # canonical — MANDATORY
+   ```
+   If the second push is rejected (non-fast-forward), someone else's run
+   landed first: `git fetch origin claude/lucid-heisenberg-Bs2QZ && git
+   merge --no-edit origin/claude/lucid-heisenberg-Bs2QZ` and retry. If it's
+   rejected because of branch protection, open a PR via the GitHub MCP
+   tools and merge it (`create_pull_request` + `merge_pull_request` or
+   `enable_pr_auto_merge`). The routine is broken until canonical moves.
+
+### How to know the routine is healthy
+
+Run `git log --oneline origin/claude/lucid-heisenberg-Bs2QZ -5` at session
+start. You should see a chain of recent session commits — session N-1,
+N-2, etc. If it shows only the initial scaffold, the previous run failed
+step 8 and this session is starting blind; flag it loudly in your session
+log and do what you can.
 
 ---
 
