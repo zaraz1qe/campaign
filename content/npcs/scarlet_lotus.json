@@ -21,6 +21,10 @@
       "azure_cloud_sect": {
         "3": ["A sword of the Azure Cloud, pausing at my stone. How curious. I wonder what I would fetch if I sold this meeting to your elder."]
       }
+    },
+    "companion_reply": {
+      "blood_sworn_jin": "Oh — Jin. Still walking. I thought Red Feather would have found a use for your shadow by now. Tell her I was *polite*; it will amuse her.",
+      "disciple_meilin": "The crane-sister, at my milestone. Do not worry, little blade — I do not bite in the open. The Pavilion is more thoughtful than that."
     }
   },
   {
@@ -35,6 +39,7 @@
     ],
     "teaches": ["blood_lotus_palm", "heart_rending_claw"],
     "sells": ["blood_petal_mantle"],
+    "gives_quest": "the_red_ledger",
     "faction": "scarlet_lotus_pavilion",
     "disposition": "neutral",
     "rep_dialogue": {
@@ -46,6 +51,14 @@
       "azure_cloud_sect": {
         "5": ["Azure Cloud's favoured sword, in my gallery. Tell me, does Baixu know you have come? Tell me true — the pond will check."]
       }
+    },
+    "companion_reply": {
+      "blood_sworn_jin": [
+        "Jin. You brought him back to my gallery, wanderer. That was brave. He did not run — that was braver. Sit, Jin. The third cup is yours if your hand will hold it.",
+        "I will not speak of your uncle while you stand at my pillar. It is the only courtesy this sect owes his line. Use it."
+      ],
+      "disciple_meilin": "An Azure sword inside my gallery. You bring guests with fine taste in enemies, wanderer. She will not draw in my hall — she is too well-trained for that — and I will not ask her to. We understand each other, the Cloud and I.",
+      "venomhand_bai": "The valley's second hand. Tell Matriarch Shan the pond sends its respects; tell her the Pavilion asks no favour of the Five Poisons, and neither owes one. That is, for us, a kind of friendship."
     }
   },
   {
@@ -61,7 +74,11 @@
     "teaches": ["crimson_tide_fist"],
     "sells": ["crimson_cinnabar_pill", "scarlet_pavilion_token", "antidote_pearl"],
     "faction": "scarlet_lotus_pavilion",
-    "disposition": "friendly"
+    "disposition": "friendly",
+    "companion_reply": {
+      "blood_sworn_jin": "Oh, Jin! You thin thing, you look half a ghost. Come — take the red pill; on the house, on the house. Your colour is all wrong.",
+      "disciple_meilin": "A sword-sister of the Azure Cloud, at my pestle. How *exciting*. I will not sell you anything today, dear — nothing personal; only my elder would skin me."
+    }
   },
   {
     "id": "blood_sworn_jin",

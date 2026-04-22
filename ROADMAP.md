@@ -23,10 +23,11 @@ A living checklist for what's been done and what to add next.
 - **Companions** (3): Disciple Meilin (Azure Cloud), Venom-Handler Bai
   (Five Poisons), Blood-Sworn Jin (Scarlet Lotus). Affinity/bond system
   active across all three.
-- **Items**: 52 (equipment, pills, materials, treasures)
+- **Items**: 55 (equipment, pills, materials, treasures)
 - **Recipes**: 15 (Forge-Master Bo: 6, Pillmaster Lu: 4, Apothecary Qi: 5)
-- **Quests**: 8 (Kettle's Request, Study Sutra, Missing Disciple, Envoy's
-  Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace, Red Path)
+- **Quests**: 9 (Kettle's Request, Study Sutra, Missing Disciple, Envoy's
+  Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace, Red Path,
+  **Red Ledger** — the first multi-quest arc)
 - **Realms**: 8 (Mortal → Ascendant Immortal)
 
 ## How to Add Content (the path of least resistance)
@@ -63,6 +64,8 @@ A living checklist for what's been done and what to add next.
 
 ### 3. Quests to Write
 - [x] The Envoy's Letter — deliver a sealed letter from Azure Cloud to Five Poisons (s6)
+- [x] **The Red Ledger** — Red Feather's second errand; recover a stolen page
+      of the Crimson Registry from an apostate hiding at Jadestep (s10)
 - [ ] Multi-part sect tournament (Azure Cloud vs Scarlet Lotus)
 - [ ] Find the lost manual at the bottom of the River of Swords
 - [ ] Investigate why frost wolves descended on the foothills (link to Blood Moon Cult)
@@ -123,6 +126,12 @@ A living checklist for what's been done and what to add next.
       across dismiss/recruit (s9)
 - [x] **Companion location barks** — one-line reactions when a companion
       walks into a place that matters to them (s9)
+- [x] **NPC companion_reply** — NPCs acknowledge the specific companion
+      at the player's shoulder during `talk`. Red Feather, Baixu, Shan,
+      Rulan, Weilan, Huilin, and the Jadestep ghosts all speak to Jin,
+      Meilin, or Bai when relevant (s10).
+- [x] **requires_quest gate on quests** — quest arcs can chain. A second
+      errand stays silent until the first is closed (s10).
 - [ ] **Faction war state**: more than spawns — sect patrols that pursue
       between locations, trade embargoes, sect-tournament triggers
 - [ ] **Auto-respawn enemies** so locations don't go empty after one fight
@@ -146,6 +155,37 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-22 (session 10)** — "The Red Ledger." First multi-quest arc,
+  plus a new engine layer that makes companions *visible in dialogue*. New
+  quest **The Red Ledger** from Elder Red Feather — a 4-step follow-up to
+  The Red Path, gated by the prior quest + SL rep +3. Retrieves a stolen
+  page of the Crimson Registry from an apostate (Willow-Step Shen, new
+  enemy at Jadestep, rep-gated on SL +3 so he's invisible to non-Pavilion
+  players). Shen is a qi-condensation cultivator with stolen Pavilion arts
+  (crimson_tide_fist / blood_lotus_palm / pond_veil_step). Drops cipher
+  page (100%), spirit-stone pouch, willow-step-ring, a cinnabar pill,
+  blood-lotus petal. Quest rewards: +280 stones, +120 XP, new accessory
+  **Pond-Drinker Sash** (+2 ATK, +1 DEF, +12 HP, bleed-on-hit, SL-rep-3
+  gated), a cinnabar pill, and rep deltas (SL +3, ACS -2, Jadestep -1).
+  Engine: `quest.requires_quest` gates a quest offer silently until the
+  prior quest is closed — the first real "arc" support. Companion
+  system: NPCs gain an optional **`companion_reply: {companion_id: line|[lines]}`**
+  field; on `talk`, the matching companion's line prints after the
+  NPC's main dialogue and rep_dialogue. Downed companions are silent.
+  Wired lines for Red Feather (Jin / Meilin / Bai), Baixu (Jin /
+  Meilin / Bai), Matriarch Shan (Bai / Meilin / Jin), Weilan, Rulan,
+  Huilin, Mingshu's ghost, and the Old Dog of Jadestep — fifteen
+  companion-reply entries across eight NPCs. New lore entry:
+  **The Willow-Step Cut** — the twelve-year-old backstory of the stolen
+  page, told in Red Feather's own voice. Validator: checks
+  `companion_reply` shape (keys are real npcs; values are strings or
+  lists of strings) and `quest.requires_quest` points at a real quest.
+  SCHEMAS.md documents both new fields. Smoke test `tools/smoke_red_ledger.py`
+  covers 7 scenarios: gate before prereq, offer after prereq, Shen
+  invisible at low rep, full quest flow with reward verification,
+  companion_reply fires only for bound companion, downed silences it,
+  and Baixu↔Meilin wiring. Save-compat preserved — no new Player
+  fields.
 - **2026-04-22 (session 9)** — "The Blood-Sworn." Completes the
   companion triangle and adds a persistent bond layer on top. New
   companion **Blood-Sworn Jin** (Prodigal of the Red Path) at Crimson

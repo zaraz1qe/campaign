@@ -41,6 +41,14 @@
       "azure_cloud_sect": {
         "5": ["So. You are a sword of the Azure Cloud and still you come to my hall. That is either courage or confusion; I have not decided which."]
       }
+    },
+    "companion_reply": {
+      "venomhand_bai": [
+        "Bai. You came the long way. Good. The scorpions tire of hearing about you second-hand.",
+        "Tell your wanderer that whatever road they take next, I count the Pavilion as the one road the valley will not follow. Tell them that too."
+      ],
+      "disciple_meilin": "So — the Cloud and the Valley both in my hall, at one shoulder. A small marvel. Sit, sword-sister. The serpents have learned your step as well.",
+      "blood_sworn_jin": "You bring the Pavilion's stray dog into my hall. He will not bite — I can see that — but the dog's master has teeth enough for both. Speak carefully."
     }
   },
   {

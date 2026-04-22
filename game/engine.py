@@ -283,6 +283,11 @@ class Game:
             self.out(_wrap(f'  "{line}"'))
         for line in self._rep_dialogue_lines(n):
             self.out(_wrap(f'  "{line}"'))
+        # A companion at your shoulder may be known to this NPC — in which case
+        # the NPC speaks to them, too. The exchange reads as the NPC addressing
+        # the companion; the companion's answering line (if any) follows.
+        for line in self._companion_reply_lines(n):
+            self.out(_wrap(f'  "{line}"'))
         if n.get("teaches"):
             names = [self.world["techniques"].get(t, {}).get("name", t) for t in n["teaches"]]
             self.out(f"  (Can teach: {', '.join(names)})")
@@ -320,6 +325,27 @@ class Game:
             need = have + s
             parts.append(f"{sname} (have {have:+d}, need {need:+d})")
         return "Required standing: " + "; ".join(parts) + "."
+
+    def _companion_reply_lines(self, npc: Dict[str, Any]) -> list:
+        """Return the lines an NPC adds when a specific companion is bound.
+        Data shape on the npc: `companion_reply: {companion_npc_id: str | [str...]}`.
+        A single string is wrapped into a one-line list; a list is returned in
+        order. If no companion is active or the NPC has no entry for them,
+        returns an empty list."""
+        comp = self.player.companion
+        if not comp or comp.get("downed"):
+            return []
+        replies = npc.get("companion_reply") or {}
+        if not isinstance(replies, dict):
+            return []
+        entry = replies.get(comp.get("id", ""))
+        if entry is None:
+            return []
+        if isinstance(entry, str):
+            return [entry]
+        if isinstance(entry, list):
+            return [s for s in entry if isinstance(s, str) and s.strip()]
+        return []
 
     def _rep_dialogue_lines(self, npc: Dict[str, Any]) -> list:
         """Pick one line per sect from npc['rep_dialogue'] whose threshold the

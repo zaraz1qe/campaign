@@ -20,7 +20,7 @@
     "description": "Stepped platforms cling to the cliff like broken stairs for a fallen giant. Cracked flagstones still bear the worn crane-and-peak crest of the Jadestep Sect, who died out four hundred years ago. Green lichen grows where disciples once knelt. Wind-sung prayer bells, long cracked, give off a sound like weeping glass whenever the gale turns.",
     "exits": { "south": "cloudroot_pass", "up": "thunderhead_ridge", "east": "skyweavers_cloister" },
     "npcs": ["ghost_of_patriarch_mingshu"],
-    "enemies": ["cloudstep_ape", "terrace_revenant"],
+    "enemies": ["cloudstep_ape", "terrace_revenant", "apostate_willow_step_shen"],
     "events": ["terrace_bell_tolls"],
     "items_on_ground": ["broken_terrace_medallion"],
     "qi_density": 4,

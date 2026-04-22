@@ -51,6 +51,25 @@
     "tags": ["human", "cultivator", "scarlet_lotus"]
   },
   {
+    "id": "apostate_willow_step_shen",
+    "name": "Willow-Step Shen, the Apostate",
+    "description": "A slight man in travel-stained grey, his hair cut short and untied — the mark of a disciple who walked away from his sect without the elder's ribbon. A short-handled hook-sword hangs loose in his left hand; the right holds a folded sheet of paper the way a drowning man holds a rope. His eyes dart from stone to stone, and he smiles too quickly. He has been afraid for twelve years, and has not rested in any of them.",
+    "realm": "qi_condensation",
+    "hp": 78, "atk": 11, "def": 3, "spd": 9,
+    "techniques": ["crimson_tide_fist", "blood_lotus_palm", "pond_veil_step"],
+    "requires_rep": { "scarlet_lotus_pavilion": 3 },
+    "ambush_text": "Between two broken flagstones a figure crouches like a hare — watching, hook-sword held across the knee, a folded page pressed to the chest.",
+    "drops": [
+      { "item": "apostates_cipher_page", "chance": 1.0 },
+      { "item": "spirit_stone_pouch", "chance": 0.80 },
+      { "item": "willow_step_ring", "chance": 0.75 },
+      { "item": "crimson_cinnabar_pill", "chance": 0.40 },
+      { "item": "blood_lotus_petal", "chance": 0.30 }
+    ],
+    "xp": 110,
+    "tags": ["human", "cultivator", "scarlet_lotus", "apostate", "quest_target"]
+  },
+  {
     "id": "scarlet_pavilion_guardian",
     "name": "Scarlet Pavilion Guardian",
     "description": "A veteran of the red-petal robes — broader than any outer disciple, and calmer. A pair of lotus-hilted hook-swords rest easily at the waist. The eyes are not cruel. That, somehow, is worse.",

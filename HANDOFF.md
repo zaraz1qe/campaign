@@ -124,6 +124,207 @@ validated, committed.
 
 # Session log
 
+## Session 10 — 2026-04-22 — "The Red Ledger"
+
+### What I built
+- **First multi-quest arc.** The previous handoff flagged a demonic-path
+  follow-up as the obvious next step, and the game had nothing really
+  "arc-shaped" — every quest stood alone. Now the Pavilion has one.
+  **The Red Ledger** is Red Feather's second errand, silent until The
+  Red Path is closed (new `quest.requires_quest` gate). Four steps:
+  visit Hanging Terraces of Jadestep → defeat **Willow-Step Shen** (new
+  enemy; a former outer petal, qi-condensation, hiding with the ghosts
+  for twelve years) → collect the **Apostate's Cipher Page** (100% drop)
+  → talk Red Feather. Rewards: +280 stones, +120 XP, a new accessory
+  (**Pond-Drinker Sash** — +2 ATK, +1 DEF, +12 HP, bleed-on-hit, rep-
+  gated at SL +3 so the item's own worldview matches the giver's), a
+  cinnabar pill. Rep deltas: SL +3, ACS -2, Jadestep -1 (you did
+  disturb the terraces).
+- **Willow-Step Shen** placed at Hanging Terraces of Jadestep with
+  `requires_rep: {SL: 3}`, so players *not* on the red path never meet
+  him — he's functionally invisible and unfightable for them. Good: he
+  only shows up when the quest makes sense. Drops include a small unique
+  accessory (**Willow-Step Ring** — +2 SPD, +1 ATK, 75%) so even
+  players who don't pick up the Sash reward get a flavored trophy.
+  Techniques: crimson_tide_fist, blood_lotus_palm, pond_veil_step.
+- **NPC `companion_reply` — a whole new dialogue layer.** Until today,
+  your companion walked with you through the world but was invisible
+  to it in conversation. Baixu never saw Jin at your shoulder; Red
+  Feather never addressed Meilin. That asymmetry was the cleanest
+  lever left in the companion system. New field on any NPC dialogue
+  block: `companion_reply: {companion_npc_id: "line" | ["lines"]}`.
+  On `talk`, if the player's bound companion's id matches any key,
+  the matching line(s) print under the NPC's main dialogue and
+  rep_dialogue. Downed companions get no reply — an unconscious
+  companion is not a topic of conversation. Fired through
+  `_companion_reply_lines()` in engine.py, parallel to
+  `_rep_dialogue_lines()`; same data-shape treatment.
+- **Fifteen reply lines across eight NPCs.** Red Feather (for Jin,
+  Meilin, Bai), Elder Baixu (for Jin, Meilin, Bai), Matriarch Shan
+  (for Bai, Meilin, Jin), Weilan (for Jin, Meilin), Rulan (for Jin,
+  Meilin), Huilin (for Meilin, Bai, Jin), Mingshu's ghost (for Jin,
+  Meilin, Bai), Old Dog of Jadestep (for Jin, Meilin). Each line is
+  voice-specific: Red Feather tells Jin to sit for a third cup; Baixu
+  speaks to his nephew without speaking of him; Shan names Bai as
+  "her Sister" and warns the player about bringing the Pavilion's
+  stray dog into the hall. The demonic companion gets the richest
+  treatment because he has the heaviest backstory. The righteous
+  companion gets the most *reassuring* lines because she is known
+  everywhere.
+- **Lore.** New entry `the_willow_step_cut` — Red Feather's own
+  account of the stolen page twelve years ago, closing on the line
+  she didn't say ("and then for the man") and the sister-elder who
+  didn't ask. Discoverable in the world by... well, presently by
+  hand. Not yet attached to an event or read-on-defeat hook. (A next
+  session could tie it to Shen's defeat.)
+- **Engine plumbing.**
+  - `engine.py`: `_companion_reply_lines(npc)` added; called from
+    `cmd_talk` after rep_dialogue.
+  - `quests.py`: `offer_quest` checks the new `requires_quest` field
+    and silently declines to offer (empty string return) if unmet.
+  - No new Player fields. All save-compat preserved.
+- **Validator.** Two new checks in `tools/check_content.py`:
+  - `companion_reply`: must be dict; keys must be real npc ids;
+    values must be non-empty strings or lists of non-empty strings.
+  - `quest.requires_quest`: must point at a real quest id.
+- **SCHEMAS.md.** NPC section documents `companion_reply`. Quest
+  section documents `requires_quest`.
+- **Smoke test.** `tools/smoke_red_ledger.py` — 7 scenarios:
+  (A) quest silent before prereq, (B) auto-offered after prereq,
+  (C) Shen invisible/unfightable at low rep and visible at SL +3,
+  (D) full quest flow end-to-end with reward/rep delta
+  verification, (E) companion_reply fires only for the bound
+  companion, (F) downed companion silences it, (G) Baixu↔Meilin
+  wiring works at a different location. All prior smoke tests
+  (affinity, companion, companion_downed) still green.
+
+### Current state
+- Validator: **23 loc / 22 npc / 17 enemy / 25 tech / 55 item / 4 sect /
+  9 quest / 16 event / 14 lore / 15 recipe.** (+1 enemy, +3 items,
+  +1 quest, +1 lore.)
+- `python3 play.py` boots. A fresh player sees no change; a player
+  who has walked the Red Path and re-talks to Red Feather sees the
+  second quest offered. A player with Jin/Meilin/Bai at their
+  shoulder now hears *different* NPCs address the companion during
+  talk.
+- All prior saves load. No new Player fields.
+- Quest data flow: auto-offer, accept on first talk, step through
+  visit → defeat → collect → talk. Shen's drop is 100% on the cipher
+  page so the collect step is never a luck gate.
+- The Willow-Step Ring is pure drop flavor: no rep gate, stacks with
+  anything. Useful as a mid-realm SPD option for non-Pavilion
+  players too (if they manage to reach Shen; since he's SL-rep-gated,
+  they can't).
+
+### What I'd do next if I had another hour
+1. **Tier-up affinity barks.** Session 9's first next-up item, still
+   open. When Meilin first reaches `trusted`, she should say
+   something Meilin-specific the next time you `look`. Cheap to
+   implement (`last_bark_tier` on companion runtime dict; four lines
+   per companion). I deferred because the companion_reply layer felt
+   higher-value as its own session.
+2. **Attach `the_willow_step_cut` lore to Shen's defeat.** Right now
+   the lore entry exists but can't be acquired. Options: (a) an
+   on-defeat-lore hook in combat.py (new mechanic); (b) reach it
+   through a Red Feather "tell me the story" dialogue after the
+   quest is done; (c) add it as an item-on-ground at the terraces
+   that becomes visible after Shen's death (requires new mechanic).
+   Smallest path is probably (b): a rep_dialogue tier above +5 on
+   Red Feather that grants lore. But rep_dialogue doesn't currently
+   grant lore — it's pure text. So (a) or (c) is a small engine add.
+3. **A third quest in the arc.** Red Feather now owes you one. The
+   natural step: she sends you to *deliver* the page to the sister-
+   elder the page cost — a new NPC, perhaps at a new Pavilion
+   location. Would start to build the Pavilion into a proper sect
+   with more than two locations.
+4. **Companion banter lines on `go`.** Location barks fire on
+   arrival. A spare system would be `travel_barks` — a small
+   percentage chance per move that the companion comments on the
+   road ("the bamboo sings tonight", "I hate this stretch after
+   dark"). Pure flavor; low risk.
+5. **Sect Conference / Tournament** — still the top unchecked
+   multi-quest project. Much larger than a session.
+6. **Something above Foundation Establishment.** The Core-Formation
+   tiger exists at Sky-Spire, but the *realm* above it is empty in
+   practice — no locations, no NPCs, no quests. An endgame session
+   is overdue.
+7. **`teach <technique> to companion`.** Still on the list from
+   session 8. The current companion techniques are baked at recruit
+   time; letting the player pass on learned arts would be a proper
+   new mechanical layer.
+
+### Things I noticed but didn't fix
+- **companion_reply doesn't chain with rep_dialogue.** If Red Feather
+  has both a rep_dialogue tier triggered AND a companion_reply, she
+  prints both. That's fine — they're additive commentary — but the
+  *order* is: base dialogue, then rep lines, then companion reply.
+  Feels right to me (world state first, companion reaction last).
+- **The final talk step in the quest is redundant in practice.** See
+  the session-9 note on quests: once visited/defeated/collected are
+  all satisfied, progress_quests auto-closes the quest if the player
+  has ever talked to the giver. Since you must talk to them to
+  accept the quest, the return-talk is implicit. Works fine; feels
+  slightly loose narratively. A `talk_again_required` flag would fix
+  it, but that's engine work for a small feel improvement.
+- **Pond-Drinker Sash is accessory slot.** Scarlet Pavilion Token is
+  also accessory slot. A fully-kitted SL player can only wear one at
+  a time. Probably the right call — you choose between the assassin-
+  recognised token and the elder-sworn sash — but a future
+  alternative could make the Sash a belt/sash sub-slot if slots ever
+  expand.
+- **`requires_quest` is a single string.** Multi-prereq quests ("do
+  A and B first") aren't supported — intentional, scope control.
+  List support is a three-line change if ever needed.
+- **Willow-Step Ring has no rep gate.** Any player who somehow
+  reaches Shen can loot it. Since Shen himself is rep-gated, the
+  ring is effectively SL-gated too, but an aggregator would find
+  this a loose hatch.
+- **Red Feather's gives_quest is now `the_red_ledger`** — not the
+  original Red Path. The original giver was Rulan (still is), so
+  that's fine. If a future session wants Red Feather to give
+  multiple quests, the `gives_quest` field would need to become a
+  list.
+- **Completed quests still show in `quest` output.** The player can
+  see "Red Path" under "Completed:" even after The Red Ledger is
+  accepted. That's fine for now, but a big quest list will eventually
+  want a "most recent completed only" toggle or a cap.
+
+### Don'ts (lessons learned)
+- **Don't capture `before_stones` / `before_xp` after the quest has
+  already auto-completed.** My first smoke test measured "after the
+  fight" and "before the final talk", not realising the quest had
+  already closed when progress_quests ran during the fight. The
+  final talk gives no new reward. Right measurement is: snapshot
+  everything *before* the player does anything that could trigger
+  progress_quests (i.e. before the first talk or first look). This
+  is a general lesson for smoke-testing multi-step quests where the
+  last step can be pre-satisfied.
+- **Don't forget the companion may not be at the location you expect
+  when you re-recruit.** My first cut of the "downed silences
+  companion_reply" test re-recruited Jin at the shrine — he lives at
+  Crimson Creek, so `find_in_loc` failed. Move the player, then
+  recruit, then move them back.
+- **Don't wire `gives_quest` to two quests on the same NPC.** The
+  field is a single string. I considered migrating it to a list but
+  that's a separate infra task; easier to keep Rulan on the Red Path
+  and put the Red Ledger on Red Feather herself (who had no
+  gives_quest before).
+- **Don't rep-gate a quest on the *same* sect's rep that the prior
+  quest grants.** The Red Path grants SL +3; the Red Ledger requires
+  SL +3. This looks tautological, but it isn't: a player who did the
+  Red Path and then somehow lost SL rep (future content might) would
+  be locked out of the Ledger until they rebuilt. That's actually
+  the correct behaviour — the Pavilion doesn't trust you if you've
+  cooled — but I double-checked the math to make sure I wasn't
+  accidentally gating myself out of my own quest.
+- **Don't forget that `talked_to` is a set, not a list of encounters.**
+  Once you talk to an NPC, you've "talked" to them forever as far as
+  the quest engine is concerned. Designing a final-talk step as a
+  "return delivery" doesn't enforce returning — see above. Know this
+  when writing multi-step quest content.
+
+---
+
 ## Session 9 — 2026-04-22 — "The Blood-Sworn"
 
 ### What I built

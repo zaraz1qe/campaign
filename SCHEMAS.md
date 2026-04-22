@@ -65,6 +65,19 @@ Optional fields can be omitted. Unknown fields are ignored (forward-compatible).
     }
   },
 
+  // Optional per-companion reactions — an extra line or two the NPC adds
+  // to `talk` when the player's bound companion matches a key here. The
+  // key is the companion NPC's id. Value is a string (one line) or list
+  // (multiple lines). Fires for whichever companion is active; silently
+  // absent otherwise. Downed companions do NOT trigger this.
+  "companion_reply": {
+    "blood_sworn_jin": [
+      "Jin. So. The nephew walks with a stranger now.",
+      "I will not speak of your uncle while you stand at my pillar."
+    ],
+    "disciple_meilin": "Meilin at your shoulder. Good — she is better at the road than I was at her age."
+  },
+
   // Optional companion block. Makes this NPC recruitable via the `recruit`
   // command. At most one companion walks with the player at a time. A
   // recruited NPC still lives at their home location (still visible/talk-able);
@@ -219,7 +232,12 @@ Unequipping gear that bumps `max_hp` clamps current HP down if over.
   // Optional rep gate on quest offer. If the player doesn't meet this,
   // the questgiver's `talk` will not auto-offer the quest (they weigh
   // you silently).
-  "requires_rep": { "azure_cloud_sect": 1 }
+  "requires_rep": { "azure_cloud_sect": 1 },
+
+  // Optional prerequisite quest — this quest is not offered until the
+  // named quest sits in `Player.completed_quests`. Used to chain an arc:
+  // the second errand stays silent until the first is closed.
+  "requires_quest": "the_red_path"
 }
 ```
 

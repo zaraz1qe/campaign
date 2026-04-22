@@ -35,7 +35,12 @@
     ],
     "teaches": ["thundering_nine_heavens_palm"],
     "gives_quest": "the_broken_terrace",
-    "disposition": "friendly"
+    "disposition": "friendly",
+    "companion_reply": {
+      "blood_sworn_jin": "Ah. A Pavilion shadow on my stones, and you — the thief's hunter, and the thief's mourner both. My disciples were less complicated. Be quick on my terrace; I do not wish to see another grey-robed man weep here.",
+      "disciple_meilin": "A crane-disciple, here at last. The Sect of the Azure Cloud and the Jadestep were friends once, in the reign of the Third Emperor. Go carefully; the terrace still remembers being friendly.",
+      "venomhand_bai": "A venom-handler on the terrace. Good — the valley's palms are honest, even when the hands are not. Do not touch the tenth scar in the Cloister wall; it is not finished, and it would not like you."
+    }
   },
   {
     "id": "old_dog_of_jadestep",
@@ -51,6 +56,10 @@
     "teaches": ["cloudtread_footwork", "skyweavers_veil"],
     "sells": ["ironbark_pill", "cloud_silk_robe"],
     "faction": "jadestep_remnant",
-    "disposition": "friendly"
+    "disposition": "friendly",
+    "companion_reply": {
+      "blood_sworn_jin": "Ha. A red-sleeve and a wanderer in my cloister. Sit, Jin — I pour tea for any man who is tired of the sect that made him. I have had many such students. Few of them lived. Drink slowly.",
+      "disciple_meilin": "A crane still walking. Tell Baixu the old dog sends his respect, and that the terrace has not yet forgiven him for outliving me. He will laugh; he laughed the last time. Laughter is the Azure Cloud's one reliable swordstroke."
+    }
   }
 ]

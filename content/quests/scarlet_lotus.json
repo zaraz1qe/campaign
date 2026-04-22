@@ -16,5 +16,25 @@
       "azure_cloud_sect": -2,
       "five_poisons_sect": -1
     }
+  },
+  {
+    "id": "the_red_ledger",
+    "name": "The Red Ledger",
+    "giver": "elder_red_feather",
+    "description": "Red Feather has pulled you aside in the gallery and poured a third cup. A single page was cut from the Crimson Registry twelve years ago — a list of four names her sister-elder still has not forgiven her for losing. The thief was one of their own: Willow-Step Shen, once an outer petal, now a ghost in a dead sect's ruins. He has hidden at the Hanging Terraces of Jadestep, where he believes the wind and the old stones will keep him. Red Feather wants the page. She does not say what she wants done with the bearer; she does not need to.",
+    "requires_quest": "the_red_path",
+    "requires_rep": { "scarlet_lotus_pavilion": 3 },
+    "steps": [
+      { "type": "visit",   "target": "hanging_terraces_of_jadestep" },
+      { "type": "defeat",  "target": "apostate_willow_step_shen" },
+      { "type": "collect", "target": "apostates_cipher_page" },
+      { "type": "talk",    "target": "elder_red_feather" }
+    ],
+    "reward": { "spirit_stones": 280, "items": ["pond_drinker_sash", "crimson_cinnabar_pill"], "xp": 120 },
+    "rep_change": {
+      "scarlet_lotus_pavilion": 3,
+      "azure_cloud_sect": -2,
+      "jadestep_remnant": -1
+    }
   }
 ]

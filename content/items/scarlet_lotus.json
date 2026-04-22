@@ -55,5 +55,41 @@
     "power": 0,
     "value": 0,
     "tags": ["treasure", "scarlet_lotus", "lore"]
+  },
+  {
+    "id": "apostates_cipher_page",
+    "name": "Apostate's Cipher Page",
+    "type": "treasure",
+    "description": "A sheet of rice paper folded seven times to fit inside a boot-lining. Four names are written in a cramped, left-leaning hand — two in black ink, two in red. The red are Azure Cloud elders. The margins are scored with the small crossed-circle marks that the Pavilion uses for a debt paid in more than stones.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["treasure", "scarlet_lotus", "quest", "lore"]
+  },
+  {
+    "id": "pond_drinker_sash",
+    "name": "Pond-Drinker Sash",
+    "type": "accessory",
+    "slot": "accessory",
+    "atk_bonus": 2,
+    "def_bonus": 1,
+    "hp_bonus": 12,
+    "on_hit_effect": "bleed",
+    "on_hit_power": 2,
+    "requires_rep": { "scarlet_lotus_pavilion": 3 },
+    "description": "A length of crimson silk heavy with old Pavilion seals — one for each elder the Pavilion has buried without a tomb. Worn at the hip by those who have retrieved, for Red Feather, something the sect could not retrieve for itself. The silk is dark from the pond; the pond, from the silk.",
+    "value": 320,
+    "tags": ["accessory", "scarlet_lotus", "rare", "quest_reward"]
+  },
+  {
+    "id": "willow_step_ring",
+    "name": "Willow-Step Ring",
+    "type": "accessory",
+    "slot": "accessory",
+    "spd_bonus": 2,
+    "atk_bonus": 1,
+    "description": "A pewter ring with a band so thin it must be worn high on the knuckle. The stone is no stone at all — only a smooth river-pebble polished by a lifetime of nervous turning. It was taken from a thief's hand while the thief no longer needed it.",
+    "value": 140,
+    "tags": ["accessory", "scarlet_lotus"]
   }
 ]

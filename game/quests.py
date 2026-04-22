@@ -27,6 +27,12 @@ def offer_quest(world: Dict[str, Dict[str, Any]], player: Player, quest_id: str)
     q = world["quests"].get(quest_id)
     if not q:
         return ""
+    # Prerequisite quest gate — an arc's second step stays sealed until the
+    # first is done. Silent: the giver simply doesn't speak of the second
+    # errand before the first is closed.
+    prereq = q.get("requires_quest")
+    if prereq and prereq not in player.completed_quests:
+        return ""
     # Rep gate — skip auto-offer quietly if the giver won't entrust it yet.
     req = q.get("requires_rep") or {}
     if not player.meets_rep(req):

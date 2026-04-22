@@ -13,7 +13,12 @@
     "teaches": ["empty_palm"],
     "sells": ["bamboo_longstaff", "monks_wooden_beads"],
     "faction": "shaolin",
-    "disposition": "friendly"
+    "disposition": "friendly",
+    "companion_reply": {
+      "disciple_meilin": "The Azure Cloud walks with you. Good. A sword shared is a sword that will not be wielded for the wrong reason.",
+      "venomhand_bai": "A sister of the Black Lattice. I have drunk tea with your matriarch; she poured it herself, which is a politeness I still owe her. If you pass that way, tell her.",
+      "blood_sworn_jin": "You bring a red sleeve onto my path. I will not ask him to unshoulder it; I will ask you, instead, whether you have already decided which of you will be the first to grieve the other."
+    }
   },
   {
     "id": "old_hermit_yun",
@@ -194,6 +199,14 @@
       "scarlet_lotus_pavilion": {
         "2": ["A red silk knot at your sleeve, cultivator. Do not come to this pavilion again with it on. I warn you once as a courtesy; what comes next will come from younger hands."]
       }
+    },
+    "companion_reply": {
+      "blood_sworn_jin": [
+        "So. The nephew walks with a stranger now. Sit down, Jin. The cushion is the same one your uncle taught you to straighten. It remembers you whether I do or not.",
+        "I will not ask whose oath is older, his or mine. I only say: one of us is speaking, and one of us is not."
+      ],
+      "disciple_meilin": "Meilin walks at your shoulder. Good. She is better at the road than I was at her age — though she will not thank me for saying so until I am older, or dead.",
+      "venomhand_bai": "A sister of the Black Lattice, under the cranes. We have fought the Five Poisons twice in this long life, and drunk tea with them three times. Drink with me now, and we will tip the count."
     }
   }
 ]

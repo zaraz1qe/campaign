@@ -217,6 +217,34 @@ def main() -> int:
     for eid, e in world["enemies"].items():
         _check_rep_map(f"enemy '{eid}'", "requires_rep", e.get("requires_rep"))
         _check_rep_map(f"enemy '{eid}'", "requires_rep_at_most", e.get("requires_rep_at_most"))
+    # 10b. companion_reply: keys must be real npcs (companions), values must be
+    # non-empty strings or lists of non-empty strings.
+    for nid, n in world["npcs"].items():
+        cr = n.get("companion_reply")
+        if cr is None:
+            continue
+        if not isinstance(cr, dict):
+            errors.append(f"npc '{nid}' companion_reply must be an object of npc_id -> line")
+            continue
+        for other_nid, entry in cr.items():
+            if other_nid not in world["npcs"]:
+                errors.append(f"npc '{nid}' companion_reply references unknown npc '{other_nid}'")
+            if isinstance(entry, str):
+                if not entry.strip():
+                    errors.append(f"npc '{nid}' companion_reply[{other_nid}] is empty")
+            elif isinstance(entry, list):
+                for i, line in enumerate(entry):
+                    if not isinstance(line, str) or not line.strip():
+                        errors.append(f"npc '{nid}' companion_reply[{other_nid}][{i}] must be a non-empty string")
+            else:
+                errors.append(f"npc '{nid}' companion_reply[{other_nid}] must be a string or list of strings")
+
+    # 10c. quests: requires_quest must be a real quest id.
+    for qid, q in world["quests"].items():
+        rq = q.get("requires_quest")
+        if rq and rq not in world["quests"]:
+            errors.append(f"quest '{qid}' requires_quest '{rq}' is unknown")
+
     for nid, n in world["npcs"].items():
         rd = n.get("rep_dialogue")
         if rd is None:
