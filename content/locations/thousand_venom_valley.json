@@ -49,7 +49,7 @@
     "region": "Thousand Venom Valley",
     "description": "A terraced garden cut into the gorge wall, walled by iron-black lattice. Every plant is a killer, beautifully arranged: oleander by monkshood, datura by black lotus. A small bronze censer breathes a sweet-sour smoke. Cultivating here is a test of the lungs as much as the dantian.",
     "exits": { "south": "venom_gorge" },
-    "npcs": [],
+    "npcs": ["venomhand_bai"],
     "enemies": [],
     "events": ["black_lotus_opens"],
     "items_on_ground": ["black_lotus_seed"],

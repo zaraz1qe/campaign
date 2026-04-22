@@ -63,6 +63,23 @@ Optional fields can be omitted. Unknown fields are ignored (forward-compatible).
       "2":  ["Welcome, friend of the sect."],
       "-2": ["You have stood too often with those who owe us blood."]
     }
+  },
+
+  // Optional companion block. Makes this NPC recruitable via the `recruit`
+  // command. At most one companion walks with the player at a time. A
+  // recruited NPC still lives at their home location (still visible/talk-able);
+  // only their combat shape is snapshotted onto the player. Gates (realm,
+  // rep, quest) are all optional; all present must be met.
+  "companion": {
+    "recruit_dialogue": "She grins. 'Yours, then — until one of us falls.'",
+    "decline_dialogue": "She bows. 'Come back when the sect has weighed you.'",
+    "requires_realm":   "qi_condensation",    // optional
+    "requires_quest":   "study_the_sutra",    // optional
+    "requires_rep":     { "azure_cloud_sect": 2 },  // optional
+    "hp":      58,
+    "atk":     9, "def": 3, "spd": 7,
+    "qi":      20, "max_qi": 40,
+    "techniques": ["white_crane_sword", "azure_cloud_palm"]
   }
 }
 ```
@@ -290,6 +307,32 @@ the change moves them through a rank boundary.
 
 The `reputation` / `rep` / `standing` command shows rep against every
 known sect, with rank names.
+
+
+## Companions
+
+An NPC with a `companion` block can be `recruit`ed to fight at the
+player's side. At most one companion walks with the player at a time;
+`dismiss` releases the bond and `companion` / `party` prints a status.
+Recruited NPCs remain at their home location (visible, talk-able); only
+their combat shape is snapshotted onto the player (`Player.companion`).
+
+During combat, if a companion is active and not downed:
+- they take one turn per round after the player, choosing a random
+  technique they can afford or a basic attack;
+- the enemy splits attention — ~35% of enemy attacks target the
+  companion instead of the player;
+- status effects apply to whoever was targeted.
+
+A companion reduced to 0 HP is **downed** — they skip the rest of the
+fight but are not dead. `cultivate` at any location revives them to full
+HP. After any non-defeat outcome, an un-downed companion also heals to
+full (the post-battle breather is part of the fiction).
+
+Gates on recruitment are all optional: `requires_realm`, `requires_rep`,
+and `requires_quest` (must be in `Player.completed_quests`). The
+`recruit_dialogue` / `decline_dialogue` strings let each companion
+speak in their own voice at bind-time.
 
 
 ## lore/  — `Lore`

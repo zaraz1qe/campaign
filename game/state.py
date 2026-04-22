@@ -73,6 +73,14 @@ class Player:
         default_factory=lambda: {s: "" for s in EQUIP_SLOTS}
     )
 
+    # Companion (optional). A dict shaped by the recruited NPC's `companion`
+    # block plus live fields:
+    #   { "id": npc_id, "hp": int, "max_hp": int, "atk": int, "def": int,
+    #     "spd": int, "qi": int, "max_qi": int, "techniques": [tid, ...],
+    #     "downed": bool }
+    # None means no companion. At most one is active at a time.
+    companion: Optional[Dict[str, Any]] = None
+
     # ------------------------------------------------------------------
     def add_item(self, item_id: str, count: int = 1) -> None:
         self.inventory[item_id] = self.inventory.get(item_id, 0) + count
@@ -165,4 +173,6 @@ class Player:
         # Backfill equipment for pre-session-3 saves.
         eq = d.get("equipped") or {}
         d["equipped"] = {s: eq.get(s, "") for s in EQUIP_SLOTS}
+        # Backfill companion for pre-session-8 saves (default: none).
+        d.setdefault("companion", None)
         return cls(**d)

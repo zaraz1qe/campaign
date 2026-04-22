@@ -90,6 +90,9 @@ class Game:
           status     (s)                  player sheet
           quest                           list quests
           reputation (rep)                list standing with each sect
+          recruit <npc>                   ask an able companion to walk with you
+          dismiss                         release your companion
+          companion (party)               show your companion's condition
           lore                            list lore you've collected
           name <yourname>                 set your name
           save [slot]                     save game (slot defaults to 'default')
@@ -377,6 +380,21 @@ class Game:
     # ------------------------------------------------------------------
     def cmd_cultivate(self, _arg: str) -> None:
         self.out(cultivation.cultivate(self.world, self.player))
+        # Cultivation shares breath with your sworn companion: revive them if
+        # they were downed, or top them up otherwise. Qi is *not* shared (they
+        # regenerate it mid-combat on their own turn).
+        comp = self.player.companion
+        if comp:
+            cname = self.world["npcs"].get(comp.get("id", ""), {}).get("name",
+                                                                        comp.get("id", "Your companion"))
+            was_downed = bool(comp.get("downed"))
+            was_wounded = int(comp.get("hp", 0)) < int(comp.get("max_hp", 0))
+            comp["hp"] = int(comp.get("max_hp", comp.get("hp", 0)))
+            comp["downed"] = False
+            if was_downed:
+                self.out(f"{cname}'s meridians settle; their breath comes even again. They are ready to walk with you.")
+            elif was_wounded:
+                self.out(f"{cname} shares your breath; their wounds close.")
 
     def cmd_breakthrough(self, _arg: str) -> None:
         self.out(cultivation.breakthrough(self.world, self.player))
@@ -807,9 +825,109 @@ class Game:
             for sid, v in sorted(self.player.reputation.items()):
                 sname = self.world["sects"].get(sid, {}).get("name", sid)
                 self.out(f"  {sname}: {v:+d} ({rep_rank(int(v))})")
+        comp = self.player.companion
+        if comp:
+            cname = self.world["npcs"].get(comp.get("id", ""), {}).get("name",
+                                                                        comp.get("id", "Companion"))
+            tag = " [DOWNED]" if comp.get("downed") else ""
+            self.out(f"Companion: {cname} ({comp.get('hp',0)}/{comp.get('max_hp',0)} HP){tag}")
 
     def cmd_quest(self, _arg: str) -> None:
         self.out(quests.quest_status(self.world, self.player))
+
+    # ------------------------------------------------------------------
+    # Companion — recruit a qualified NPC to fight at your side. Only one at a
+    # time; the recruited NPC still "lives" at their home location (visible on
+    # look, talk-able), but their combat shape is snapshotted onto the player.
+    def cmd_recruit(self, arg: str) -> None:
+        if not arg:
+            self.out("Recruit whom?")
+            return
+        npc_id = self._find_in_loc("npcs", arg)
+        if not npc_id:
+            self.out("No such person stands here to recruit.")
+            return
+        n = self.world["npcs"][npc_id]
+        comp_def = n.get("companion")
+        if not comp_def:
+            self.out(f"{n.get('name', npc_id)} does not walk that road with you.")
+            return
+        # Can only hold one companion.
+        if self.player.companion:
+            cur_name = self.world["npcs"].get(self.player.companion.get("id", ""),
+                                               {}).get("name", "your current companion")
+            if self.player.companion.get("id") == npc_id:
+                self.out(f"{n['name']} already walks with you.")
+                return
+            self.out(f"You must first dismiss {cur_name} before binding oaths with another.")
+            return
+        # Gates — realm / rep / quests.
+        req_realm = comp_def.get("requires_realm")
+        if req_realm and not cultivation.realm_meets(self.world, self.player, req_realm):
+            need = self.world["realms"].get(req_realm, {}).get("name", req_realm)
+            self.out(f"{n['name']} shakes their head. 'My road waits for a {need} — no sooner.'")
+            return
+        gate = self._rep_gate_msg(comp_def.get("requires_rep") or {})
+        if gate:
+            decline = comp_def.get("decline_dialogue") or f"{n['name']} will not walk with you yet."
+            self.out(decline)
+            self.out(gate)
+            return
+        req_q = comp_def.get("requires_quest")
+        if req_q and req_q not in self.player.completed_quests:
+            qname = self.world["quests"].get(req_q, {}).get("name", req_q)
+            decline = comp_def.get("decline_dialogue") or f"{n['name']} is not ready to travel."
+            self.out(decline)
+            self.out(f"(Requires completed quest: {qname}.)")
+            return
+        # Instance the companion.
+        self.player.companion = {
+            "id": npc_id,
+            "hp": int(comp_def.get("hp", 40)),
+            "max_hp": int(comp_def.get("hp", 40)),
+            "atk": int(comp_def.get("atk", 5)),
+            "def": int(comp_def.get("def", 2)),
+            "spd": int(comp_def.get("spd", 5)),
+            "qi": int(comp_def.get("qi", 0)),
+            "max_qi": int(comp_def.get("max_qi", comp_def.get("qi", 0))),
+            "techniques": list(comp_def.get("techniques", [])),
+            "downed": False,
+        }
+        line = comp_def.get("recruit_dialogue") or \
+               f"{n['name']} nods once. 'Lead. I will stand at your shoulder.'"
+        self.out("")
+        self.out(_wrap(f'  "{line}"'))
+        self.out(f"({n['name']} now walks at your side.)")
+
+    def cmd_dismiss(self, _arg: str) -> None:
+        comp = self.player.companion
+        if not comp:
+            self.out("No one walks with you to dismiss.")
+            return
+        cname = self.world["npcs"].get(comp.get("id", ""), {}).get("name",
+                                                                    "Your companion")
+        self.player.companion = None
+        self.out(f"You thank {cname} and release the bond. They turn for home.")
+
+    def cmd_companion(self, _arg: str) -> None:
+        comp = self.player.companion
+        if not comp:
+            self.out("You walk alone.")
+            return
+        n = self.world["npcs"].get(comp.get("id", ""), {})
+        cname = n.get("name", comp.get("id", "Companion"))
+        title = n.get("title", "")
+        title_str = f" — {title}" if title else ""
+        self.out(f"{cname}{title_str}")
+        status_tag = "  [DOWNED — rest/cultivate to revive]" if comp.get("downed") else ""
+        self.out(f"  HP: {comp.get('hp',0)}/{comp.get('max_hp',0)}{status_tag}")
+        if comp.get("max_qi"):
+            self.out(f"  Qi: {comp.get('qi',0)}/{comp.get('max_qi',0)}")
+        self.out(f"  ATK {comp.get('atk',0)}   DEF {comp.get('def',0)}   SPD {comp.get('spd',0)}")
+        techs = comp.get("techniques") or []
+        if techs:
+            tnames = [self.world["techniques"].get(t, {}).get("name", t) for t in techs]
+            self.out(f"  Techniques: {', '.join(tnames)}")
 
     def cmd_reputation(self, _arg: str) -> None:
         """Show the player's standing with each sect that knows them."""
@@ -901,6 +1019,10 @@ class Game:
         "reputation": "cmd_reputation",
         "rep": "cmd_reputation",
         "standing": "cmd_reputation",
+        "recruit": "cmd_recruit",
+        "dismiss": "cmd_dismiss",
+        "companion": "cmd_companion",
+        "party": "cmd_companion",
         "name": "cmd_name",
         "save": "cmd_save",
         "load": "cmd_load",

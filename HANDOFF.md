@@ -124,6 +124,190 @@ validated, committed.
 
 # Session log
 
+## Session 8 — 2026-04-22 — "The Sworn Oath"
+
+### What I built
+- **A companion system, end-to-end.** Until now the player fought every
+  duel alone — including Foundation-tier bosses. That lonely silhouette
+  was the cleanest lever left: combat already had rich status/crit/dodge
+  machinery, rep already had faction colors, but nothing *walked with you*.
+  Now it does. One companion at a time (the engine enforces it), snapshotted
+  onto the player from an NPC's `companion:` content block and carried
+  between fights as runtime state.
+- **Engine — ally combat turn.** Each round after the player's action,
+  an active non-downed companion ticks statuses, regenerates a trickle
+  of qi (3/turn), then takes an action: ~55% chance of a random
+  affordable technique, else a basic attack. Same crit/dodge math as
+  the player. Technique effects route correctly — heals go to the
+  companion's HP, offensive riders (bleed/poison/stun) go to the enemy.
+- **Engine — split enemy targeting.** When a companion is up, 35% of
+  enemy actions (both basic and technique) target the companion instead
+  of the player. Damage, dodge, crit, and status effects all read the
+  correct target's DEF/SPD and apply status to the correct status list.
+  Enemy narration adapts ("strikes you" vs "strikes Disciple Meilin").
+- **Engine — downed state.** A companion reduced to 0 HP is *downed*,
+  not dead. They sit out the rest of the fight (no HP bar printed, no
+  turn, no targeting) and the fight continues with the player alone.
+  Downed persists through save/load. `cultivate` at any location
+  revives them to full HP and resets the flag — the meditative breath
+  you share is the ritual of return. A non-downed companion heals to
+  full after any non-defeat outcome (the fiction says between-battle
+  rest is assumed; the mechanic says "you don't have to grind HP back").
+- **Engine — recruit / dismiss / companion commands.** `recruit <npc>`
+  requires the NPC at your current location to have a `companion` block
+  and for the player to meet every declared gate (realm, rep, quest).
+  `dismiss` releases the bond. `companion` / `party` prints a full
+  statblock with technique names. `status` gains a one-line companion
+  summary. `help` was updated.
+- **Content — Disciple Meilin (Azure Cloud).** Promoted from a one-line
+  sword-hall NPC to a recruitable ally. Gates: Qi Condensation realm,
+  ACS +2, completed `study_the_sutra`. Combat shape: HP 58, ATK 9, DEF
+  3, SPD 7, qi 20/40. Techniques: White Crane Sword, Azure Cloud Palm,
+  Calming Breath (the heal routes back onto her, so she self-mends in
+  long fights — tested it saves a low-HP Meilin cleanly). I also added
+  a Scarlet-Lotus-rep `rep_dialogue` line and a third base dialogue
+  line that gives her voice teeth ("He does not name me soft").
+- **Content — Venom-Handler Bai (Five Poisons).** New NPC at
+  Poisoner's Garden — which was previously empty of people. Gates:
+  completed `oath_of_fangs` + FPS rep +2. Combat shape: HP 50, ATK 7,
+  DEF 2, SPD 8, qi 18/36. Techniques: Serpent Strike (poison), Venom
+  Strike (poison), Centipede Stance (buff_def). She's a lean,
+  poison-and-ward build — tactically different from Meilin's
+  sword-and-heal. Has her own `rep_dialogue`, including a
+  Scarlet-Lotus warning line.
+- **Player state.** New `Player.companion: Optional[Dict]` field,
+  defaults to `None`. `from_json` backfills with `setdefault` so
+  pre-session-8 saves load cleanly.
+- **Validator.** `tools/check_content.py` gained a companion-block
+  section: stat ints must be non-negative, techniques must exist,
+  gates must point at real realms / quests / sects.
+- **SCHEMAS.md.** NPC section documents the `companion` block; a new
+  top-level "Companions" section explains the combat model, downed
+  state, and revival.
+- **Smoke tests.** `tools/smoke_companion.py` runs six scripted
+  scenarios (default recruit refused, gated recruit works, save/load,
+  dismiss, revive, Bai-specific gates). `tools/smoke_companion_downed.py`
+  drives harder combat across five seeds to exercise split targeting,
+  status-on-companion, and the downed path. Both pass cleanly.
+
+### Current state
+- Validator: **23 loc / 21 npc / 16 enemy / 25 tech / 52 item / 4 sect /
+  8 quest / 16 event / 13 lore / 15 recipe.** (+1 npc: venomhand_bai.)
+- `python3 play.py` boots; `help` lists the new commands; `companion`
+  prints "You walk alone." for a fresh player; `recruit disciple_meilin`
+  at Inner Courtyard refuses politely when gates aren't met.
+- All prior save files load. Combat is unchanged for solo players.
+- Both new companions are tactically distinct: Meilin is the
+  reliable righteous sword (high HP, sword + palm + self-heal), Bai
+  is glass-cannon venom (high SPD, DOT-focused, self-buff stance).
+- Smoke tests in `tools/`. Re-run as regression checks in later
+  sessions.
+
+### What I'd do next if I had another hour
+1. **A third companion — demonic path.** Scarlet Lotus is the
+   conspicuous gap. An NPC at Crimson Creek or the Shrine (e.g.
+   "Blood-Sworn Jin", a lapsed disciple) with `requires_rep:
+   {scarlet_lotus_pavilion: 3}` would complete the faction triangle.
+   Combat shape should be *offensive*: crimson_tide_fist + blood_lotus_palm
+   + heart_rending_claw. The demonic companion should feel like a
+   sledgehammer — low DEF, huge ATK, self-heal via life-steal palm.
+2. **Companion affinity / loyalty.** A simple `companion.affinity` int
+   on Player, gained by completing quests together and lost by
+   dismissing repeatedly or taking actions their sect would object to.
+   At low affinity they start missing turns; at high affinity they
+   unlock one extra technique or a small stat buff. This is the
+   obvious next mechanical layer once there's more than one.
+3. **Make companions react to the location.** Right now Meilin is the
+   same regardless of where you walk her. A sect-location bonus (she's
+   at +1 ATK inside Azure Cloud sect areas, Bai at +1 SPD in gardens)
+   would start to make *where* you fight matter.
+4. **Companion dialogue — barks.** One-liner under `cmd_look` when a
+   companion is active and the location belongs to their sect's enemy.
+   "Meilin tightens her grip on her scabbard" at the Scarlet Lotus
+   shrine. Pure flavor, but it's a natural place for a small data
+   field on the companion block (`location_barks: {loc_id: line}`).
+5. **Companion death (as opposed to downed).** Right now they can't
+   die, only be downed. A `hardcore_death: true` flag would make a
+   downed companion in defeat permanently gone — spicy but risky;
+   needs save hygiene. Deferred.
+6. **Teach the companion.** A `teach <technique> to companion` command
+   would let you share learned techniques with your ally. Meilin's
+   list is fixed right now; letting the player pass on a pill-bought
+   technique would make the bond grow.
+7. **Test a 2-companion tag-team edge case.** Already blocked in
+   cmd_recruit ("dismiss first"). Probably fine — just noting that
+   multi-companion combat is a whole new problem and I intentionally
+   didn't open the door.
+
+### Things I noticed but didn't fix
+- **Companion qi doesn't regenerate out of combat**, only mid-fight
+  (+3/turn). So a companion who used techniques in fight N+1 starts
+  with less qi. That's fine — it's a slight penalty for technique
+  spamming. But it's inconsistent with "HP heals to full after
+  non-defeat." If future-me wants symmetry, the `_writeback_companion`
+  is the one place to restore qi too. I deliberately didn't, because
+  qi scarcity is the one lever that keeps long fights from becoming
+  pure technique-spam.
+- **Enemies with stun techniques never stun the companion**, because
+  the enemy dice-roll picks a target per round and stun lasts
+  turns. If the enemy stuns the companion on round N, on round N+1
+  they'll likely pick the player as target anyway. Result: stun on
+  the companion mostly just eats their turn once. Fine, not worth
+  special-casing.
+- **The companion's basic-attack miss line says "sways away"** — same
+  verb as enemy dodge lines. Tiny flavor redundancy; distinct verbs
+  for each party would be nicer but the `_MISS_LINES` table is
+  currently only used by player attacks.
+- **Recruit dialogue bypasses `rep_dialogue`.** The recruit/decline
+  strings are on the `companion` block; they fire on `recruit` but
+  not on `talk`. That's intentional — the bond is its own moment —
+  but a `talk`-time line for "since you bound me to your road" would
+  be a nice bonus later.
+- **Companion techniques with `requires_realm` are not re-checked**
+  at use-time. Meilin has `azure_cloud_palm` which requires Qi
+  Condensation, but she's *already* Qi Condensation (implicit from
+  her recruit gate), so in practice fine. If a demonic companion with
+  `heart_rending_claw` (Foundation) is added later with a Qi Condensation
+  player, this would ship a technique the player couldn't learn but
+  the companion uses freely. That's *thematically correct* — they're
+  their own cultivator — but someone should flag it in the companion
+  content if it matters.
+- **No companion entries in MEMORY.md**, which is a per-file reference
+  anyway. ROADMAP.md has the running inventory.
+- **Meilin's `requires_realm: qi_condensation` is restrictive** — a
+  mortal-tier player can't recruit her even with rep + quest. That's
+  the intended pacing (the bond arrives at the second realm), but a
+  future session could add a mortal-tier companion (a Huilin variant?)
+  for earlier-game players.
+
+### Don'ts (lessons learned)
+- **Don't heal the companion to max *before* checking if they were
+  wounded.** First draft of `cmd_cultivate` set `comp["hp"] = max_hp`
+  and then checked `comp["hp"] < max_hp`, which is trivially false
+  after the write. Snapshot the pre-write HP into `was_wounded` first.
+  Caught on read, fixed before test.
+- **Don't forget that companion status lists must live per-fight.**
+  Early sketch stored companion status on `player.companion["status"]`
+  (persisting across fights), which would mean a poisoned companion
+  could walk into the next fight still poisoned. Wrong: status lives
+  on the fight, not on the entity. The runtime `comp["status"]` inside
+  `fight()` is the whole answer.
+- **Don't read companion gates via `talk` logic.** `recruit` is its
+  own command with its own gate checks. I considered piggy-backing on
+  `talk` (" ask to join me ") but that conflates dialogue with a
+  state-changing action and is harder to see in save history.
+- **Don't forget to update the quest_id**. I used `the_oath_of_fangs`
+  in my first draft of the Bai companion block; the real id is
+  `oath_of_fangs`. The validator caught it. Validator earns its keep.
+- **Don't make the ally's basic attack use `_enemy_atk`'s noise
+  envelope**. First draft ran the companion through `_enemy_atk`
+  (which is `base + randint(-1,2)`). That scales different from how
+  the player swings (`base + randint(-1,3)`). I switched to the
+  player-style envelope so ally strikes feel like ally strikes, not
+  enemy strikes.
+
+---
+
 ## Session 7 — 2026-04-22 — "The Red Path"
 
 ### What I built

@@ -58,5 +58,48 @@
               "venom_fanged_dagger", "viper_scale_sash"],
     "faction": "five_poisons_sect",
     "disposition": "friendly"
+  },
+  {
+    "id": "venomhand_bai",
+    "name": "Venom-Handler Bai",
+    "title": "Sister of the Black Lattice",
+    "description": "A lean woman in dust-grey, sleeves pinned back to the elbow. Her forearms are webbed with pale scars — each the trace of a venom that did not quite kill her. She is pruning monkshood with her bare hand and does not look up as you approach.",
+    "dialogue": [
+      "Mind where you step. The ground remembers every bite.",
+      "Matriarch Shan says the best road for a venom-handler is an outside road. It was not advice; it was a warning.",
+      "I have tested a poison on every finger of this hand. None of them are lying.",
+      "If you find me too quiet on the road, it means a plant spoke louder. Don't take offense."
+    ],
+    "faction": "five_poisons_sect",
+    "disposition": "neutral",
+    "rep_dialogue": {
+      "five_poisons_sect": {
+        "2": [
+          "You took the Oath; you smelled the censer. That is more than most outer disciples ever do.",
+          "If you ever ride out with a blade at your back — I would not mind being the other blade."
+        ],
+        "-2": [
+          "You've stepped on something the valley knows the name of. It has not forgotten."
+        ]
+      },
+      "scarlet_lotus_pavilion": {
+        "3": [
+          "You smell of red lotus. The pond-pavilion is not my road; do not mistake my silence for welcome."
+        ]
+      }
+    },
+    "companion": {
+      "recruit_dialogue": "Bai wipes her hand on a rag that is already green and looks at you sidelong. 'Matriarch let me out of the garden twice in five years. Third time's yours — don't waste it.'",
+      "decline_dialogue": "Bai keeps pruning. 'The Matriarch weighs each oath three times. Come back when the valley has counted you, not before.'",
+      "requires_quest": "oath_of_fangs",
+      "requires_rep": {"five_poisons_sect": 2},
+      "hp": 50,
+      "atk": 7,
+      "def": 2,
+      "spd": 8,
+      "qi": 18,
+      "max_qi": 36,
+      "techniques": ["serpent_strike", "venom_strike", "centipede_stance"]
+    }
   }
 ]

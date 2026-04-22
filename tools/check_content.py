@@ -179,6 +179,30 @@ def main() -> int:
     for nid, n in world["npcs"].items():
         _check_rep_map(f"npc '{nid}'", "requires_rep", n.get("requires_rep"))
         _check_rep_map(f"npc '{nid}'", "requires_rep_at_most", n.get("requires_rep_at_most"))
+        comp = n.get("companion")
+        if comp is not None:
+            if not isinstance(comp, dict):
+                errors.append(f"npc '{nid}' companion must be an object")
+            else:
+                for k in ("hp", "atk", "def", "spd"):
+                    v = comp.get(k)
+                    if v is None or not isinstance(v, int) or v < 0:
+                        errors.append(f"npc '{nid}' companion.{k} must be a non-negative int")
+                for k in ("qi", "max_qi"):
+                    v = comp.get(k, 0)
+                    if not isinstance(v, int) or v < 0:
+                        errors.append(f"npc '{nid}' companion.{k} must be a non-negative int")
+                for tid in comp.get("techniques", []) or []:
+                    if tid not in world["techniques"]:
+                        errors.append(f"npc '{nid}' companion uses unknown technique '{tid}'")
+                rr = comp.get("requires_realm")
+                if rr and rr not in world["realms"]:
+                    errors.append(f"npc '{nid}' companion requires unknown realm '{rr}'")
+                rq = comp.get("requires_quest")
+                if rq and rq not in world["quests"]:
+                    errors.append(f"npc '{nid}' companion requires unknown quest '{rq}'")
+                _check_rep_map(f"npc '{nid}' companion",
+                               "requires_rep", comp.get("requires_rep"))
     for eid, e in world["enemies"].items():
         _check_rep_map(f"enemy '{eid}'", "requires_rep", e.get("requires_rep"))
         _check_rep_map(f"enemy '{eid}'", "requires_rep_at_most", e.get("requires_rep_at_most"))

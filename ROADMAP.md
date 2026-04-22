@@ -20,6 +20,8 @@ A living checklist for what's been done and what to add next.
 - **Sects**: Azure Cloud Sect (righteous), Scarlet Lotus Pavilion (demonic
   — now with HQ, elders, NPCs, techniques), Five Poisons Sect (neutral/grey),
   Jadestep Sect Remnant (dead-but-haunted)
+- **Companions** (2): Disciple Meilin (Azure Cloud), Venom-Handler Bai
+  (Five Poisons). Demonic slot open.
 - **Items**: 52 (equipment, pills, materials, treasures)
 - **Recipes**: 15 (Forge-Master Bo: 6, Pillmaster Lu: 4, Apothecary Qi: 5)
 - **Quests**: 8 (Kettle's Request, Study Sutra, Missing Disciple, Envoy's
@@ -111,11 +113,16 @@ A living checklist for what's been done and what to add next.
 - [x] **Reputation gates on items / techniques / recipes / quest offers** (s6)
 - [x] **Rep-triggered NPC/enemy spawns** — assassins appear after you anger
       a sect; guardians drop their welcome when you fall below zero (s7)
+- [x] **Companions**: a fellow cultivator who fights with you — recruit,
+      dismiss, split targeting, downed state, save/load (s8)
+- [ ] **Third companion (demonic)** — Scarlet Lotus path is still missing
+      an ally; shape is ready, content isn't
+- [ ] **Companion affinity / loyalty system** — bond that grows with shared
+      quests, shrinks with dismissal
 - [ ] **Faction war state**: more than spawns — sect patrols that pursue
       between locations, trade embargoes, sect-tournament triggers
 - [ ] **Auto-respawn enemies** so locations don't go empty after one fight
 - [ ] **Multi-enemy combat** (1v many)
-- [ ] **Companions**: a fellow cultivator who fights with you
 - [ ] **Time/day system**: some events require specific times
 - [ ] **Random dungeon generation**: procedural caves with loot
 - [ ] **Achievement/milestone system**: track major life events
@@ -135,6 +142,26 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-22 (session 8)** — "The Sworn Oath." End-to-end companion
+  system. A recruitable NPC can walk at the player's side: combat gains
+  an ally turn after the player, the enemy splits fire (~35% at the
+  companion), status effects apply to whoever was targeted, and a
+  companion reduced to 0 HP is *downed* (out of the fight, not dead).
+  `cultivate` revives downed companions to full HP. After any
+  non-defeat, the companion heals fully — no grinding. New commands:
+  `recruit <npc>`, `dismiss`, `companion` / `party`. `status` shows
+  a companion summary. Save/load round-trips via a new
+  `Player.companion` field (old saves default to None). Two
+  companions shipped: **Disciple Meilin** (Azure Cloud, at Inner
+  Courtyard — gated by Qi Condensation + ACS +2 + Study the Sutra;
+  HP 58, sword + palm + heal) and **Venom-Handler Bai** (Five
+  Poisons, new NPC at Poisoner's Garden — gated by Oath of Fangs +
+  FPS +2; HP 50, venom + stance, glass-cannon shape). Validator
+  checks the new `companion` content block; SCHEMAS.md grew an NPC
+  section and a Companions system section. Smoke tests in `tools/`
+  (`smoke_companion.py` + `smoke_companion_downed.py`) cover the
+  gate logic, combat flow, downed path, and save-compat across
+  multiple seeds.
 - **2026-04-22 (session 7)** — "The Red Path." The Scarlet Lotus Pavilion
   finally walks the earth. New region (Scarlet Lotus Reach) with two
   locations (Crimson Creek, Scarlet Lotus Hidden Shrine), three NPCs

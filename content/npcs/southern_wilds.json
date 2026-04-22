@@ -104,10 +104,37 @@
     "description": "A tall woman with a thin sword at her belt and a quicker laugh than her elders would prefer.",
     "dialogue": [
       "If you have come to test the sword hall, do not embarrass me by losing too quickly.",
-      "Have you read the Sutra of Empty Sleeves? It is in the library. It explains a great deal — and almost nothing."
+      "Have you read the Sutra of Empty Sleeves? It is in the library. It explains a great deal — and almost nothing.",
+      "The Elder names me inner disciple and junior sister. He does not name me soft. Remember that, should we ever cross blades."
     ],
     "teaches": ["white_crane_sword"],
-    "disposition": "friendly"
+    "faction": "azure_cloud_sect",
+    "disposition": "friendly",
+    "rep_dialogue": {
+      "azure_cloud_sect": {
+        "2": [
+          "Brother-wanderer. The Elder says few outsiders read the Sutra twice. You are one.",
+          "If you ever ride out — the Inner Courtyard door is open to me for an hour. I would spend it at your side, if you asked."
+        ],
+        "-2": [
+          "You came through our gates once and left a stain on them. Do not mistake my courtesy — I have marked you."
+        ]
+      }
+    },
+    "companion": {
+      "recruit_dialogue": "Meilin rests her scabbard across her shoulder and grins. 'Elder Baixu said I needed a road. Fine. Yours, then — until one of us falls or the other tires.'",
+      "decline_dialogue": "Meilin bows shallowly. 'The sword of the Azure Cloud walks only with those the Cloud has measured. Come back when the sect has weighed you.'",
+      "requires_quest": "study_the_sutra",
+      "requires_rep": {"azure_cloud_sect": 2},
+      "requires_realm": "qi_condensation",
+      "hp": 58,
+      "atk": 9,
+      "def": 3,
+      "spd": 7,
+      "qi": 20,
+      "max_qi": 40,
+      "techniques": ["white_crane_sword", "azure_cloud_palm", "calming_breath"]
+    }
   },
   {
     "id": "librarian_zhao",

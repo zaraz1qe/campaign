@@ -1,9 +1,15 @@
-"""Turn-based combat. Player vs one enemy at a time.
+"""Turn-based combat. Player (plus optional companion) vs one enemy.
 
 Status effects live only inside a fight:
   { "type": "poison"|"bleed"|"stun"|"buff_atk"|"buff_def",
     "power": int,
     "turns_left": int }
+
+If the player has an active, non-downed companion at fight start, they
+join the duel: one ally turn per round after the player, and the enemy
+splits its targeting between the two. A companion reduced to 0 HP is
+*downed* — they sit the rest of the fight out and must be revived by
+cultivation before they can fight again.
 """
 from __future__ import annotations
 from typing import Dict, Any, List, Optional
@@ -199,6 +205,26 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
     }
     player_status: List[Dict[str, Any]] = []
 
+    # Companion setup — snapshot into a runtime dict; written back at end.
+    comp: Optional[Dict[str, Any]] = None
+    if player.companion and not player.companion.get("downed"):
+        c = player.companion
+        c_name = world["npcs"].get(c.get("id", ""), {}).get("name", c.get("id", "Companion"))
+        comp = {
+            "id": c.get("id", ""),
+            "name": c_name,
+            "hp": int(c.get("hp", c.get("max_hp", 40))),
+            "max_hp": int(c.get("max_hp", 40)),
+            "atk": int(c.get("atk", 5)),
+            "def": int(c.get("def", 2)),
+            "spd": int(c.get("spd", 5)),
+            "qi": int(c.get("qi", 0)),
+            "max_qi": int(c.get("max_qi", 0)),
+            "techniques": list(c.get("techniques", [])),
+            "status": [],
+            "downed": False,
+        }
+
     # Freeze effective player stats for this encounter. Changing gear mid-fight
     # isn't a supported action, so we snapshot once and read from these.
     p_gear_atk = player.eff_atk(world)
@@ -220,6 +246,8 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
         io.out(desc)
     if weapon_name:
         io.out(f"(You draw {weapon_name}.)")
+    if comp:
+        io.out(f"({comp['name']} steps in at your side.)")
 
     def _player_take(dmg: int) -> None:
         player.hp -= dmg
@@ -229,22 +257,77 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
         player.hp = min(p_gear_hp_max, player.hp + amt)
     def _enemy_heal(amt: int) -> None:
         e["hp"] = min(e["max_hp"], e["hp"] + amt)
+    def _comp_take(dmg: int) -> None:
+        if comp is not None:
+            comp["hp"] -= dmg
+    def _comp_heal(amt: int) -> None:
+        if comp is not None:
+            comp["hp"] = min(comp["max_hp"], comp["hp"] + amt)
+
+    def _comp_down_check() -> None:
+        """Mark companion downed when they hit 0 HP. They're out of the fight
+        but still alive — can be revived by cultivation afterward."""
+        if comp and not comp["downed"] and comp["hp"] <= 0:
+            comp["hp"] = 0
+            comp["downed"] = True
+            comp["status"] = []
+            io.out(f"  ({comp['name']} folds to one knee, breath torn — out of the fight.)")
+
+    def _writeback_companion(victorious: bool) -> None:
+        """Copy the runtime companion state back onto the player at fight end.
+        Convention: after combat, an un-downed companion recovers to full — the
+        between-fight breather is part of the fiction. Downed companions stay
+        downed until cultivation revives them."""
+        if not player.companion or comp is None:
+            return
+        player.companion["qi"] = comp["qi"]
+        if comp["downed"]:
+            player.companion["hp"] = 0
+            player.companion["downed"] = True
+        else:
+            player.companion["hp"] = player.companion["max_hp"]
+            player.companion["downed"] = False
+
+    def _victory(prose_line: Optional[str] = None) -> str:
+        if prose_line:
+            io.out("")
+            io.out(prose_line)
+        xp = int(enemy_def.get("xp", 10))
+        player.xp += xp
+        player.qi += xp // 2
+        io.out(f"You gain {xp} XP and {xp // 2} qi.")
+        for drop in enemy_def.get("drops", []):
+            if random.random() < float(drop.get("chance", 0.5)):
+                iid = drop["item"]
+                player.add_item(iid, 1)
+                iname = world["items"].get(iid, {}).get("name", iid)
+                io.out(f"You loot: {iname}")
+        player.defeated[enemy_id] = player.defeated.get(enemy_id, 0) + 1
+        _writeback_companion(True)
+        return "victory"
+
+    def _defeat() -> str:
+        player.hp = 1
+        io.out("")
+        io.out("You collapse, broken. A passing herbalist drags you back to safety...")
+        io.out("(You wake at 1 HP. Rest well.)")
+        _writeback_companion(False)
+        return "defeat"
 
     while True:
         io.out("")
         io.out(_print_bar(player.name.ljust(16), player.hp, p_gear_hp_max)
                + _status_summary(player_status))
+        if comp and not comp["downed"]:
+            io.out(_print_bar(comp["name"].ljust(16), comp["hp"], comp["max_hp"])
+                   + _status_summary(comp["status"]))
         io.out(_print_bar(e["name"].ljust(16), e["hp"], e["max_hp"])
                + _status_summary(e["status"]))
 
         # -------- Player start-of-turn status tick --------
         stunned = _tick_status(player_status, "You", io, _player_take, is_player=True)
         if player.hp <= 0:
-            player.hp = 1
-            io.out("")
-            io.out("You collapse, broken. A passing herbalist drags you back to safety...")
-            io.out("(You wake at 1 HP. Rest well.)")
-            return "defeat"
+            return _defeat()
 
         player_acted = True
         if stunned:
@@ -349,6 +432,9 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
                 flee_chance = 0.5 + max(0, p_gear_spd - e["spd"]) * 0.05
                 if random.random() < min(0.9, flee_chance):
                     io.out("You break away into cover. The duel is broken.")
+                    if comp and not comp["downed"]:
+                        io.out(f"({comp['name']} falls back with you.)")
+                    _writeback_companion(False)
                     return "fled"
                 io.out("You try to disengage — but the foe closes the distance!")
             else:
@@ -356,20 +442,22 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
                 player_acted = False
 
         if e["hp"] <= 0:
-            io.out("")
-            io.out(f"{e['name']} collapses, defeated.")
-            xp = int(enemy_def.get("xp", 10))
-            player.xp += xp
-            player.qi += xp // 2
-            io.out(f"You gain {xp} XP and {xp // 2} qi.")
-            for drop in enemy_def.get("drops", []):
-                if random.random() < float(drop.get("chance", 0.5)):
-                    iid = drop["item"]
-                    player.add_item(iid, 1)
-                    iname = world["items"].get(iid, {}).get("name", iid)
-                    io.out(f"You loot: {iname}")
-            player.defeated[enemy_id] = player.defeated.get(enemy_id, 0) + 1
-            return "victory"
+            return _victory(f"{e['name']} collapses, defeated.")
+
+        # -------- Companion turn --------
+        if comp and not comp["downed"]:
+            c_stunned = _tick_status(comp["status"], comp["name"], io,
+                                     _comp_take, is_player=False)
+            _comp_down_check()
+            if e["hp"] <= 0:
+                return _victory(f"{e['name']} succumbs, edged out by the final toxin.")
+            if comp and not comp["downed"] and not c_stunned:
+                # Slow qi regen so long fights stay playable.
+                if comp["qi"] < comp["max_qi"]:
+                    comp["qi"] = min(comp["max_qi"], comp["qi"] + 3)
+                _run_companion_action(world, comp, e, io, _enemy_take)
+                if e["hp"] <= 0:
+                    return _victory(f"{e['name']} falls under {comp['name']}'s final stroke.")
 
         if not player_acted:
             # still do enemy turn — otherwise cancelling a menu is a free skip
@@ -378,72 +466,87 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
         # -------- Enemy start-of-turn status tick --------
         e_stunned = _tick_status(e["status"], e["name"], io, _enemy_take, is_player=False)
         if e["hp"] <= 0:
-            io.out("")
-            io.out(f"{e['name']} succumbs to the lingering toxin.")
-            xp = int(enemy_def.get("xp", 10))
-            player.xp += xp
-            player.qi += xp // 2
-            io.out(f"You gain {xp} XP and {xp // 2} qi.")
-            for drop in enemy_def.get("drops", []):
-                if random.random() < float(drop.get("chance", 0.5)):
-                    iid = drop["item"]
-                    player.add_item(iid, 1)
-                    iname = world["items"].get(iid, {}).get("name", iid)
-                    io.out(f"You loot: {iname}")
-            player.defeated[enemy_id] = player.defeated.get(enemy_id, 0) + 1
-            return "victory"
+            return _victory(f"{e['name']} succumbs to the lingering toxin.")
 
         if e_stunned:
             continue
 
         # -------- Enemy action --------
+        # Pick a target. If the companion is up, some fraction of attacks land
+        # on them instead — an enemy with any sense splits fire.
+        target_is_comp = bool(comp and not comp["downed"] and random.random() < 0.35)
         tech = _enemy_choose_technique(world, e)
         player_def_total = p_gear_def + _active_buff(player_status, "buff_def")
+        if target_is_comp:
+            tgt_name = comp["name"]
+            tgt_def = comp["def"] + _active_buff(comp["status"], "buff_def")
+            tgt_spd = comp["spd"]
+            tgt_status = comp["status"]
+            tgt_take = _comp_take
+            tgt_heal_self_was_player = False
+            tgt_pronoun_you = False
+        else:
+            tgt_name = "You"
+            tgt_def = player_def_total
+            tgt_spd = p_gear_spd
+            tgt_status = player_status
+            tgt_take = _player_take
+            tgt_pronoun_you = True
         if tech:
             base = int(tech.get("damage", 0))
             landed = True
             if base > 0:
-                if random.random() < _dodge_chance(p_gear_spd, e["spd"]):
-                    io.out(f"{e['name']} unleashes {tech['name']} — "
-                           "but you slip the path of their qi.")
+                if random.random() < _dodge_chance(tgt_spd, e["spd"]):
+                    subj = ("but you slip the path of their qi."
+                            if tgt_pronoun_you
+                            else f"but {tgt_name} slips the path of the qi.")
+                    io.out(f"{e['name']} unleashes {tech['name']} — {subj}")
                     landed = False
                 else:
-                    raw = max(1, base + e["atk"] // 2 + random.randint(0, 2) - player_def_total)
-                    crit = random.random() < _crit_chance(e["spd"], p_gear_spd)
+                    raw = max(1, base + e["atk"] // 2 + random.randint(0, 2) - tgt_def)
+                    crit = random.random() < _crit_chance(e["spd"], tgt_spd)
                     dmg = int(raw * 1.7) if crit else raw
-                    _player_take(dmg)
+                    tgt_take(dmg)
+                    target_label = "you" if tgt_pronoun_you else tgt_name
                     if crit:
-                        io.out(f"** {e['name']} finds a seam! ** "
+                        io.out(f"** {e['name']} finds a seam in {target_label}! ** "
                                f"{tech['name']} lands for {dmg} damage.")
                     else:
-                        io.out(f"{e['name']} uses {tech['name']}! {dmg} damage.")
+                        io.out(f"{e['name']} uses {tech['name']} on {target_label}! "
+                               f"{dmg} damage.")
             else:
                 io.out(f"{e['name']} weaves {tech['name']}.")
-            _apply_tech_effect(tech, e["status"], player_status,
+            _apply_tech_effect(tech, e["status"], tgt_status,
                                attacker_is_player=False,
-                               defender_name="You",
+                               defender_name=("You" if tgt_pronoun_you else tgt_name),
                                attacker_name=e["name"],
                                attacker_heal=_enemy_heal, io=io,
                                include_offensive=landed)
         else:
-            if random.random() < _dodge_chance(p_gear_spd, e["spd"]):
-                io.out(f"{e['name']} lunges — but you slide under the arc of the blow.")
+            if random.random() < _dodge_chance(tgt_spd, e["spd"]):
+                subj = ("you slide under the arc of the blow."
+                        if tgt_pronoun_you
+                        else f"{tgt_name} slides under the arc of the blow.")
+                io.out(f"{e['name']} lunges — but {subj}")
             else:
-                base = max(1, _enemy_atk(e) - player_def_total)
-                crit = random.random() < _crit_chance(e["spd"], p_gear_spd)
+                base = max(1, _enemy_atk(e) - tgt_def)
+                crit = random.random() < _crit_chance(e["spd"], tgt_spd)
                 dmg = int(base * 1.7) if crit else base
-                _player_take(dmg)
-                if crit:
-                    io.out(f"** {e['name']} strikes with sudden cruelty! ** {dmg} damage.")
+                tgt_take(dmg)
+                if tgt_pronoun_you:
+                    if crit:
+                        io.out(f"** {e['name']} strikes with sudden cruelty! ** {dmg} damage.")
+                    else:
+                        io.out(f"{e['name']} strikes you for {dmg} damage.")
                 else:
-                    io.out(f"{e['name']} strikes you for {dmg} damage.")
+                    if crit:
+                        io.out(f"** {e['name']} turns on {tgt_name} with sudden cruelty! ** {dmg} damage.")
+                    else:
+                        io.out(f"{e['name']} strikes {tgt_name} for {dmg} damage.")
 
+        _comp_down_check()
         if player.hp <= 0:
-            player.hp = 1
-            io.out("")
-            io.out("You collapse, broken. A passing herbalist drags you back to safety...")
-            io.out("(You wake at 1 HP. Rest well.)")
-            return "defeat"
+            return _defeat()
 
 
 def _enemy_atk(enemy_state: Dict[str, Any]) -> int:
@@ -457,6 +560,76 @@ def _enemy_choose_technique(world, enemy_state):
         return None
     tid = random.choice(techs)
     return world["techniques"].get(tid)
+
+
+# ---------------------------------------------------------------------------
+# Companion action — one turn of swinging or channeling. Shares the math with
+# the player's own attack: ATK + variance - enemy DEF, crit/dodge via SPD.
+
+def _run_companion_action(world: Dict[str, Dict[str, Any]],
+                          comp: Dict[str, Any],
+                          e: Dict[str, Any],
+                          io,
+                          enemy_take) -> None:
+    """Companion picks a technique (if qi allows) or makes a basic attack."""
+    c_name = comp["name"]
+    atk_total = comp["atk"] + _active_buff(comp["status"], "buff_atk")
+    # Tech-first bias: if they know any they can afford, 50% odds to use one.
+    chosen_tech = None
+    techs = comp.get("techniques", [])
+    if techs and random.random() < 0.55:
+        affordable = []
+        for tid in techs:
+            t = world["techniques"].get(tid, {})
+            if int(t.get("qi_cost", 0)) <= comp["qi"]:
+                affordable.append(t)
+        if affordable:
+            chosen_tech = random.choice(affordable)
+    if chosen_tech:
+        comp["qi"] = max(0, comp["qi"] - int(chosen_tech.get("qi_cost", 0)))
+        base = int(chosen_tech.get("damage", 0))
+        if base > 0:
+            if random.random() < _dodge_chance(e["spd"], comp["spd"]):
+                io.out(f"{c_name} unleashes {chosen_tech['name']} — "
+                       f"but {e['name']} slips aside.")
+                landed = False
+            else:
+                raw = max(1, base + atk_total // 2 + random.randint(0, 3) - e["def"])
+                crit = random.random() < _crit_chance(comp["spd"], e["spd"])
+                dmg = int(raw * 1.7) if crit else raw
+                enemy_take(dmg)
+                if crit:
+                    io.out(f"** {c_name}'s {chosen_tech['name']} finds a seam! ** "
+                           f"{dmg} damage.")
+                else:
+                    io.out(f"{c_name} unleashes {chosen_tech['name']}! {dmg} damage.")
+                landed = True
+        else:
+            io.out(f"{c_name} channels {chosen_tech['name']}.")
+            landed = True
+        # Apply effect payload — heal routes back to comp; offensive routes to e.
+        def _comp_heal_local(amt: int) -> None:
+            comp["hp"] = min(comp["max_hp"], comp["hp"] + amt)
+        _apply_tech_effect(chosen_tech, comp["status"], e["status"],
+                           attacker_is_player=False,
+                           defender_name=e["name"],
+                           attacker_name=c_name,
+                           attacker_heal=_comp_heal_local, io=io,
+                           include_offensive=landed)
+    else:
+        # Basic attack.
+        if random.random() < _dodge_chance(e["spd"], comp["spd"]):
+            io.out(f"{c_name} strikes — but {e['name']} sways away untouched.")
+        else:
+            base = max(1, atk_total + random.randint(-1, 3) - e["def"])
+            crit = random.random() < _crit_chance(comp["spd"], e["spd"])
+            dmg = int(base * 1.7) if crit else base
+            enemy_take(dmg)
+            if crit:
+                io.out(f"** {c_name} finds the heartbeat's gap! ** "
+                       f"Strikes {e['name']} for {dmg} damage.")
+            else:
+                io.out(f"{c_name} strikes {e['name']} for {dmg} damage.")
 
 
 def _apply_pill(player: Player, item: Dict[str, Any], io,
