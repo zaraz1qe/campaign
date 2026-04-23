@@ -73,8 +73,8 @@
     },
     "npcs": ["fisher_ren"],
     "enemies": ["pale_lake_carp_spirit"],
-    "events": ["lake_surface_shivers"],
-    "items_on_ground": [],
+    "events": ["lake_surface_shivers", "pale_lake_silt_stirs"],
+    "items_on_ground": ["pale_lake_silt"],
     "qi_density": 3,
     "tags": ["lake", "water", "village"]
   },

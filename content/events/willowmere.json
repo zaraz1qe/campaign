@@ -42,6 +42,13 @@
     "effect": { "qi": 4 }
   },
   {
+    "id": "pale_lake_silt_stirs",
+    "location": "pale_lake_shore",
+    "chance": 0.20,
+    "text": "Between two reeds on the east bank, under three fingers of clear water, a grey tongue of silt unrolls itself — not in the direction of the current, but against it, toward the shore. It comes the length of a palm, considers, and withdraws. Fisher Ren, without looking up, spits softly into the lake. The silt holds still for a long moment before it resettles.",
+    "effect": {}
+  },
+  {
     "id": "moon_face_in_the_water",
     "location": "drowned_willow_shrine",
     "chance": 0.3,

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "pale_lake_silt",
+    "name": "A Cup of Pale-Lake Silt",
+    "type": "material",
+    "description": "A small ceramic cup full of silt so fine it feels like cold flour between the fingers. It is grey, but not the grey of ash — it is the grey of the lake's underside, the light that lives below the reeds where no light lives. The cup is warm in your palm. You do not know why.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["material", "quest", "willowmere"]
+  },
+  {
+    "id": "sealed_blood_lotus",
+    "name": "A Sealed Blood-Lotus Bud",
+    "type": "material",
+    "description": "A thick-petalled lotus bud the colour of old meat — not crimson, not rust, but the colour that lies between them when a wound is a day old. The petals are folded past folded; whatever is inside has never seen the sun and was never meant to. Held close to the ear, the bud hums very faintly, as though something under the petals is counting.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["material", "quest", "scarlet_lotus"]
+  },
+  {
+    "id": "moon_red_pill",
+    "name": "Moon-Red Pill",
+    "type": "pill",
+    "description": "A large uneven pellet the colour of a moon half-swallowed by cloud — not red, not silver, but a dim rose-brown that the eye cannot settle on. Weilan says the old apothecaries called it 'the red that came from moon' because they did not know what else to say. The drinker, some of them, has claimed to hear their own voice speaking in a voice they had not used since childhood. Most of them claim only to have lived.",
+    "effect": "hp_heal",
+    "power": 70,
+    "value": 260,
+    "tags": ["consumable", "scarlet_lotus", "rare"]
+  },
+  {
+    "id": "sisters_iron_spoon",
+    "name": "The Red Pestle's Sister-Spoon",
+    "type": "accessory",
+    "slot": "accessory",
+    "hp_bonus": 14,
+    "def_bonus": 2,
+    "spd_bonus": 1,
+    "description": "A small iron measuring-spoon, no larger than the bowl of a thumb. The shaft has been thinned by half a lifetime of a left-handed hold. Weilan has tied a strip of plain hemp-cord through the eye where a silk one ought to go; the hemp is Pavilion-plain, but the knot at the end is an Azure Cloud physician's knot, eight-fold. He did not say which of them tied it. Warm at the hip, always — whether from the iron or from the hand that carried it last, you do not ask.",
+    "value": 420,
+    "tags": ["accessory", "scarlet_lotus", "azure_cloud", "rare", "quest_reward"]
+  }
+]

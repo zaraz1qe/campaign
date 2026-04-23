@@ -124,6 +124,246 @@ validated, committed.
 
 # Session log
 
+## Session 15 — 2026-04-23 — "The Bitter Remedy"
+
+### What I built
+- **Apothecary Weilan — three quests of her own.** Sessions 12,
+  13 AND 14 all flagged Weilan as the next obvious deepening
+  target. Her state going in: a voiced apothecary at the
+  Scarlet Lotus Shrine, 3 dialogue lines, 1 teach, 3 sells, 2
+  companion_reply lines — and no rep_dialogue, no lore_dialogue,
+  no quest. Scarlet Lotus as a sect was also quest-starved: 2
+  quests vs Azure Cloud's 6. Built her a three-quest arc that
+  closes both gaps. "The Bitter Remedy" — the apothecary who
+  has made peace with being the person who brews what she
+  cannot refuse to brew; underneath, a sister she does not
+  speak of, from the other side of the war.
+- **Quest 1 — A Cup of Sleeping Water** (mortal, no gate).
+  Weilan needs silt from Pale Lake Shore for the Pavilion's
+  Sleeping-Water pill. Player walks south, collects the cup,
+  returns. Reward: 80 stones, minor_healing_pill + antidote_pearl,
+  SLP +1, lore `the_pond_that_sleeps` — what Sleeping-Water
+  actually does, and for whom (the Pavilion gives it to those
+  for whom "the alternative would be a scream that would
+  travel further than the Pavilion could afford"; the reader
+  is left to decide whether the carrier is captive, disciple,
+  or petitioner).
+- **Quest 2 — The Bud That Will Not Open** (QC-tier,
+  prereq-only). One bud in every blood-lotus creek refuses to
+  open — "the red that does not clot," a thing that will stop
+  a wound the heart has given up on. One sits under the
+  tongueless bronze bell at Crimson Creek. Reward: 200 stones,
+  **Moon-Red Pill** (new hp_heal, power 70 — the strongest
+  single-use heal in the game) + crimson_cinnabar_pill, SLP
+  +1, lore `the_red_that_does_not_clot`.
+- **Quest 3 — The Pestle My Sister Used Last** (Foundation-
+  ready, gated at **Scarlet Lotus +3**). The arc's emotional
+  spine. Weilan has a sister the Pavilion does not know about:
+  Physician Weiyan of the Azure Cloud, who died at the last
+  Crane-Lotus clash fourteen years ago. He keeps her iron
+  pestle on the shelf; there is a residue in it, her last
+  grind, and he cannot read what it was. He asks the player
+  to carry it to Baixu, who is old enough to have known her
+  hand. Steps: visit Baixu's Pavilion, talk to Baixu, return
+  to Weilan. Reward: 360 stones + spirit_stone_pouch +
+  **sisters_iron_spoon** (new accessory: HP+14, DEF+2, SPD+1;
+  an iron measuring-spoon with a Pavilion-plain hemp cord and
+  an Azure Cloud physician's knot at the eye) + **SLP +1 AND
+  Azure Cloud +2** — a cross-sect rep bump earned by honoring
+  a dead physician across faction lines. Lore:
+  `the_pestle_unbroken` (the history of Weiyan's death and the
+  courier who returned the pestle at dawn) and
+  `the_sisters_unspoken_cure` (Baixu's identification — the
+  residue is a *corrective* for the Pavilion's Heart-Boiling
+  Technique; she was working on a cure that crossed faction
+  lines the way a good physician's hand should).
+- **Content totals**: 4 new items (pale_lake_silt +
+  sealed_blood_lotus as on-ground quest materials; moon_red_pill
+  as heal reward; sisters_iron_spoon as capstone accessory), 4
+  new lore entries, 3 new quests, 3 new events
+  (pale_lake_silt_stirs at Pale Lake, sealed_bud_under_the_bell
+  at Crimson Creek, weilan_hums_at_the_pestle at the shrine).
+  Zero new NPCs, zero new enemies, zero new locations — the arc
+  is pure deepening using places, people, and sect politics
+  already on the map. Four pre-existing locations (Pale Lake
+  Shore, Crimson Creek, Scarlet Lotus Shrine, Baixu's Pavilion)
+  each picked up a new reason to visit.
+- **Weilan's voice.** Dialogue grew from 3 to 6 lines — adding
+  his line about the pond eating letters, about the spoon-sized
+  space between poison and cure, and the line that foreshadows
+  the whole arc: *"I came up to this shrine out of a village
+  further south than any of the maps bother with. My sister did
+  not. If she had, we would not be speaking the same language
+  now."* Pre-arc this reads ambient; mid-arc it reads like a
+  confession. New `rep_dialogue` tiers at SLP +2 (the pond is
+  beginning to know your breath), +3 (the matter not a sect
+  errand — a personal one; come back when the censers burn
+  thinner), +5 (the pestle is my sister's, I'll tell you about
+  her someday, today I'm still humming), and -2 (the pond is
+  watching how you carry yourself). New cross-sect line at ACS
+  +3 (she refuses to sell to an Azure sword directly — unless
+  the buyer won't say who). New `lore_dialogue` at SLP +4 giving
+  `the_ledger_of_red_names`. New companion_reply for venomhand_bai
+  ("We will have words, she and I, about a girl from her valley
+  I could not save — but not today, and not through a courier.").
+- **Teach and sell expansion.** Teaches: +calming_breath,
+  +settling_stone_sit (both mortal-tier heals; an apothecary of
+  course knows the basic arts). Sells: +minor_healing_pill,
+  +moonflower_tonic (now a mortal player walking into the shrine
+  has something to buy; before, her lowest-tier sell was
+  antidote_pearl at 40 stones with a +1 ACS gate side-door).
+  Description expanded with a single telling beat: his hand
+  hums a tune that stops on a low note when he thinks no one
+  is looking.
+- **Baixu adjustment.** One new standing dialogue line about
+  "the physician we could not bring home, whose pestle went to
+  a brother she had not seen in a lifetime." Ambient before the
+  arc, fulfillment during/after — same trick Huilin used for
+  the Broken-Bridge bowl. No rep_dialogue, no step gating; just
+  a line in his array that reads as a memory.
+- **Multi-quest giver (3rd).** Weilan's `gives_quest` became
+  a list of three. He joins Zhao (library) and Huilin (bell)
+  as the game's third multi-quest giver. Engine contract was
+  already list-aware (session 13); no engine touch this session.
+- **Smoke test.** `tools/smoke_weilan.py` — 7 scenarios: content
+  load, list-gives + teach/sell expansion, silt on ground at
+  Pale Lake (prior lake_surface_shivers event still present),
+  sealed bud on ground at Crimson Creek (prior
+  crimson_wind_carries_chanting still present), full three-
+  quest arc with SLP+3 gate on quest 3 and cross-sect ACS +2
+  payoff on capstone, sister-spoon equip with claimed bonuses,
+  save/load round-trip of arc state. All green.
+
+### Current state
+- Validator: **29 loc / 30 npc / 22 enemy / 43 tech / 88 item /
+  4 sect / 22 quest / 45 event / 37 lore / 15 recipe.** Deltas
+  from session 14: +4 items, +3 quests, +3 events, +4 lore. No
+  new NPCs, enemies, locations or techniques.
+- All 9 prior smoke tests remain green; the new `smoke_weilan.py`
+  is green. Interactive `python3 play.py` boots cleanly; fast-
+  travelling to Scarlet Lotus Shrine and talking to Weilan
+  offers "A Cup of Sleeping Water" on the first talk and walks
+  the full six-line dialogue before the offer — a player who
+  has never met Weilan now gets both a character sketch and a
+  quest in one breath.
+- Save-compat preserved. Zero new Player fields. Existing saves
+  load; an old save that had talked to Weilan before just starts
+  the arc next time they do.
+- Quest distribution going in → going out: **Weilan** went
+  from 0 to 3 quests. **Scarlet Lotus** went from 2 quests
+  (Rulan's Red Path, Red Feather's Red Ledger) to 5 — now the
+  most-quested sect in the game after the Willowmere village
+  hub. **Pale Lake Shore** gained a second reason to exist (the
+  silt next to the fisherman). **Crimson Creek** gained an
+  item-on-ground and its second event. **Elder Baixu's
+  Pavilion** picked up a third reason to re-visit mid/late
+  game (bell quest, missing disciple, pestle).
+
+### What I'd do next if I had another hour
+1. **Five Poisons' second arc.** Matriarch Shan has
+   `oath_of_fangs`; nothing chains from it. She'd be the
+   strongest candidate for the next multi-quest-giver — voice
+   (3 dlg / 4 rep_dlg / 2 lore_dlg / 3 cr), 3 teaches, 0 sells,
+   1 quest. A venom-garden / apostate-of-the-valley arc would
+   fit. Alternatively Venomhand Bai (4 dlg / 3 rep_dlg) already
+   has voice for a personal arc.
+2. **Apothecary Qi in Thousand Venom Valley.** Qi has 3 dlg,
+   3 teaches, 5 sells, no rep_dialogue, no quest, no
+   companion_reply. Strong candidate for "the valley's Weilan"
+   — thematic parallel. She's the most under-used voiced NPC
+   still standing in the valley.
+3. **Bannerman follow-up.** Session 13 left the Black Banner
+   unaddressed after Bannerman Shao was killed on the Bandit
+   Road. A Pavilion (or Rulan) quest to chase whoever holds
+   the banner next is still unwritten.
+4. **Azure Cloud Commentary / Sutra of Empty Sleeves.** The
+   library's `sutra_of_empty_sleeves` item exists but is never
+   referenced by an NPC or placed on any shelf — it's the
+   actual text the manual_azure_cloud_commentary comments on.
+   A minor polish: put it behind a high-rep Zhao sell or on a
+   locked shelf the 4th library quest (that does not yet exist)
+   could unlock.
+5. **Thinnest voiced NPCs still under-served.** Post-Weilan, the
+   game's thinnest voiced NPCs (by surface area total) are:
+   `fisher_ren` (d=3, teach=1), `farmer_shen_daiyu` (d=4, zero
+   else), `little_yu` (d=3, gq=1). Little Yu's songbird errand
+   could chain; Shen Daiyu could gain a rep_dialogue tier; Ren
+   is positioned perfectly to foil a quest (he's at Pale Lake
+   where Weilan's silt quest now routes players).
+6. **A heal-tier technique gap.** Weilan teaches mortal heals
+   and Red Feather/Shan teach foundation heals; there is a
+   clean QC-tier heal gap for Scarlet Lotus aesthetics. Could
+   be a one-technique add if session budget allows.
+
+### Things I noticed but didn't fix
+- **Quest item placement is save-invariant (ongoing).**
+  `pale_lake_silt` and `sealed_blood_lotus` sit in
+  `items_on_ground`; the world reloads fresh each session, so
+  a completionist stacks duplicates on reload. Same
+  pre-existing pattern as the Huilin arc's cracked_brass_bell
+  and wind_named_stone. Flagging again — world-state save is
+  the carry-forward from session 13.
+- **The pestle is never an inventory item.** Quest 3 narrates
+  the player carrying the pestle to Baixu, but mechanically it
+  is a visit-and-talk step chain like Huilin's bowl quest. The
+  item doesn't exist; the fiction does. Same design choice as
+  Huilin's folded_tea_invitation: dramatize the carry without
+  adding a give-item verb the engine doesn't have.
+- **Weilan's `moon_red_pill` reward is a one-off.** Strongest
+  heal in the game (power 70), but only obtainable once per
+  save via quest 2 closure. Could later be added to Weilan's
+  sells post-arc if a repeatable mid-game heal ceiling is
+  wanted — but unlimited moon_reds at 260 stones would
+  trivialize some QC encounters. Leave it as a rarity for now.
+- **Weilan's sister's name is Weiyan.** One letter off from
+  his. That's intentional (sibling name-pattern, southern
+  villages where parents pick a stem and vary by stroke).
+  Flagging it so a future editor doesn't "fix" what looks like
+  a typo.
+- **ACS rep leak.** Quest 3 grants ACS +2 unconditionally on
+  completion. A player who has been grinding down ACS rep
+  (Scarlet Lotus partisan path) will get +2 they didn't want.
+  That's narratively correct (Baixu's respect crosses sect
+  lines) but mechanically slightly lossy for demon-path players.
+  Not a bug — a feature that argues the sect war is not as
+  total as the partisans pretend. Flagging so future me doesn't
+  try to "fix" it.
+
+### Don'ts (lessons learned)
+- **Don't audit with the wrong field names.** First audit
+  pass used `teach`/`sell` (wrong; the schema is
+  `teaches`/`sells`). Showed Weilan with 0 teach/0 sell, which
+  was already the session-13 & 14 flag. Correct audit showed
+  1 teach / 3 sells + 2 companion_reply. The call (deepen
+  Weilan) was right for different reasons — she had no
+  rep_dialogue, no lore_dialogue, no quest. Lesson:
+  `cat SCHEMAS.md | grep -E "^\"[a-z]"` before auditing, or
+  re-use the test harness' own field-access. Cheap check.
+- **Don't overwrite rep_dialogue with zero-guardrails.**
+  Weilan's rep_dialogue added a -2 tier warning the player
+  that she'll count their stones twice — but if a player
+  lands at SLP -2 and Rulan has already left the milestone
+  (requires_rep_at_most=4) and they haven't cleared
+  red_ledger to -2 paths, there's not currently a way *back*.
+  Fine for now; the -2 line is a threat not a wall. But note
+  it for when partisan-path design tightens up.
+- **Don't split an NPC's voice across two sessions.** Weilan
+  had been waiting since session 12. Three sessions of "I
+  should expand Weilan" was two sessions too many. If an NPC
+  is flagged in the handoff, either do it that session or
+  explicitly re-defer it. The "I'll get to it next time" ran
+  three deep here; it should have been done in session 13.
+- **Don't let the final quest read as a *sect errand*.**
+  Quest 3 explicitly lives outside Red Feather's hearing —
+  Weilan's line: *"I am not asking the Pavilion. I am asking
+  you."* That's the load-bearing narrative moment of the whole
+  arc. Earlier drafts had her reporting to Red Feather for an
+  approval step; cut for a reason. The cross-sect rep bump
+  reads clean only because the sect was not party to the
+  errand.
+
+---
+
 ## Session 14 — 2026-04-23 — "The Silent Bell's Return"
 
 ### What I built

@@ -8,8 +8,8 @@
     "exits": { "north": "bandit_road", "east": "scarlet_lotus_shrine" },
     "npcs": ["blood_sworn_jin"],
     "enemies": ["blood_sworn_cultivator"],
-    "events": ["crimson_wind_carries_chanting"],
-    "items_on_ground": [],
+    "events": ["crimson_wind_carries_chanting", "sealed_bud_under_the_bell"],
+    "items_on_ground": ["sealed_blood_lotus"],
     "qi_density": 2,
     "tags": ["approach", "scarlet_lotus", "hidden"]
   },

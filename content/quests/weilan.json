@@ -1,0 +1,62 @@
+[
+  {
+    "id": "a_cup_of_sleeping_water",
+    "name": "A Cup of Sleeping Water",
+    "giver": "apothecary_weilan",
+    "description": "Weilan sets down his pestle and dusts his hands on his cinnabar-stained apron. 'There is a silt at Pale Lake Shore I used to gather myself, in the years my knees allowed. It settles in a finger-deep layer under the reeds on the east bank — grey as fresh mortar, fine as a widow's hair. My apprentices will not go; Fisher Ren has a way of looking at them until they forget what they came for. You — you are a guest. He will think twice before the look, and in that two-think, you walk behind him and reach. A cup of silt is enough. A *small* cup. Do not wet the sleeves of your robe — the grey takes a month to beat out.'",
+    "steps": [
+      { "type": "visit",   "target": "pale_lake_shore" },
+      { "type": "collect", "target": "pale_lake_silt" },
+      { "type": "talk",    "target": "apothecary_weilan" }
+    ],
+    "reward": {
+      "spirit_stones": 80,
+      "items": ["minor_healing_pill", "antidote_pearl"],
+      "xp": 35
+    },
+    "rep_change": { "scarlet_lotus_pavilion": 1 },
+    "grants_lore": ["the_pond_that_sleeps"]
+  },
+  {
+    "id": "the_bud_that_will_not_open",
+    "name": "The Bud That Will Not Open",
+    "giver": "apothecary_weilan",
+    "description": "Weilan is smiling when you arrive, which he does when he is happiest and when he is saddest and you cannot always tell which. 'My apprentices will tell you the blood-lotus opens at its own hour. They are right, and they are very wrong. One bud in every creek will not open in this life — it is sealed. Sealed buds are what the old apothecaries called *the red that does not clot* — a thing that will stop the worst bleeding in a body that has already stopped fighting. I need one. There is one at the Crimson Creek, under the stone where the bell without a tongue hangs. I have been looking at it for a season and cannot bring myself to pick it. Pick it for me. Carry it gently; it will not like the journey.'",
+    "requires_quest": "a_cup_of_sleeping_water",
+    "steps": [
+      { "type": "visit",   "target": "crimson_creek" },
+      { "type": "collect", "target": "sealed_blood_lotus" },
+      { "type": "talk",    "target": "apothecary_weilan" }
+    ],
+    "reward": {
+      "spirit_stones": 200,
+      "items": ["moon_red_pill", "crimson_cinnabar_pill"],
+      "xp": 85
+    },
+    "rep_change": { "scarlet_lotus_pavilion": 1 },
+    "grants_lore": ["the_red_that_does_not_clot"]
+  },
+  {
+    "id": "the_pestle_my_sister_used_last",
+    "name": "The Pestle My Sister Used Last",
+    "giver": "apothecary_weilan",
+    "description": "Weilan has set his pestle down for the first time since you have known him. He looks small without it. 'I have a sister the pond does not know about. That is a lie — the pond knows everything. I have a sister the *Pavilion* does not know about. Had. She was Physician Weiyan of the Azure Cloud; she died at the last Crane-Lotus clash, fourteen years ago. I keep her iron pestle in the cabinet behind me. There is a residue in it — the last thing she ever ground — and I cannot read what it was. I have tried. My hands know the shape of a poison and the shape of a cure and this is neither. Elder Baixu of the Azure Cloud is old enough to have known her hand. Carry the mortar to him. Tell him only that the Red Pestle's sister asks. Come back and tell me what he says. — And, child: do not put this errand in Red Feather's hearing. I am not asking the Pavilion. I am asking you.'",
+    "requires_quest": "the_bud_that_will_not_open",
+    "requires_rep": { "scarlet_lotus_pavilion": 3 },
+    "steps": [
+      { "type": "visit", "target": "elder_baixus_pavilion" },
+      { "type": "talk",  "target": "elder_baixu" },
+      { "type": "talk",  "target": "apothecary_weilan" }
+    ],
+    "reward": {
+      "spirit_stones": 360,
+      "items": ["sisters_iron_spoon", "spirit_stone_pouch"],
+      "xp": 150
+    },
+    "rep_change": {
+      "scarlet_lotus_pavilion": 1,
+      "azure_cloud_sect": 2
+    },
+    "grants_lore": ["the_pestle_unbroken", "the_sisters_unspoken_cure"]
+  }
+]

@@ -70,19 +70,58 @@
     "id": "apothecary_weilan",
     "name": "Weilan of the Red Pestle",
     "title": "Brewer of the Scarlet Basin",
-    "description": "A short, bright-eyed man in an apron so stained with cinnabar it looks freshly painted. His hands are perpetually in motion — grinding, folding, measuring powders with a small iron spoon. He hums old road-songs between words and seems to find the whole world faintly amusing.",
+    "description": "A short, bright-eyed man in an apron so stained with cinnabar it looks freshly painted. His hands are perpetually in motion — grinding, folding, measuring powders with a small iron spoon whose shaft has been thinned by half a lifetime of left-handed use. He hums old road-songs between words and seems to find the whole world faintly amusing. The mirth does not quite reach the corners of his eyes; when he thinks no one is looking, his humming stops on a low note and does not quite resume.",
     "dialogue": [
       "Pill? Mantle? A whisper of what the pond actually eats? I have it all, for a price a sect can bear.",
       "Do not swallow the Crimson Cinnabar on an empty stomach. Swallow it on an *angry* one; the sect gets better value that way.",
-      "Azure Cloud sells white pills. We sell red ones. The colour is the whole of the difference — and, of course, the effect."
+      "Azure Cloud sells white pills. We sell red ones. The colour is the whole of the difference — and, of course, the effect.",
+      "The pond eats silt, and stone, and the occasional letter a disciple should not have written. What it drinks, now — that is what I brew.",
+      "My hands know a poison by its weight and a cure by its colour. Between the two there is a little space the size of a spoon; most of an apothecary's life is spent in that space.",
+      "I came up to this shrine out of a village further south than any of the maps bother with. My sister did not. If she had, we would not be speaking the same language now."
     ],
-    "teaches": ["crimson_tide_fist"],
-    "sells": ["crimson_cinnabar_pill", "scarlet_pavilion_token", "antidote_pearl"],
+    "teaches": ["crimson_tide_fist", "calming_breath", "settling_stone_sit"],
+    "sells": ["crimson_cinnabar_pill", "scarlet_pavilion_token", "antidote_pearl", "minor_healing_pill", "moonflower_tonic"],
+    "gives_quest": [
+      "a_cup_of_sleeping_water",
+      "the_bud_that_will_not_open",
+      "the_pestle_my_sister_used_last"
+    ],
     "faction": "scarlet_lotus_pavilion",
     "disposition": "friendly",
+    "rep_dialogue": {
+      "scarlet_lotus_pavilion": {
+        "5": [
+          "Ah. Here you come again, walking like a disciple who has earned their third cup. I will not call you a disciple — the Pavilion has disciples already — but the pestle knows you now, and that is closer than most will ever get.",
+          "The mortar on the cabinet is my sister's. I will tell you about her someday; today I am still humming."
+        ],
+        "3": [
+          "You carry yourself like someone the pond has tasted and not spat out. That is a compliment — the pond spits out most things.",
+          "There is a matter I would like to set before you, when the shrine is quieter. Not a sect errand. A personal one. Come back this evening; the censers burn thinner then."
+        ],
+        "2": [
+          "The pond has begun to know your breath. Red Feather mentioned you at the last cup — not to me; around me. That is how she mentions people who matter.",
+          "If you need the red pill, I will sell it to you cheaper now. The sect's hand on the price is lighter when the buyer is *almost* one of us."
+        ],
+        "-2": [
+          "I will still sell to you, friend — the sect has not told me not to — but I will count your stones twice, and I will not turn my back on the pestle while you are at the counter.",
+          "Do not come to my stall with Azure wet still on your sleeve. The pond sees, and I am the pond's hand in this matter."
+        ]
+      },
+      "azure_cloud_sect": {
+        "3": [
+          "A sword of the cranes, at my counter. How unexpected. Your elder has been very particular, these last years, about the company his disciples keep. I will not sell you anything today, dear — unless you are buying for someone who will not say who."
+        ]
+      }
+    },
+    "lore_dialogue": {
+      "scarlet_lotus_pavilion": {
+        "4": "the_ledger_of_red_names"
+      }
+    },
     "companion_reply": {
       "blood_sworn_jin": "Oh, Jin! You thin thing, you look half a ghost. Come — take the red pill; on the house, on the house. Your colour is all wrong.",
-      "disciple_meilin": "A sword-sister of the Azure Cloud, at my pestle. How *exciting*. I will not sell you anything today, dear — nothing personal; only my elder would skin me."
+      "disciple_meilin": "A sword-sister of the Azure Cloud, at my pestle. How *exciting*. I will not sell you anything today, dear — nothing personal; only my elder would skin me. — Though if you are her size, the plain hempen robe in the back might fit; take it, and do not tell me you took it.",
+      "venomhand_bai": "The valley at my counter. Tell Matriarch Shan the red and the green do not mix — I mean the paints, of course; I mean the powders. We will have words sometime, she and I, about a girl from her valley I could not save; but not today, and not through a courier."
     }
   },
   {

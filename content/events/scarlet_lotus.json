@@ -7,10 +7,24 @@
     "effect": {}
   },
   {
+    "id": "sealed_bud_under_the_bell",
+    "location": "crimson_creek",
+    "chance": 0.30,
+    "text": "The tongueless bronze bell tugs once in a wind you cannot feel. Beneath the branch it hangs from, one blood-lotus bud — thicker, darker, folded past folded — does not answer the water at all. It seems to be listening. When you stop moving, the listening is louder.",
+    "effect": {}
+  },
+  {
     "id": "lotus_pond_reflects_blood",
     "location": "scarlet_lotus_shrine",
     "chance": 0.45,
     "text": "The pond's surface settles. For a moment, in the red water, you do not see yourself — you see someone who looks almost like you but older, in robes the colour of the water, smiling with a mouth that has learned a new shape. Then the image is gone, and the pond is only a pond again.",
     "effect": { "lore": "scarlet_lotus_oath" }
+  },
+  {
+    "id": "weilan_hums_at_the_pestle",
+    "location": "scarlet_lotus_shrine",
+    "chance": 0.25,
+    "text": "Somewhere behind the gallery's north column, Weilan is grinding something. The mortar taps out a slow, familiar three — one-two, pause, one — and he hums across the pestle in a voice that has no words in it and does not need any. When the tune breaks, so does his rhythm; a moment later they both resume, the tune a half-step lower, as if it has been carrying a small weight and shifted it to the other hand.",
+    "effect": {}
   }
 ]

@@ -24,10 +24,10 @@ A living checklist for what's been done and what to add next.
 - **Companions** (3): Disciple Meilin (Azure Cloud), Venom-Handler Bai
   (Five Poisons), Blood-Sworn Jin (Scarlet Lotus). Affinity/bond system
   active across all three.
-- **Items**: 84 (equipment, pills, materials, treasures, **manuals**,
-  Silent Bell Charm)
+- **Items**: 88 (equipment, pills, materials, treasures, **manuals**,
+  Silent Bell Charm, Moon-Red Pill, Sister-Spoon)
 - **Recipes**: 15 (Forge-Master Bo: 6, Pillmaster Lu: 4, Apothecary Qi: 5)
-- **Quests**: 19. Single-givers: Kettle's Request, Missing Disciple,
+- **Quests**: 22. Single-givers: Kettle's Request, Missing Disciple,
   Envoy's Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace,
   Red Path, and the five Willowmere starters (Wolves at Shen's Farm,
   Little Yu's Songbird, Three Ingots of River-Iron, Errand of the
@@ -36,22 +36,26 @@ A living checklist for what's been done and what to add next.
   (Study the Sutra → The Locked Shelves → The Committee of 1184 —
   session 13), **Huilin's Silent Bell arc** (The Bell Beneath the
   Willow → A Bowl on the Broken Bridge → The Name the Wind Would
-  Not Give — session 14). Three of the game's mid-game NPCs now
-  own a proper three-quest spine.
+  Not Give — session 14), **Weilan's Bitter Remedy arc** (A Cup
+  of Sleeping Water → The Bud That Will Not Open → The Pestle My
+  Sister Used Last — session 15). Four of the game's mid-game NPCs
+  now own a proper three-quest spine. Scarlet Lotus is now the
+  best-quested sect in the game after the Willowmere hub.
 - **Techniques**: 43 total, **35 learnable** across all tiers. Every
   combat effect (poison/bleed/stun/heal/buff_def/buff_atk) has ≥3
   learnable options. Mortal 9 / Qi-Condensation 15 / Foundation 11.
-- **Events**: 42 (ambient + qi-grant + lore-grant; every location has
-  at least one, and the library / foothills / bandit road picked up
-  ambient events in session 13; the drowned shrine, Baixu's pavilion,
-  Cragspine shrine and the Spirit-Gale plateau picked up bell-motif
-  events in session 14).
-- **Lore**: 33 (earnable via boss defeats, quest rewards, high-rep NPC
-  trust, village story, and **manuals**). Session-13 additions:
+- **Events**: 45 (ambient + qi-grant + lore-grant; every location has
+  at least one. Session 15 additions: pale_lake_silt_stirs at the
+  lake, sealed_bud_under_the_bell at Crimson Creek,
+  weilan_hums_at_the_pestle at the Scarlet Lotus Shrine).
+- **Lore**: 37 (earnable via boss defeats, quest rewards, high-rep NPC
+  trust, village story, and **manuals**). Session-15 additions:
+  the_pond_that_sleeps, the_red_that_does_not_clot, the_pestle_unbroken,
+  the_sisters_unspoken_cure. Session-14 additions:
+  the_bell_that_came_too_late, the_broken_bridge_tea,
+  the_wind_that_named_itself. Session-13 additions:
   committee_of_1184, azure_cloud_commentary_1184, lamplighter_of_zhao,
-  gatekeepers_oath, sword_calamity, west_reading_room. Session-14
-  additions: the_bell_that_came_too_late, the_broken_bridge_tea,
-  the_wind_that_named_itself.
+  gatekeepers_oath, sword_calamity, west_reading_room.
 - **Manuals**: 7 (library-only: open shelf 2, mid 3, locked 2 — gated
   by ACS rep, priced against the labour of copying, not the weight
   of the words).
@@ -224,6 +228,72 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-23 (session 15)** — "The Bitter Remedy" — Weilan's
+  three-quest arc. Session 12, 13 AND 14 all flagged Apothecary
+  Weilan as the next obvious deepening target: she had voice, a
+  teach, three sells, two companion_reply lines — and no
+  rep_dialogue, no lore_dialogue, no quest. Sect-wise, Scarlet
+  Lotus was the most quest-starved of the four sects (2 quests vs
+  Azure Cloud's 6). This session closed both gaps at once. Three
+  connected quests giving Weilan a spine and giving Scarlet Lotus
+  a second full arc:
+  - **A Cup of Sleeping Water** (mortal-tier, no gate). Weilan
+    needs silt from Pale Lake Shore for the Pavilion's
+    Sleeping-Water pill. Player walks south, picks up the cup,
+    returns. Reward: 80 stones, minor_healing_pill + antidote_pearl,
+    Scarlet Lotus +1, the_pond_that_sleeps lore (what the
+    Sleeping-Water pill actually does, and for whom).
+  - **The Bud That Will Not Open** (QC-tier, prereq only). An
+    apothecaries' secret: in every creek of blood-lotus, one bud
+    refuses to open — "the red that does not clot," a thing that
+    will stop the worst bleeding in a body that has already
+    stopped fighting. One such bud sits under the tongueless bell
+    at Crimson Creek. Reward: 200 stones, Moon-Red Pill (new
+    heal, power 70) + crimson_cinnabar_pill, Scarlet Lotus +1,
+    the_red_that_does_not_clot lore.
+  - **The Pestle My Sister Used Last** (Foundation-ready,
+    Scarlet Lotus +3 gate). Weilan's sister Weiyan was an Azure
+    Cloud physician. She died at the last Crane-Lotus clash. He
+    has her iron pestle with the last residue she ever ground
+    still in the bowl, and he cannot read what it was. Only
+    Baixu's hand could. Player carries the pestle to Baixu's
+    Pavilion; Baixu identifies the residue (a cure for the
+    Pavilion's Heart-Boiling Technique, a thing that crossed
+    sect lines the way a good physician's hand should). Reward:
+    360 stones, sisters_iron_spoon accessory (HP+14, DEF+2,
+    SPD+1, with an Azure Cloud physician's knot on a
+    Pavilion-plain hemp cord), Scarlet Lotus +1 AND **Azure
+    Cloud +2** — the arc's emotional hinge is a cross-sect rep
+    bump earned by honoring a dead physician across faction
+    lines. Two new lore entries: the_pestle_unbroken,
+    the_sisters_unspoken_cure.
+  Content: 4 new items (pale_lake_silt and sealed_blood_lotus
+  as quest materials on-ground at Pale Lake / Crimson Creek;
+  moon_red_pill as a strong heal reward; sisters_iron_spoon
+  as the capstone accessory), 4 new lore entries, 3 new quests,
+  3 new events (pale_lake_silt_stirs at the lake,
+  sealed_bud_under_the_bell at the creek, weilan_hums_at_the_pestle
+  at the shrine). Weilan's NPC expanded from 3 to 6 dialogue lines
+  (about the pond, about poison-vs-cure, about a sister who did
+  not leave their southern village with him), gained rep_dialogue
+  tiers at SLP +2/+3/+5 and -2, a new cross-sect line at ACS +3,
+  lore_dialogue at SLP +4, and one new companion_reply for
+  venomhand_bai. Teaches expanded from 1 to 3 (added
+  calming_breath and settling_stone_sit — heals an apothecary
+  should of course know), sells expanded from 3 to 5 (added
+  minor_healing_pill and moonflower_tonic — so a mortal player
+  walking into the shrine now has something to buy). Weilan's
+  gives_quest became a list of three — he joins Huilin and Zhao
+  as the third multi-quest giver in the game. Baixu got one new
+  standing dialogue line about "the physician we could not bring
+  home, whose pestle went to a brother she had not seen in a
+  lifetime" — ambient before the arc, fulfilment during/after.
+  New smoke test `tools/smoke_weilan.py` — 7 scenarios covering
+  content-load, list-gives, items-on-ground placement, the full
+  arc with SLP+3 gate and cross-sect ACS +2 payoff,
+  accessory-equip, and save/load. All green. All 9 prior smoke
+  tests remain green.
+
 - **2026-04-23 (session 14)** — "The Silent Bell's Return" — Huilin's
   quest. Huilin had voice, teaches, sells, rep_dialogue for three
   sects, and companion_reply for all three companions — but no
