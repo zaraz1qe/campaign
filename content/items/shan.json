@@ -1,0 +1,47 @@
+[
+  {
+    "id": "bloodmarked_cloth",
+    "name": "A Bloodmarked Underrobe Square",
+    "type": "quest",
+    "description": "A small square cut from the inner hem of a sickbed robe. Most of the blood is the merchant's own — dull brown, brittle. A single ring at one corner is still faintly damp, and that ring is a colour blood does not make alone: a violet so soft the eye nearly refuses it. Shan will read it where the Azure Cloud would wash it.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["material", "quest", "five_poisons"]
+  },
+  {
+    "id": "hundred_grass",
+    "name": "A Stem of Hundred-Grass",
+    "type": "quest",
+    "description": "A single pale blade of grass the width of a writing-brush hair and the length of a wrist. It is not, under the censer-light, quite green; it is the colour of water drawn from a stone well and held up to a lamp. It weighs nothing. Held too tightly it will wilt by morning; held too loosely it will drift out of the palm. The Poisoner's Garden grows it only where every other plant has refused, and only at midnight, and only to the hand that walks with a patience the hand cannot afford to pretend.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["material", "quest", "five_poisons", "rare"]
+  },
+  {
+    "id": "five_venoms_sash",
+    "name": "Five-Venoms Brocade Sash",
+    "type": "accessory",
+    "slot": "accessory",
+    "atk_bonus": 2,
+    "def_bonus": 1,
+    "hp_bonus": 10,
+    "on_hit_effect": "poison",
+    "on_hit_power": 1,
+    "requires_rep": { "five_poisons_sect": 3 },
+    "description": "A broad silk sash the colour of overcast morning, shot through with five running threads: green for the viper, red for the centipede, black for the scorpion, yellow for the toad, white for the spider. Matriarch Shan ties the knot herself on the day the sash is given, and the knot is not a common one — a small asymmetric loop that loosens only to the wearer's own left hand. The basin-creatures, it is said, will not strike a hand that carries this knot. The hand that carries this knot strikes no living thing it has not named first.",
+    "value": 380,
+    "tags": ["accessory", "five_poisons", "rare", "quest_reward"]
+  },
+  {
+    "id": "shans_dispensary_ledger",
+    "name": "Shan's Dispensary Ledger",
+    "type": "treasure",
+    "description": "A slim leather-bound book, stitched and re-stitched down its spine. The first page lists three names in Shan's own hand: three apothecaries known to brew the Pavilion's Moon-Silt poison. Two are dead. The third is named but not located. Most pages after are dose-tables, counter-venoms, and the occasional annotation in the margin that reads only *do not weep — read it again*.",
+    "effect": null,
+    "power": 0,
+    "value": 120,
+    "tags": ["treasure", "five_poisons", "lore"]
+  }
+]

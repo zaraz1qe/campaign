@@ -24,10 +24,10 @@ A living checklist for what's been done and what to add next.
 - **Companions** (3): Disciple Meilin (Azure Cloud), Venom-Handler Bai
   (Five Poisons), Blood-Sworn Jin (Scarlet Lotus). Affinity/bond system
   active across all three.
-- **Items**: 88 (equipment, pills, materials, treasures, **manuals**,
-  Silent Bell Charm, Moon-Red Pill, Sister-Spoon)
+- **Items**: 92 (equipment, pills, materials, treasures, **manuals**,
+  Silent Bell Charm, Moon-Red Pill, Sister-Spoon, Five-Venoms Sash)
 - **Recipes**: 15 (Forge-Master Bo: 6, Pillmaster Lu: 4, Apothecary Qi: 5)
-- **Quests**: 22. Single-givers: Kettle's Request, Missing Disciple,
+- **Quests**: 25. Single-givers: Kettle's Request, Missing Disciple,
   Envoy's Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace,
   Red Path, and the five Willowmere starters (Wolves at Shen's Farm,
   Little Yu's Songbird, Three Ingots of River-Iron, Errand of the
@@ -228,6 +228,67 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-23 (session 19)** — "The Grey That Does Not Lie" —
+  Matriarch Shan's three-quest arc. Back to content after three
+  UX-only sessions. Five Poisons was the most quest-starved sect
+  (1 quest — oath_of_fangs — vs Azure Cloud's 6 and Scarlet Lotus's
+  5); Shan was the fourth multi-quest candidate flagged in session
+  15's handoff. Arc pays off the sect's "grey that does not lie"
+  identity by threading Shan between Azure Cloud and Scarlet Lotus
+  across three quests, each using existing locations:
+  - **The Honest Venom** (QC, prereq oath_of_fangs). A Merchant's
+    Crossing merchant has been poisoned with the Pavilion's
+    Moon-Silt — a toxin three apothecaries alive can brew. Shan
+    reads it from a bloodmarked cloth; gives the counter-venom.
+    FPS+1, Scarlet Lotus -1. Lore: the_honest_venom (Shan's
+    dispensary ledger, the third apothecary who hasn't been
+    located). The player's first taste of Shan not attacking
+    the Pavilion but refusing to lie about them.
+  - **The Sword That Would Not Strike** (QC, prereq Q1). Gatekeeper
+    Wuwei carried an Azure Cloud disciple — Yanyu — out of the
+    valley fog; her sword's hilt-wrap had been poisoned by a
+    junior brother in a sect-internal feud. Shan drew the venom,
+    asks the player to carry the girl back to Baixu without
+    ceremony. FPS+1, ACS+1 — a cross-sect rep bump for the
+    valley tending the Azure Cloud's failure. Lore:
+    the_sword_that_would_not_strike (the letter Yanyu carried,
+    never opened, returned in her sash).
+  - **The Hand That Empties the Heart** (Foundation-ready, FPS+3
+    gate). Shan's capstone. The serpent in the sect's first
+    basin — 41 years old — has stopped drinking. The rite calls
+    for the hundred-grass (*bai-cao*), a herb that grows only
+    where no other plant has ever attempted. The garden's three
+    iron-lattice corners are such places. Quest sends the player
+    through the Poisoner's Garden, collect the grass, return it
+    to Shan — who will perform the rite alone, "not for
+    witness." FPS+1. Capstone: Five-Venoms Brocade Sash
+    accessory (ATK+2, DEF+1, HP+10, on-hit poison 1, sect rep
+    +3 gate). Lore: the_hand_that_empties_the_heart +
+    the_hundred_grass.
+  Content: 4 new items (bloodmarked_cloth and hundred_grass as
+  on-ground quest materials; five_venoms_sash as capstone;
+  shans_dispensary_ledger as narrative prop + orphan lore item),
+  4 new lore entries, 3 new quests, 3 new events (garden_silence_listens
+  at Poisoner's Garden, basin_viper_silence at the Hall,
+  market_paper_seal_fresh at Merchant's Crossing). Matriarch
+  Shan's dialogue grew from 3 to 6 lines (new beats about the
+  third thing that doesn't fit, the three apothecaries, the
+  basin serpent); added rep_dialogue tiers at FPS +5, a new
+  ACS +3 tier, and two Scarlet Lotus tiers (+3 and -2); added
+  lore_dialogue at ACS +3 for the_sword_that_would_not_strike.
+  Gatekeeper Wuwei picked up one new dialogue line about carrying
+  Yanyu — reads ambient before the arc, fulfillment during. Shan
+  also gained a modest sell (antidote_pearl at Matriarch price).
+  Shan's gives_quest became a list of four — she joins Zhao,
+  Huilin, Weilan as the fourth multi-quest giver in the game.
+  New smoke test `tools/smoke_shan.py` — 7 scenarios covering
+  content load, list-gives structure with oath-first order,
+  cloth + grass on-ground placement, full three-quest arc with
+  FPS+3 rep gate (both positive and negative cases) and cross-sect
+  rep deltas (ACS +1, SLP -1), sash equip with claimed bonuses,
+  save/load round-trip. All green. All 13 prior smoke tests
+  remain green.
+
 - **2026-04-23 (session 18)** — "The Bar and the Compass" — third
   UX-only session, coupled polish:
   - **Coloured combat.** Combat was still monochrome. `_print_bar`

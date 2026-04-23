@@ -8,7 +8,8 @@
       "Few come this way by accident, cultivator. Say what you came to say.",
       "Beyond these stones, the sect does not hate; nor does it love. It weighs.",
       "Antidote is a courtesy. Venom is the honest speech. Remember which is which.",
-      "If you would walk the seven steles more than once, I can teach you the sting — the mortal-tier fingerwork we give our own children before they are trusted with a cup. Do not ask for more until you have asked for less."
+      "If you would walk the seven steles more than once, I can teach you the sting — the mortal-tier fingerwork we give our own children before they are trusted with a cup. Do not ask for more until you have asked for less.",
+      "The Azure Cloud sword-girl I carried out of the fog last week — do not ask me her name. She did not give it; I did not ask. The Matriarch has the knowing; the Matriarch will keep it. Tell her, if she asks after Yanyu — tell her the scorpion did not need to wake."
     ],
     "teaches": ["viper_sting"],
     "faction": "five_poisons_sect",
@@ -24,30 +25,48 @@
     "id": "matriarch_shan",
     "name": "Matriarch Shan",
     "title": "Hand of the Five Poisons",
-    "description": "A woman of middling age, her hair coiled with silver pins shaped as centipede legs. Her robes are dust-grey; her eyes are the pale yellow of old amber. She does not seem dangerous until you realise she has not blinked.",
+    "description": "A woman of middling age, her hair coiled with silver pins shaped as centipede legs. Her robes are dust-grey; her eyes are the pale yellow of old amber. She does not seem dangerous until you realise she has not blinked. A small asymmetric knot of many-coloured silk hangs at her left wrist — the sect's ceremonial sash in miniature; she tied it herself at dawn.",
     "dialogue": [
       "Sit. The serpent listens first, the scorpion second. I, last.",
       "We are not the Scarlet Lotus. We do not love cruelty; we only refuse the lie that cruelty is the only evil.",
-      "Bring me three proofs — venom of valley, venom of road, venom of snow — and we will speak of the palm that empties the heart."
+      "Bring me three proofs — venom of valley, venom of road, venom of snow — and we will speak of the palm that empties the heart.",
+      "The valley does not *balance* the cranes and the pond. A scale is too clean a metaphor. We are the third thing that does not fit the lie either tells about the other.",
+      "Three apothecaries alive can brew the Pavilion's Moon-Silt. I have written their names in a book I keep under the lamp. Two are dead, in the sense that dying is what the body does; one is alive in the sense that apothecaries use the word. Do not ask me which.",
+      "The serpent in the first basin is older than my braid. She has held a corner of the sect's courtesy for forty-one winters. When she will not drink, the rite is mine to perform; the rite is not yours to witness. The valley has a grief that does not need an audience to be honest."
     ],
     "teaches": ["five_poisons_palm", "centipede_stance", "five_venoms_brocade_palm"],
-    "gives_quest": "oath_of_fangs",
+    "sells": ["antidote_pearl"],
+    "gives_quest": [
+      "oath_of_fangs",
+      "the_honest_venom",
+      "the_sword_that_would_not_strike",
+      "the_hand_that_empties_the_heart"
+    ],
     "faction": "five_poisons_sect",
     "disposition": "neutral",
     "rep_dialogue": {
       "five_poisons_sect": {
+        "5":  ["You have carried the hundred-grass for the rite. The sect does not forget such a hand. You are not valley-born, and will not be named in the rolls — but if the rolls were the only record, they would be a poor one. You are on the other record.", "The third apothecary who can still brew Moon-Silt — I will tell you her name, if you ever ask me twice. Not tonight."],
         "3":  ["The valley opens for you as it opens for our own. Sit. Drink. The serpent has learned your step.", "If you should ever need a hall to stand between you and the sword — the Five Poisons remembers you."],
         "1":  ["You are not a stranger now. The gatekeeper's scorpion did not rouse when you crossed the steles."],
         "-2": ["Speak plainly, outsider. The valley does not lie, but it weighs every breath that enters it."]
       },
       "azure_cloud_sect": {
-        "5": ["So. You are a sword of the Azure Cloud and still you come to my hall. That is either courage or confusion; I have not decided which."]
+        "5": ["So. You are a sword of the Azure Cloud and still you come to my hall. That is either courage or confusion; I have not decided which.", "Yanyu is recovering. Tell Baixu, if the chance comes, that the valley does not keep letters. Tell him we read the sword, not the sleeve."],
+        "3": ["A disciple of the cranes returning to my hall. I am glad of it. Not every road between us is the one the elders draw."]
+      },
+      "scarlet_lotus_pavilion": {
+        "3": ["You carry Pavilion red close to your wrist. The merchant at the Crossing still lives; I would ask you to tell me which of us should take that as a quiet gift, or a quiet warning. I will not guess on your behalf."],
+        "-2": ["You have cost the Pavilion a debt-collection this season. Do not imagine they have forgotten the name that refused the payment. Nor have I."]
       }
     },
     "lore_dialogue": {
       "five_poisons_sect": {
         "5": "the_five_poisons_refusal",
         "3": "legend_of_the_first_poisoner"
+      },
+      "azure_cloud_sect": {
+        "3": "the_sword_that_would_not_strike"
       }
     },
     "companion_reply": {

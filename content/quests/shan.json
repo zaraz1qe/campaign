@@ -1,0 +1,71 @@
+[
+  {
+    "id": "the_honest_venom",
+    "name": "The Honest Venom",
+    "giver": "matriarch_shan",
+    "description": "Shan does not raise her voice, which somehow makes it all the more audible. 'A merchant at the Crossing is dying slowly — his hands have stopped holding the coin, his eyes the letter. His wife has come to my gate because the physicians of the Cloud have turned her away, and the Pavilion's price for help was a son. I cannot go to the Crossing myself; the valley's absence would be noticed, and the absence of the valley is a signal. You go. Find the sickbed. Take one square of his under-robe where he has bled. Bring it to me. I will read the poison from the blood; I will not read it from hearsay. When you return, I will know whose venom this is — and what, honestly, we can do about it.' She does not say the word *Pavilion*. She does not need to.",
+    "requires_quest": "oath_of_fangs",
+    "steps": [
+      { "type": "visit",   "target": "merchant_crossing" },
+      { "type": "collect", "target": "bloodmarked_cloth" },
+      { "type": "talk",    "target": "matriarch_shan" }
+    ],
+    "reward": {
+      "spirit_stones": 180,
+      "items": ["antidote_pearl", "antidote_pearl", "minor_healing_pill"],
+      "xp": 80
+    },
+    "rep_change": {
+      "five_poisons_sect": 1,
+      "scarlet_lotus_pavilion": -1
+    },
+    "grants_lore": ["the_honest_venom"]
+  },
+  {
+    "id": "the_sword_that_would_not_strike",
+    "name": "The Sword That Would Not Strike",
+    "giver": "matriarch_shan",
+    "description": "Shan has set aside her ceremonial ladle. 'Wuwei found an Azure Cloud disciple at the mouth of the valley last night — walking, then not walking. The sword that struck her was her own; the poison on it is a sect-internal matter no elder of theirs will name. I have drawn the venom; she is fed; she is not mine to keep. Carry her to Elder Baixu. Do not announce her. Hand her to a disciple at the gate; tell them *the valley returns what was never yours to lend.* Then come back, and we will speak of what the cranes do to their own. Do not leave her in the gorge. The gorge would drink her.'",
+    "requires_quest": "the_honest_venom",
+    "steps": [
+      { "type": "visit",   "target": "thousand_venom_valley_mouth" },
+      { "type": "talk",    "target": "gatekeeper_wuwei" },
+      { "type": "visit",   "target": "elder_baixus_pavilion" },
+      { "type": "talk",    "target": "elder_baixu" },
+      { "type": "talk",    "target": "matriarch_shan" }
+    ],
+    "reward": {
+      "spirit_stones": 260,
+      "items": ["nine_serpents_pill", "iron_skin_pill"],
+      "xp": 110
+    },
+    "rep_change": {
+      "five_poisons_sect": 1,
+      "azure_cloud_sect": 1
+    },
+    "grants_lore": ["the_sword_that_would_not_strike"]
+  },
+  {
+    "id": "the_hand_that_empties_the_heart",
+    "name": "The Hand That Empties the Heart",
+    "giver": "matriarch_shan",
+    "description": "Shan stands at the first basin for a long time before she turns. 'The serpent in this basin has stopped drinking. She is older than my braid and older than my name; she has held this corner of the sect's courtesy for forty-one years. The rite says: when the old basin-snake will not drink, the Matriarch offers her the hundred-grass — the one herb in the Poisoner's Garden that grows only where every other plant has failed to live. It is the only passage the serpent will accept. The garden is at its quietest at midnight; the grass cannot be taken from a hand that hurries. Walk the garden slowly. Find the grass. Bring one stem. I will sit with her after you leave; the rite is not for witness. She has earned her rest. She has not earned an audience.'",
+    "requires_quest": "the_sword_that_would_not_strike",
+    "requires_rep": { "five_poisons_sect": 3 },
+    "steps": [
+      { "type": "visit",   "target": "poisoners_garden" },
+      { "type": "collect", "target": "hundred_grass" },
+      { "type": "talk",    "target": "matriarch_shan" }
+    ],
+    "reward": {
+      "spirit_stones": 360,
+      "items": ["five_venoms_sash", "spirit_stone_pouch"],
+      "xp": 150
+    },
+    "rep_change": { "five_poisons_sect": 1 },
+    "grants_lore": [
+      "the_hand_that_empties_the_heart",
+      "the_hundred_grass"
+    ]
+  }
+]

@@ -19,5 +19,19 @@
     "chance": 0.25,
     "text": "A black lotus unfurls at your passing, its petals slick as wet glass. It breathes out once — a cold, sweet breath — and you feel a small gate open somewhere beneath your ribs.",
     "effect": { "qi": 8 }
+  },
+  {
+    "id": "garden_silence_listens",
+    "location": "poisoners_garden",
+    "chance": 0.25,
+    "text": "Every sound in the garden — the drip of censer-resin, the quiet slither of a spider, the wind through the iron lattice — stops together, for the length of a single breath. In the three corner-squares where no plant grows, the dust on the stone lifts, holds, and settles again. Something in the valley was listening. It has stopped. You do not know whether it has left, or whether it has heard what it came to hear.",
+    "effect": {}
+  },
+  {
+    "id": "basin_viper_silence",
+    "location": "five_poisons_hall",
+    "chance": 0.30,
+    "text": "At the first basin, the attendant pauses with the ladle half-raised. The serpent inside has not turned her head; she has not taken the wine; she has not struck the ladle away. The attendant sets the ladle down without a sound and bows, once, to the basin. No one in the hall speaks of it. The Matriarch, in her chair of lacquered bone, does not look up, but her left hand — for the first time since you have known her — moves to touch the small silk knot at her wrist.",
+    "effect": {}
   }
 ]

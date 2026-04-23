@@ -124,6 +124,251 @@ validated, committed.
 
 # Session log
 
+## Session 19 — 2026-04-23 — "The Grey That Does Not Lie"
+
+### What I built
+- **Back to content.** Three consecutive UX-only sessions (16–18)
+  shipped the map, examine, coloured prompt, coloured combat,
+  `saves`, compass, unfinished-business, inventory grouping,
+  `where`. The game reads well now. Time to widen the content
+  surface that those reads-well verbs are reading. Five Poisons
+  Sect was the most quest-starved sect in the game — 1 quest
+  (oath_of_fangs) vs Azure Cloud's 6 and Scarlet Lotus's 5.
+  Matriarch Shan was the obvious next multi-quest-giver target
+  per session 15's handoff — voice enough (3 dlg / 2 rep tiers
+  / 1 lore tier / 3 comp replies), 3 teaches, 1 quest.
+- **Arc: "The Grey That Does Not Lie".** Three connected quests
+  that put Shan between Azure Cloud and Scarlet Lotus in sequence
+  — each pays off the sect's existing `oath_of_the_grey` lore
+  (*"we are not the righteous / we are not the demonic / we are
+  the grey — which is to say, we have eyes"*). The arc's shape
+  is the sect's philosophy made gameplay.
+- **Q1 — "The Honest Venom"** (QC, prereq oath_of_fangs). A
+  merchant at the Crossing has been poisoned with Moon-Silt —
+  a Scarlet Lotus pill only three apothecaries alive can brew.
+  Shan reads the toxin from a bloodmarked underrobe square,
+  identifies it, gives the counter-venom. The valley does not
+  attack the Pavilion; it refuses to lie about them.
+  FPS+1, Scarlet Lotus -1. Lore: the_honest_venom. Items:
+  bloodmarked_cloth on-ground at Merchant's Crossing; also
+  added shans_dispensary_ledger as a narrative treasure-prop
+  that names the two dead apothecaries and the third who
+  hasn't been located (hook for a later arc).
+- **Q2 — "The Sword That Would Not Strike"** (QC, prereq Q1).
+  An Azure Cloud disciple named Yanyu — sent south on a
+  sealed-letter errand — collapses at the valley's mouth after
+  her own sword's hilt-wrap is discovered to be poisoned by a
+  junior brother who had a grudge against her senior. Shan's
+  gatekeeper Wuwei carried her in; Shan drew the venom; the
+  player is asked to carry her back to Baixu without
+  announcement. FPS+1 AND ACS+1 — a cross-sect rep bump
+  earned by the valley tending the cranes' failure, which is
+  the correct shape of "grey" in action. Lore:
+  the_sword_that_would_not_strike. The letter is returned,
+  unopened, in her sash; the crime is for the cranes to find
+  in their own hall, not Shan's.
+- **Q3 — "The Hand That Empties the Heart"** (Foundation-ready,
+  FPS+3 gate, prereq Q2). Shan's capstone. The serpent in the
+  sect's first bronze basin — 41 winters old — has stopped
+  drinking. The rite is the Matriarch's alone, but the rite
+  needs the *hundred-grass* — the one plant that grows only
+  where no plant has ever attempted to live (the garden's
+  iron-lattice corners, where wind geometry denies even a
+  seed its landing). The player walks the Poisoner's Garden
+  at the sect's quietest hour, finds the grass, returns it.
+  Shan performs the rite alone, "not for witness; the valley
+  has a grief that does not need an audience to be honest."
+  FPS+1. Capstone item: **Five-Venoms Brocade Sash**
+  (accessory: ATK+2, DEF+1, HP+10, on-hit poison 1, FPS+3
+  rep-gated). Lore: the_hand_that_empties_the_heart and
+  the_hundred_grass — the first is a sutra-category entry
+  on the rite, the second a sutra on the herb's strange
+  botany and Lan-yi's treatise margin note ("*if the garden
+  does not grow it for you tonight, do not return tomorrow.
+  Both answers are also answers.*").
+- **Content totals**: 4 new items (2 quest materials, 1
+  capstone accessory, 1 treasure ledger), 4 new lore entries,
+  3 new quests, 3 new events (garden_silence_listens at
+  Poisoner's Garden, basin_viper_silence at Five Poisons Hall,
+  market_paper_seal_fresh at Merchant's Crossing). Zero new
+  locations, zero new NPCs, zero new enemies, zero new
+  techniques — pure deepening of existing geography and
+  voice.
+- **Matriarch Shan's voice.** Dialogue grew 3 → 6 lines:
+  added the "third thing that does not fit the lie either
+  tells about the other" (the sect's self-definition in
+  one breath), the three-apothecaries line (lamps Q1 in
+  advance), and the basin-serpent line (lamps Q3 in advance).
+  Description now notes the many-coloured silk knot at her
+  left wrist — the sect's ceremonial sash in miniature; she
+  tied it herself at dawn. Added rep_dialogue at **FPS +5**
+  (she'll tell you the third apothecary's name if you ever
+  ask her twice), **ACS +3** (a disciple of the cranes
+  returning to her hall), **ACS +5** (Yanyu update), and
+  two Scarlet Lotus tiers — +3 (the merchant-at-the-Crossing
+  weigh-in) and -2 (the Pavilion remembers the refused
+  debt). New lore_dialogue at ACS +3 revealing
+  the_sword_that_would_not_strike — a crane disciple who
+  has earned the sect's respect learns the story from Shan
+  herself. Added a small sell: antidote_pearl (the Matriarch
+  carries her own personal stock). Her gives_quest became a
+  list of four — she joins Zhao (library), Huilin (bell),
+  Weilan (bitter remedy) as the fourth multi-quest giver.
+- **Gatekeeper Wuwei nod.** One new dialogue line about
+  carrying an Azure Cloud sword-girl out of the fog — reads
+  ambient before the arc, fulfillment during. Same technique
+  as Baixu's bowl-line for Huilin (session 14), Baixu's
+  physician-Weiyan line for Weilan (session 15). Players
+  who meet Wuwei before the arc get foreshadowing; players
+  who meet him during the arc get pay-off.
+- **Smoke test.** `tools/smoke_shan.py` — 7 scenarios: content
+  load (items / lore / quests / events); Shan's gives_quest
+  list structure with oath-first order; cloth on-ground at
+  Merchant's Crossing (pre-existing ground content not
+  clobbered); grass on-ground at Poisoner's Garden
+  (pre-existing black_lotus_seed preserved); full three-quest
+  arc end-to-end with FPS+3 gate (positive AND negative case
+  — a gate-fails regression test), cross-sect rep deltas land
+  (ACS+1 on Q2, SLP-1 on Q1); sash equip with claimed
+  bonuses; save/load round-trip. All green.
+
+### Current state
+- Validator: **29 loc / 30 npc / 22 enemy / 43 tech / 92 item /
+  4 sect / 25 quest / 48 event / 41 lore / 15 recipe.** Deltas
+  from session 18: +4 items, +3 quests, +3 events, +4 lore. No
+  new NPCs / enemies / locations / techniques.
+- All 13 prior smoke tests remain green; new `smoke_shan.py`
+  green. Fourteen total.
+- Save-compat preserved. Zero new Player fields. Existing saves
+  load; an old save that completed `oath_of_fangs` just starts
+  the new arc next time they talk to Shan.
+- Quest distribution going in → going out: **Five Poisons Sect**
+  went from 1 quest to 4 — now matches the other sects for
+  density. Four NPCs in the game own multi-quest arcs (Zhao:
+  3 library quests, Huilin: 3 bell quests, Weilan: 3 bitter
+  remedy quests, Shan: 4 including oath). **Merchant's
+  Crossing** picked up a new ground item + event — the market
+  hub finally has a Scarlet Lotus side-story beat worth
+  returning to. **Poisoner's Garden** picked up an item on
+  the ground and a second atmospheric event. **Five Poisons
+  Hall** picked up its first ambient event.
+
+### What I'd do next if I had another hour
+1. **Apothecary Qi's arc.** Qi has 3 dlg, 3 teaches, 5 sells,
+   no rep_dialogue, no companion_reply, no quest. She is
+   Shan's basin-keeper at the Five Poisons Hall. A two-or-
+   three quest arc about her tending the basin-creatures,
+   pairing thematically with Shan's capstone. Would round
+   out the Thousand Venom Valley to Azure Cloud-quality
+   density.
+2. **The third Moon-Silt apothecary.** Shan's ledger names
+   them but doesn't locate them. A follow-up arc from Shan
+   at FPS+5 (the lore_dialogue tier hints at this): track
+   the third apothecary down. Could take the player to an
+   existing region (Sky-Spire? Scarlet Lotus?) or a new
+   unlocatable side-NPC.
+3. **Venomhand Bai's own arc.** Bai is a companion (3rd
+   companion in the game). She has 4 dialogue / 2 rep tiers /
+   no quest. A pre-companion "prove yourself to the sister
+   of the black lattice" arc would make recruiting her feel
+   earned rather than rep-gated. Parallel to how Jin the
+   Blood-Sworn has recruit lore but no arc.
+4. **Yanyu as a future NPC.** The Azure Cloud disciple from
+   Q2 has a name and a story but no on-screen presence. She
+   could appear at the Azure Cloud Inner Courtyard post-arc
+   as a recovering disciple, giving the arc a visible
+   aftermath.
+5. **Cross-sect quest follow-ups.** Now that three sects have
+   3-or-4 quest arcs, cross-sect quests (where a player with
+   high standing in TWO sects triggers new content) become
+   affordable. E.g. a player with FPS+5 AND ACS+5 could be
+   offered by Shan to carry a proposal between her and
+   Baixu — the first actual "diplomatic" quest in the game.
+6. **Five Poisons second arc from Bai or Qi.** The sect has
+   4 quests now, all through Shan. Adding a second multi-
+   quest giver to the sect (like Zhao and Baixu both have in
+   Azure Cloud) would make the sect feel like a place with
+   people, not just a place with a matriarch.
+
+### Things I noticed but didn't fix
+- **Talk-step satisfaction subtlety.** When Q2's step chain
+  ends in `talk Shan`, and the player has ALREADY talked to
+  Shan (to accept the quest in the first place), the final
+  step is trivially satisfied the moment every prior step
+  closes. So Q2 closes when the player talks to Baixu, not
+  when they return to Shan. Discovered this writing the
+  smoke test; updated the test assertion to match the real
+  contract. Narratively this is fine — the player still goes
+  back to Shan because Q3 waits for them there. Engine-level
+  fix would be a `ceremonially_talk` verb, but that's its
+  own design rabbit hole.
+- **Apothecary Qi is still 0-quest.** Flagged in session 15's
+  handoff; still flagged. Next session's obvious follow-up.
+- **The third Moon-Silt apothecary** is named in Shan's ledger
+  but unlocated. Deliberate open thread.
+- **`shans_dispensary_ledger` is the only new item that isn't
+  placed anywhere.** It's listed in the items file but not
+  on any NPC's sell list, not in any location's items_on_ground,
+  not in any quest reward. The smoke-test inventory-grouping
+  audit would catch it. Left it orphan because it's a narrative
+  prop whose in-fiction existence is already acknowledged in
+  Shan's rep+5 dialogue ("a book I keep under the lamp") —
+  a future arc or rep-gated gift can reach for it.
+- **Merchant's Crossing 'sickbed' NPC is fictional.** The Q1
+  quest describes visiting the merchant; mechanically, the
+  step is `visit merchant_crossing` + `collect bloodmarked_cloth`
+  — no talk-step. So the merchant's wife, his sickbed, the
+  paper-sealed shop-front all live in the quest text and the
+  new event, not as a walkable NPC. Intentional scope-cut;
+  adding a "sickbed_merchant" NPC would've meant another
+  dialogue tree for a one-quest puppet.
+
+### Don'ts (lessons learned)
+- **Don't forget `talked_to` is a persistent set.** A quest
+  chain that ends in `talk <giver>` where the giver is
+  already in `talked_to` will close on the *previous* step's
+  trigger, not on a ceremonial return-talk. Every arc I've
+  written has been affected by this — Huilin, Weilan, now
+  Shan. The workaround is that the giver still has something
+  to offer on the next talk (the next quest in the list, rep
+  crossings, etc.), so the narrative beat lands. But the
+  assertion "return-talk closes the quest" is wrong for all
+  these arcs; the correct shape is "the final step's trigger
+  closes the quest, and the next talk carries the next
+  offer."
+- **Don't write a rep-gated quest without a gate-fails
+  regression in the smoke test.** FPS+3 gate on Q3 is
+  trivially met after two quests that each grant FPS+1 on
+  top of an oath_of_fangs grant. But if someone later
+  rebalances the rep grants, the gate could silently become
+  unreachable or trivial. Explicit gate-fails assertion
+  (with the second `g2` game, FPS=2) locks in the gate's
+  meaning.
+- **Don't duplicate gatekeeper dialogue in NPC + quest text.**
+  Wuwei's new "I carried the sword-girl out of the fog" line
+  is tight because it ONLY reveals what the gatekeeper
+  remembers — the Azure Cloud name Yanyu comes from Shan.
+  Overlapping the two would flatten both. Let each voice
+  own what it knows.
+- **Don't add new locations for the sake of an arc.** Every
+  Shan quest uses pre-existing geography — Merchant's
+  Crossing, TVV mouth, Baixu's Pavilion, Poisoner's Garden,
+  Five Poisons Hall. Five under-used places got another
+  reason to exist. A new "Moon-Silt apothecary house"
+  location would have thinned the world, not thickened it.
+  Session 14's lesson applies again: pay off the geography
+  you have before adding more.
+- **Don't over-write the capstone's narrative.** The
+  hand_that_empties_the_heart rite is performed alone. The
+  player hands Shan the grass and leaves. That's the right
+  shape — the valley's grief is not the player's to witness.
+  An earlier draft had the player present for the rite.
+  Cut. Some narrative beats belong to the NPC, not to the
+  camera. The lore entry carries the rite's shape; the
+  quest itself stops at the door.
+
+---
+
 ## Session 18 — 2026-04-23 — "The Bar and the Compass"
 
 ### What I built

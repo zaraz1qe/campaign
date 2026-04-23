@@ -28,6 +28,13 @@
     "effect": { "spirit_stones": -3 }
   },
   {
+    "id": "market_paper_seal_fresh",
+    "location": "merchant_crossing",
+    "chance": 0.25,
+    "text": "Down the side-alley behind the cloth-stall, a shop-front has been sealed with a strip of fresh paper. A woman sits on the step with her hands folded; her husband has been ill nine days, a neighbour mutters, and no Azure Cloud healer has come. She raises her eyes at you, weighs the weigh, and looks away. Someone has already failed her once.",
+    "effect": {}
+  },
+  {
     "id": "distant_cry_for_help",
     "location": "bandit_road",
     "chance": 0.3,
