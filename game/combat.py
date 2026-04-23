@@ -15,6 +15,7 @@ from __future__ import annotations
 from typing import Dict, Any, List, Optional
 import random
 
+from . import style
 from .state import Player, affinity_bonus, affinity_tier
 
 
@@ -39,10 +40,26 @@ _CRIT_LINES = (
 )
 
 
-def _print_bar(label: str, cur: int, mx: int, width: int = 20) -> str:
+def _print_bar(label: str, cur: int, mx: int, width: int = 20,
+               *, is_enemy: bool = False) -> str:
     cur = max(0, cur)
     filled = int(width * cur / mx) if mx > 0 else 0
-    return f"{label} [{'#' * filled}{'.' * (width - filled)}] {cur}/{mx}"
+    # The bar glyphs are colour-coded by fill: green > 2/3, yellow > 1/3,
+    # red below. Enemies render with the same fill bands but the label
+    # gets the enemy colour to set tone. Labels for allies pass through
+    # style.companion() at the call site.
+    bar_glyphs = "#" * filled + "." * (width - filled)
+    if mx > 0:
+        frac = cur / mx
+        if frac >= 0.66:
+            bar = style.wrap(bar_glyphs, style.BRIGHT_GREEN)
+        elif frac >= 0.33:
+            bar = style.wrap(bar_glyphs, style.BRIGHT_YELLOW)
+        else:
+            bar = style.wrap(bar_glyphs, style.BRIGHT_RED)
+    else:
+        bar = bar_glyphs
+    return f"{label} [{bar}] {cur}/{mx}"
 
 
 # ---------------------------------------------------------------------------
@@ -59,12 +76,17 @@ def _status_summary(status: List[Dict[str, Any]]) -> str:
     for s in status:
         t = s["type"]
         if t in _DOT_KINDS:
-            parts.append(f"{t} {s['power']}/{s['turns_left']}t")
+            # DoT effects read in alarm-colours so the player clocks the
+            # count-down mid-fight without reading the number first.
+            parts.append(style.wrap(f"{t} {s['power']}/{s['turns_left']}t",
+                                     style.BRIGHT_RED))
         elif t == "stun":
-            parts.append(f"stunned {s['turns_left']}t")
+            parts.append(style.wrap(f"stunned {s['turns_left']}t",
+                                     style.BRIGHT_YELLOW))
         elif t.startswith("buff_"):
             stat = t.split("_", 1)[1].upper()
-            parts.append(f"+{s['power']} {stat} ({s['turns_left']}t)")
+            parts.append(style.wrap(f"+{s['power']} {stat} ({s['turns_left']}t)",
+                                     style.BRIGHT_GREEN))
     return " [" + ", ".join(parts) + "]"
 
 
@@ -244,21 +266,22 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
     weapon_on_hit_pwr = int(weapon.get("on_hit_power", 0) or 0) if weapon else 0
 
     io.out("")
-    io.out(f"=== Combat begins: {e['name']} ===")
+    io.out(style.alert(f"=== Combat begins: {e['name']} ==="))
     desc = enemy_def.get("description", "")
     if desc:
         io.out(desc)
     if weapon_name:
-        io.out(f"(You draw {weapon_name}.)")
+        io.out(style.dim(f"(You draw {weapon_name}.)"))
     if comp:
-        io.out(f"({comp['name']} steps in at your side.)")
+        io.out(style.dim(f"({style.companion(comp['name'])} steps in at your side.)"))
         if comp_aff_bonus["atk"] or comp_aff_bonus["def"] or comp_aff_bonus["spd"]:
             tier = affinity_tier(comp["affinity"])
             parts = []
             for k in ("atk", "def", "spd"):
                 if comp_aff_bonus[k]:
                     parts.append(f"+{comp_aff_bonus[k]} {k.upper()}")
-            io.out(f"  (Your bond is {tier} — {', '.join(parts)}.)")
+            io.out(style.dim(f"  (Your bond is {style.good(tier)} — "
+                             f"{', '.join(parts)}.)"))
 
     def _player_take(dmg: int) -> None:
         player.hp -= dmg
@@ -306,13 +329,13 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
         xp = int(enemy_def.get("xp", 10))
         player.xp += xp
         player.qi += xp // 2
-        io.out(f"You gain {xp} XP and {xp // 2} qi.")
+        io.out(style.good(f"You gain {xp} XP and {xp // 2} qi."))
         for drop in enemy_def.get("drops", []):
             if random.random() < float(drop.get("chance", 0.5)):
                 iid = drop["item"]
                 player.add_item(iid, 1)
                 iname = world["items"].get(iid, {}).get("name", iid)
-                io.out(f"You loot: {iname}")
+                io.out(f"You loot: {style.item(iname)}")
         player.defeated[enemy_id] = player.defeated.get(enemy_id, 0) + 1
         # Affinity: a shared victory deepens the bond. Only if the companion
         # was still standing at the end — you win *together*, not despite.
@@ -329,19 +352,25 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
     def _defeat() -> str:
         player.hp = 1
         io.out("")
-        io.out("You collapse, broken. A passing herbalist drags you back to safety...")
-        io.out("(You wake at 1 HP. Rest well.)")
+        io.out(style.alert("You collapse, broken. A passing herbalist drags you back to safety..."))
+        io.out(style.dim("(You wake at 1 HP. Rest well.)"))
         _writeback_companion(False)
         return "defeat"
 
     while True:
         io.out("")
-        io.out(_print_bar(player.name.ljust(16), player.hp, p_gear_hp_max)
+        # Player / companion / enemy bars. Labels get coloured at the
+        # label position (not inside the bar), so the HP-fill colour is
+        # independent of the team colour.
+        p_label = style.bold(player.name.ljust(16))
+        io.out(_print_bar(p_label, player.hp, p_gear_hp_max)
                + _status_summary(player_status))
         if comp and not comp["downed"]:
-            io.out(_print_bar(comp["name"].ljust(16), comp["hp"], comp["max_hp"])
+            c_label = style.companion(comp["name"].ljust(16))
+            io.out(_print_bar(c_label, comp["hp"], comp["max_hp"])
                    + _status_summary(comp["status"]))
-        io.out(_print_bar(e["name"].ljust(16), e["hp"], e["max_hp"])
+        e_label = style.enemy(e["name"].ljust(16))
+        io.out(_print_bar(e_label, e["hp"], e["max_hp"])
                + _status_summary(e["status"]))
 
         # -------- Player start-of-turn status tick --------
@@ -353,7 +382,11 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
         if stunned:
             player_acted = False
         else:
-            io.out("Actions: (a)ttack  (t)echnique  (i)tem  (f)lee")
+            io.out(style.dim("Actions: ") +
+                   f"({style.bold('a')})ttack  "
+                   f"({style.bold('t')})echnique  "
+                   f"({style.bold('i')})tem  "
+                   f"({style.bold('f')})lee")
             choice = io.ask("> ").strip().lower()
 
             if choice in ("a", "attack", ""):
@@ -462,7 +495,7 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
                 player_acted = False
 
         if e["hp"] <= 0:
-            return _victory(f"{e['name']} collapses, defeated.")
+            return _victory(f"{style.enemy(e['name'])} collapses, defeated.")
 
         # -------- Companion turn --------
         if comp and not comp["downed"]:
@@ -470,14 +503,15 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
                                      _comp_take, is_player=False)
             _comp_down_check()
             if e["hp"] <= 0:
-                return _victory(f"{e['name']} succumbs, edged out by the final toxin.")
+                return _victory(f"{style.enemy(e['name'])} succumbs, edged out by the final toxin.")
             if comp and not comp["downed"] and not c_stunned:
                 # Slow qi regen so long fights stay playable.
                 if comp["qi"] < comp["max_qi"]:
                     comp["qi"] = min(comp["max_qi"], comp["qi"] + 3)
                 _run_companion_action(world, comp, e, io, _enemy_take)
                 if e["hp"] <= 0:
-                    return _victory(f"{e['name']} falls under {comp['name']}'s final stroke.")
+                    return _victory(f"{style.enemy(e['name'])} falls under "
+                                    f"{style.companion(comp['name'])}'s final stroke.")
 
         if not player_acted:
             # still do enemy turn — otherwise cancelling a menu is a free skip
@@ -486,7 +520,7 @@ def fight(world: Dict[str, Dict[str, Any]], player: Player, enemy_id: str,
         # -------- Enemy start-of-turn status tick --------
         e_stunned = _tick_status(e["status"], e["name"], io, _enemy_take, is_player=False)
         if e["hp"] <= 0:
-            return _victory(f"{e['name']} succumbs to the lingering toxin.")
+            return _victory(f"{style.enemy(e['name'])} succumbs to the lingering toxin.")
 
         if e_stunned:
             continue

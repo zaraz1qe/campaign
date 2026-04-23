@@ -102,6 +102,7 @@ class Game:
           name <yourname>                 set your name
           save [slot]                     save game (slot defaults to 'default')
           load [slot]                     load saved game
+          saves / slots                   list all save slots with metadata
           help                            show this help
           quit                            exit
         Shorthand:  n / s / e / w / u / d  for go directions; '' (Enter) = look
@@ -191,6 +192,12 @@ class Game:
                          f"{style.dim('(use `take ' + iid + '`)')}")
         exits = loc.get("exits", {})
         if exits:
+            # Compass overlay: three lines with N / W+E / S cells naming
+            # the neighbour in that direction. Diagonal / named portals
+            # fall through to the "Exits:" line below. Only drawn when
+            # at least one cardinal exit is present — otherwise the
+            # compass is empty and just wastes three lines.
+            self._print_compass(exits)
             parts = []
             for d, t in exits.items():
                 name = self.world["locations"].get(t, {}).get("name", t)
@@ -204,6 +211,49 @@ class Game:
         self._maybe_event(loc)
         # Quest progression triggers from visiting
         self._note_quests()
+
+    def _print_compass(self, exits: Dict[str, str]) -> None:
+        """Render a tiny compass under `look` naming cardinal neighbours.
+        Output is three lines:
+            `         N: Foothills`
+            `  W: Village    E: River`
+            `         S: Hermit`
+        Unvisited cells render dim; visited cells render in `loc` colour.
+        `up`/`down` are folded onto N/S (matching the map renderer). If
+        there are no cardinal exits at all, no compass prints."""
+        def _neighbour(d: str) -> Optional[str]:
+            t = exits.get(d)
+            if not t:
+                return None
+            name = self.world["locations"].get(t, {}).get("name", t)
+            return (style.loc(name) if t in self.player.visited
+                    else style.dim(name))
+
+        n = _neighbour("north") or _neighbour("up")
+        s = _neighbour("south") or _neighbour("down")
+        e = _neighbour("east")
+        w = _neighbour("west")
+        if not any((n, s, e, w)):
+            return
+        # Layout: 3 lines, each ~40 chars wide. Pad so labels align.
+        def _line_nors(glyph: str, text: Optional[str]) -> str:
+            if not text:
+                return ""
+            return f"{style.dim(glyph + ':')} {text}"
+        pad = " " * 14
+        if n:
+            self.out(f"{pad}{_line_nors('N', n)}")
+        # Middle line: W on the left, E on the right (roughly).
+        wl = _line_nors("W", w)
+        el = _line_nors("E", e)
+        if wl and el:
+            self.out(f"{wl:<30s}{el}")
+        elif wl:
+            self.out(wl)
+        elif el:
+            self.out(f"{pad}{el}")
+        if s:
+            self.out(f"{pad}{_line_nors('S', s)}")
 
     def _maybe_companion_bark(self) -> None:
         """Print the companion's location-specific bark once per arrival.
@@ -1266,6 +1316,59 @@ class Game:
             self.out(f"Companion: {style.companion(cname)} "
                      f"({style.hp_bar(comp.get('hp',0), comp.get('max_hp',0))}){tag}  "
                      f"— bond: {style.good(affinity_tier(aff))} ({aff:+d})")
+        # Unfinished business — a short sheet of active-quest next beats.
+        # Mirrors `where` look-ahead but summarises every active quest
+        # rather than filtering to the current location.
+        self._print_unfinished_business(limit=4)
+
+    def _print_unfinished_business(self, limit: int = 4) -> None:
+        """Top `limit` active quests with their next-step target — a todo
+        list the player can glance at from their player-sheet."""
+        if not self.player.active_quests:
+            return
+        lines: list[str] = []
+        for qid, stored_idx in self.player.active_quests.items():
+            q = self.world["quests"].get(qid, {})
+            steps = q.get("steps", [])
+            if not steps:
+                continue
+            idx = stored_idx
+            # Same read-only look-ahead as `where`, stopping one short of the
+            # final step so a ready-to-close quest still shows its giver-talk.
+            while idx < len(steps) - 1 and quests._step_satisfied(
+                    steps[idx], self.player):
+                idx += 1
+            if idx >= len(steps):
+                continue
+            step = steps[idx]
+            stype = step.get("type", "?")
+            target = step.get("target", "")
+            hint = ""
+            if stype == "visit":
+                tname = self.world["locations"].get(target, {}).get("name", target)
+                hint = f"visit {style.loc(tname)}"
+            elif stype == "talk":
+                tname = self.world["npcs"].get(target, {}).get("name", target)
+                hint = f"talk to {style.npc(tname)}"
+            elif stype == "collect":
+                tname = self.world["items"].get(target, {}).get("name", target)
+                hint = f"collect {style.item(tname)}"
+            elif stype == "defeat":
+                tname = self.world["enemies"].get(target, {}).get("name", target)
+                hint = f"defeat {style.enemy(tname)}"
+            else:
+                hint = f"{stype} {target}"
+            lines.append(f"  - {style.quest(q.get('name', qid))} — {hint}")
+            if len(lines) >= limit:
+                break
+        if lines:
+            self.out("")
+            self.out(style.title("Unfinished business:"))
+            for line in lines:
+                self.out(line)
+            hidden = len(self.player.active_quests) - len(lines)
+            if hidden > 0:
+                self.out(style.dim(f"  (and {hidden} more — see `quest`)"))
 
     def cmd_color(self, arg: str) -> None:
         """Toggle or set ANSI colour output.
@@ -1573,17 +1676,55 @@ class Game:
         slot = arg.strip() or "default"
         path = SAVE_DIR / f"{slot}.json"
         path.write_text(self.player.to_json(), encoding="utf-8")
-        self.out(f"Saved to {path.name}.")
+        self.out(f"Saved to {style.item(path.name)}.")
 
     def cmd_load(self, arg: str) -> None:
         slot = arg.strip() or "default"
         path = SAVE_DIR / f"{slot}.json"
         if not path.exists():
-            self.out(f"No save in slot '{slot}'.")
+            self.out(style.warn(f"No save in slot '{slot}'."))
             return
         self.player = Player.from_json(path.read_text(encoding="utf-8"))
-        self.out(f"Loaded {path.name}.")
+        self.out(f"Loaded {style.item(path.name)}.")
         self.cmd_look("")
+
+    def cmd_saves(self, _arg: str) -> None:
+        """List every save slot on disk with slot name, player name,
+        realm, location, and last-modified date. Useful when juggling
+        multiple save games."""
+        import datetime, json as _json
+        paths = sorted(SAVE_DIR.glob("*.json"))
+        if not paths:
+            self.out(style.dim("No save slots yet. Use `save <slot>` to create one."))
+            return
+        self.out(style.title(f"Save slots ({len(paths)}):"))
+        rows: list[tuple[str, str, str, str, str]] = []
+        for p in paths:
+            slot = p.stem
+            mtime = datetime.datetime.fromtimestamp(p.stat().st_mtime)
+            stamp = mtime.strftime("%Y-%m-%d %H:%M")
+            try:
+                blob = _json.loads(p.read_text(encoding="utf-8"))
+            except Exception:
+                rows.append((slot, "(unreadable)", "", "", stamp))
+                continue
+            name = blob.get("name", "?")
+            realm_id = blob.get("realm_id", "mortal")
+            realm_name = self.world.get("realms", {}).get(
+                realm_id, {}).get("name", realm_id)
+            loc_id = blob.get("location", "")
+            loc_name = self.world["locations"].get(loc_id, {}).get("name", loc_id)
+            rows.append((slot, name, realm_name, loc_name, stamp))
+        # Column header.
+        self.out(f"  {style.dim('slot'):<18s}  {style.dim('name'):<14s}  "
+                 f"{style.dim('realm'):<24s}  {style.dim('location'):<28s}  "
+                 f"{style.dim('saved')}")
+        for slot, name, realm_name, loc_name, stamp in rows:
+            self.out(f"  {style.bold(slot):<18s}  "
+                     f"{name:<14s}  "
+                     f"{style.realm(realm_name):<24s}  "
+                     f"{style.loc(loc_name):<28s}  "
+                     f"{style.dim(stamp)}")
 
     # ------------------------------------------------------------------
     def cmd_quit(self, _arg: str) -> None:
@@ -1648,6 +1789,8 @@ class Game:
         "name": "cmd_name",
         "save": "cmd_save",
         "load": "cmd_load",
+        "saves": "cmd_saves",
+        "slots": "cmd_saves",
         "quit": "cmd_quit",
         "exit": "cmd_quit",
     }

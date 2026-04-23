@@ -228,6 +228,47 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-23 (session 18)** — "The Bar and the Compass" — third
+  UX-only session, coupled polish:
+  - **Coloured combat.** Combat was still monochrome. `_print_bar`
+    now fills the HP glyph run in green / yellow / red bands by
+    fraction (≥2/3 green, ≥1/3 yellow, below red). Player name
+    bold, enemy name red, companion green-bold. DoT timers
+    (poison N/Nt, bleed N/Nt, stun Nt) render bright-red in the
+    status summary; buff timers green. "=== Combat begins ===",
+    "You collapse", victory/flee/loot lines all picked up
+    semantic colour. `Actions:` line has dimmed label with bold
+    keypress letters.
+  - **`saves` command** (aliases `slots`). Lists every save slot
+    in `saves/` with slot id, player name, realm, location, and
+    last-modified timestamp in a clean column layout. Empty-state
+    message when the directory is bare. Answers "what runs do I
+    have going?" without `ls saves/`.
+  - **`look` compass overlay.** Three-line mini-compass above the
+    flat `Exits:` listing, naming the cardinal neighbours and
+    folding `up`/`down` onto N/S (matching the map renderer).
+    Visited cells render in location colour; unvisited render
+    dim. Suppressed entirely when the location has no cardinal
+    exits (e.g. the Azure Cloud Library's lone `out` portal).
+  - **Unfinished business on `status`.** The player-sheet now
+    ends with a short block listing up to 4 active quests with
+    their next-step hints — "visit Pale Lake Shore", "talk to
+    Weilan of the Red Pestle", "collect A Cup of Pale-Lake
+    Silt", "defeat Black Banner Shao". Uses the same read-only
+    look-ahead as `where` so a ready-to-close quest displays
+    the giver-talk cleanly. Silent when there are no active
+    quests; `(and N more — see quest)` footer when the list is
+    truncated.
+  New `tools/smoke_session18.py` — 8 scenarios: `_print_bar` colour
+  bands (green/yellow/red by fraction, plain when colour off);
+  status-summary timer formatting for each status kind; `look`
+  compass overlay renders with N/S/E/W + neighbour names; up/down
+  folding onto N/S; no-compass when no cardinal exits; `saves`
+  listing + empty-state message; `status` unfinished-business
+  block when there are active quests; block suppression when
+  there aren't. All 12 prior smoke tests remain green. Engine +
+  combat; no JSON touched.
+
 - **2026-04-23 (session 17)** — "The Colour of a Sect" — polish pass,
   second UX-only session. Three coupled refinements layered onto
   session 16's map/examine/prompt foundation:

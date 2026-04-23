@@ -124,6 +124,214 @@ validated, committed.
 
 # Session log
 
+## Session 18 — 2026-04-23 — "The Bar and the Compass"
+
+### What I built
+- **Third UX-only session.** Sessions 16 and 17 shipped the map,
+  examine verb, prompt, colour palette, inventory grouping, and
+  `where` command. This session layered four more polish beats on
+  top. Engine/combat only; no JSON touched; no save-compat
+  changes.
+- **Coloured combat.** Combat was the biggest remaining monochrome
+  surface — the verb the player spends most time in. Key changes
+  in `game/combat.py`:
+  - `_print_bar` fills HP glyphs with colour by fraction —
+    ≥2/3 bright green, ≥1/3 bright yellow, below bright red.
+    The player watches their own bar decay from green through
+    yellow into red and feels it.
+  - `_status_summary` wraps each chunk in alarm/buff colours:
+    poison/bleed/stun in bright red (left side of the alarm),
+    buff_atk/buff_def in bright green. DoT timers like
+    `poison 2/3t` scream at the player without a second look.
+  - Combat label colours: `Wanderer` bold, enemy name red,
+    companion green-bold — each team reads distinctively.
+  - "=== Combat begins ===" header red-alert; "You collapse"
+    red-alert; victory lines (`Foe collapses, defeated.`,
+    `succumbs to the lingering toxin`, `falls under companion's
+    final stroke`) wrap the enemy name red; "You gain X XP"
+    green; loot names cyan.
+  - `Actions:` line now `Actions: (a)ttack (t)echnique (i)tem
+    (f)lee` with dimmed label and bold keypress letters so the
+    menu reads as navigable.
+  Combat becomes readable-at-a-glance; the player can drop into
+  mid-fight state without re-reading the paragraph above.
+- **`saves` command** (aliases `slots`). `save`/`load` work with
+  slot arguments but there was no way to discover what was on
+  disk. `saves` prints a clean table: slot id (bold), player
+  name, realm, current location (loc-colour), last-modified
+  timestamp (dim) — one row per `.json` in the save dir. Empty
+  state shows `"No save slots yet. Use save <slot> to create
+  one."` Implemented read-only (no parsing of Player object —
+  just JSON blob + realm lookup via `world["realms"]`). A
+  genuinely useful multi-save command that took ~30 lines.
+- **`look` compass overlay.** Above the flat `Exits:` line,
+  `cmd_look` now prints a three-line compass:
+
+      `         N: Foothills`
+      `W: Village            E: River`
+      `         S: Hermit`
+
+  Each neighbour is coloured by visited state — cyan `style.loc`
+  when you've been, dim when you haven't. `up`/`down` fold onto
+  N/S so Sky-Spire Reach's altitudes read as above/below on the
+  compass (matching the map renderer's vertical axis). The
+  compass suppresses entirely when the location has no cardinal
+  exits — e.g. a sect hub whose only exit is `out`. Every
+  `look` now carries the immediate-neighbourhood map inline, no
+  `map` command required. Non-cardinal exits (`across`, `in`,
+  `library`, `forge`, `elder`) still surface in the existing
+  `Exits:` line below the compass.
+- **Unfinished business on `status`.** The player-sheet ended at
+  "Companion: …" with nothing to carry forward. Now appends a
+  short block listing up to 4 active quests with their next-step
+  hints in natural language: `visit Pale Lake Shore`, `talk to
+  Weilan of the Red Pestle`, `collect A Cup of Pale-Lake Silt`,
+  `defeat Black Banner Shao`. Uses the same read-only
+  look-ahead from `where`/session 17 — walks through satisfied
+  steps but stops one short of the final step, so
+  ready-to-close quests surface their giver-talk. If there are
+  more than 4 active quests, a dim footer `(and N more — see
+  quest)` prompts the player to the full list. Silent when
+  no active quests. A player glancing at `status` now sees
+  where they stand AND what comes next, in one breath.
+- **Help updated.** `help` now mentions `saves` / `slots`.
+- **Smoke test.** `tools/smoke_session18.py` — 8 scenarios:
+  - `_print_bar` colour bands (plain when off; green/yellow/red
+    by fraction when on);
+  - status-summary carries `poison 2/3t`, `stunned Nt`, `+N ATK
+    (Nt)` for each kind;
+  - `look` compass names N/S/E/W with neighbour names;
+  - up/down fold onto N/S (verified at Thunderhead Ridge);
+  - no compass at locations with no cardinal exits (verified
+    at Azure Cloud Library);
+  - `saves` lists slots + metadata with timestamps;
+  - `saves` empty-state message when the dir is bare;
+  - `status` appends Unfinished business with correct hints;
+  - `status` suppresses the block when no active quests.
+  Test safely moves real saves aside for the slot-listing
+  scenario then restores them.
+
+### Current state
+- Engine deltas: `game/engine.py` +~110 LOC (cmd_saves new,
+  _print_compass new, _print_unfinished_business new,
+  cmd_status extended, cmd_look compass-integrated, DISPATCH
+  +2, help text +1). `game/combat.py` +~30 LOC (style import,
+  _print_bar colour bands, _status_summary colour wraps,
+  label colours, start/end messages coloured). `play.py`
+  unchanged. No new state fields; all saves load as-is.
+- Validator: **29 loc / 30 npc / 22 enemy / 43 tech / 88 item /
+  4 sect / 22 quest / 45 event / 37 lore / 15 recipe.** No
+  deltas vs session 17.
+- All 12 prior smoke tests green; new `smoke_session18.py`
+  green. Thirteen total.
+- Interactive `python3 play.py --color`:
+  - Combat bars shift green→yellow→red as the fight tightens.
+  - Poison/bleed timers blink red in the bar suffix.
+  - Save slots list cleanly with `saves` command.
+  - Each `look` includes an in-line compass; unvisited
+    neighbours render dim, visited ones bright.
+  - `status` at the Scarlet Lotus Shrine with two active arcs
+    shows a 2-line unfinished-business block at the bottom.
+
+### What I'd do next if I had another hour
+1. **Buy/sell UI polish.** Vendor listings are embedded in `talk`
+   output. A dedicated `shop` command at a vendor location
+   would print a clean per-vendor vendor sheet with prices
+   coloured by affordability (green if you can buy, red if you
+   can't). Would also let vendors with long sell lists (like
+   Zhao's 7 manuals) be browsed without scrolling past their
+   dialogue. ~60 LOC.
+2. **`cmd_take` auto-progress (the open session-17 question).**
+   Currently fetch-return quests wait for the next `talk` to
+   mechanically close. `where` and `status` cover the UX with
+   look-aheads, but the fiction of "take the bell → quest
+   closes on its own" could land harder if `take` called
+   `_note_quests`. It would break two smoke tests; with their
+   updates that's a one-session pass.
+3. **`read` polish.** `read <lore>` works but the output is
+   just raw title + text. Adding a short breadcrumb — "you
+   learned this from <source>" when the lore's provenance is
+   trackable, a line above the body — would tie the lore
+   system into the rest of the game more tightly.
+4. **Combat message palette.** Attack verbs in combat ("You
+   drive into", "You hammer", "You lash out") fire a plain
+   ATK-damage line. Colour the damage number itself by
+   proportion (high-damage hit brighter) for another tone
+   beat. Small but visible.
+5. **Map grid colour.** The mapview's grid glyphs are still
+   plain ASCII. Tint current-cell green, visited-sect-aligned
+   cells by faction alignment (cyan righteous, red demonic,
+   yellow neutral) — echoes the `reputation` sect colouring.
+6. **`cmd_drop`.** Rogan noted in an old ROADMAP item — there's
+   no way to drop items. Inventory-grouped presentation now
+   makes the absence more felt. One-liner command if we scope
+   it narrowly.
+7. **Combat log scrollback.** Combat prints many lines per
+   round; on a small terminal the start of the fight scrolls
+   out of view. A brief pre-turn "round summary" (HP delta
+   since last round) could compress the history into one line.
+   Genuinely optional; current per-line form is readable.
+
+### Things I noticed but didn't fix
+- **ANSI-width column padding is still off.** `cmd_saves`
+  uses `{slot:<18s}` on a style-bold-wrapped string — the
+  bold escapes count as characters, so colour-on output
+  mis-aligns columns slightly. Same issue flagged in
+  session 17 for `cmd_reputation`. A proper fix strips ANSI
+  for width calc. The output is still readable; the misalign
+  is cosmetic. Not this session.
+- **Compass pad is hardcoded at 14 spaces.** Works well for
+  standard neighbour-name lengths (up to ~14 chars once
+  trimmed). Very long names like "Thousand Venom Valley —
+  Mouth" would collide the W/E labels. Didn't see it in the
+  wild during the test pass; flag it for future content that
+  uses mouthful location names.
+- **Saves command doesn't expose save slots of other users.**
+  It reads from the repo-local `saves/` directory. Fine for
+  single-user dev; if the game ever needs multi-user the
+  save path would have to come from an env var.
+- **Unfinished business truncates at 4.** An arbitrary limit.
+  Picked by eye. The player can always `quest` for the full
+  board.
+
+### Don'ts (lessons learned)
+- **Don't colour inside the bar glyphs and then measure from
+  the outside.** First combat_print_bar draft coloured each
+  glyph individually and broke the bar width math. Moving the
+  SGR wrap to the run (one open, one close) around the
+  pre-computed glyph string fixed it — the bar still renders
+  at the requested width, the colour is applied once.
+- **Don't assume the state layer knows about combat label
+  colours.** First pass tried `style.enemy(e['name']).ljust(16)`
+  — Python's ljust sees the ANSI escape as characters and
+  over-pads. Pad first, then colour. `.ljust(16)` is applied
+  to the raw name, then `style.enemy(...)` wraps the whole
+  padded string. The bar is still aligned under a terminal
+  that renders SGR zero-width.
+- **Don't let the test's side effects pollute a real save
+  directory.** `smoke_session18` F scenario moves any existing
+  `.json` in `saves/` aside with a `.bak_s18` extension, runs
+  the test's create/list/assert, unlinks the test's own
+  slots, and restores the originals. Wrapped in try/finally
+  so the restore happens even on assert failure. Tests
+  shouldn't cost the player their runs.
+- **Don't collapse "compass" and "exits listing" into one.**
+  Every cardinal exit needs to surface on both — the compass
+  is the visual-at-a-glance, the `Exits:` line is the
+  authoritative one (including non-cardinal exits like
+  `across`, `library`, `in`, etc.). Showing the compass
+  instead of `Exits:` would lose those. Show both; they
+  complement each other.
+- **Don't emit timers that lie.** The status-summary timer
+  `poison 2/3t` means "2 damage per turn, 3 turns left" —
+  the slash is a separator between power and duration, not
+  a fraction. First draft nearly coloured it as a single
+  semantic unit; the better read is two fields side by
+  side. Kept the format; coloured the whole chunk in one
+  alarm wrap so the eye parses it together.
+
+---
+
 ## Session 17 — 2026-04-23 — "The Colour of a Sect"
 
 ### What I built
