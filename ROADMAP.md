@@ -228,6 +228,53 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-23 (session 17)** — "The Colour of a Sect" — polish pass,
+  second UX-only session. Three coupled refinements layered onto
+  session 16's map/examine/prompt foundation:
+  - **ANSI colour output** (the want since session 6). New
+    `game/style.py` is a narrow palette module with semantic helpers
+    — `npc()`, `enemy()`, `quest()`, `lore()`, `item()`, `loc()`,
+    `realm()`, `sect_aligned()`, `rep_delta()`, `rep_value()`,
+    `hp_bar()`, `qi_bar()`, `good()`, `warn()`, `alert()`, `dim()`,
+    `bold()`. Colour is OFF by default (tests using captured IO see
+    plain text); the REPL auto-detects from TTY + `NO_COLOR` /
+    `CLICOLOR` / `CLICOLOR_FORCE`. `play.py --no-color` /
+    `play.py --color` flags override. New in-game `color on/off`
+    command toggles at will and marks the setting explicit.
+    Applied across every structured path: location titles, NPC names
+    (green), enemy names/threats (red), quest tags (yellow), lore
+    tags (gold), item names (cyan), rep values by sign, HP/Qi bars
+    by fraction (green/yellow/red), sect names coloured by
+    alignment (cyan righteous, red demonic, yellow neutral).
+  - **Inventory grouping by type.** `cmd_inventory` was a flat
+    sorted list. Now groups into Weapons / Robes & Armor /
+    Accessories / Pills / Manuals / Materials / Treasures /
+    Quest items / Other in a stable order with bold group
+    headers. Each entry shows count, name, first-line description
+    (truncated at 70 chars), and a `[equipped]` tag on any gear
+    currently slotted. A sect apothecary's sleeves finally look
+    like a sect apothecary's sleeves.
+  - **`where` / `here` command.** New verb that answers "what's
+    actionable at this location right now?" Lists every active
+    quest whose next step can progress here — visit, talk,
+    collect, defeat — with a specific hint (e.g. "talk to Weilan
+    of the Red Pestle", "take A Cup of Pale-Lake Silt from the
+    ground", "defeat Black Banner Shao"). Uses a read-only
+    look-ahead through satisfied steps so a return-talk at the
+    giver's location surfaces correctly even before the engine
+    has formally advanced the quest. Also surfaces NPCs of
+    interest with tag flags (has quest / teaches / sells /
+    crafts / recruitable), items on the ground, and any threats.
+    The answer to "I'm here; what do I do?" without opening
+    three other menus.
+  New `tools/smoke_polish.py` — 10 scenarios covering: colour off
+  by default in tests, helpers no-op/wrap correctly, auto_detect
+  honors NO_COLOR and CLICOLOR_FORCE, `color` toggle, inventory
+  grouping order, `[equipped]` indicator, `where` actionable-step
+  naming, `where` look-ahead for return-talk, `where` surfacing
+  people / items / threats, reputation render in both modes. All
+  11 prior smoke tests remain green. Engine only; no JSON touched.
+
 - **2026-04-23 (session 16)** — "The Map That Does Not Lie" — UX
   refine pass. First session in the series focused on mechanics/
   visuals rather than content. Three coupled moves:

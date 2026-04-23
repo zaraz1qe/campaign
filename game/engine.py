@@ -7,7 +7,7 @@ import sys
 import textwrap
 import shlex
 
-from . import loader, cultivation, combat, quests, mapview
+from . import loader, cultivation, combat, quests, mapview, style
 from .state import Player, EQUIP_SLOTS, rep_rank, affinity_tier, affinity_bonus
 
 
@@ -92,7 +92,9 @@ class Game:
           techniques (t)                  list martial arts known
           status     (s)                  player sheet
           quest                           list quests
+          where / here                    what can I do at this location right now?
           reputation (rep)                list standing with each sect
+          color [on|off]                  toggle ANSI colour output
           recruit <npc>                   ask an able companion to walk with you
           dismiss                         release your companion
           companion (party)               show your companion's condition
@@ -154,9 +156,9 @@ class Game:
             self.out("(You float in a featureless void. Add some locations!)")
             return
         self.out("")
-        self.out(f"~~ {loc.get('name', self.player.location)} ~~")
+        self.out(style.title(f"~~ {loc.get('name', self.player.location)} ~~"))
         if loc.get("region"):
-            self.out(f"   ({loc['region']})")
+            self.out(style.region(f"   ({loc['region']})"))
         self.out(_wrap(loc.get("description", "")))
         if self.player.location not in self.player.visited:
             ft = loc.get("first_visit_text")
@@ -170,13 +172,13 @@ class Game:
             self.out("Here you see:")
             for nid in npcs:
                 n = self.world["npcs"].get(nid, {})
-                self.out(f"  - {n.get('name', nid)}: {n.get('title','')}")
+                self.out(f"  - {style.npc(n.get('name', nid))}: {n.get('title','')}")
         enemies = self._visible_here("enemies", "enemies")
         if enemies:
-            self.out("Threats prowl these grounds:")
+            self.out(style.warn("Threats prowl these grounds:"))
             for eid in enemies:
                 e = self.world["enemies"].get(eid, {})
-                self.out(f"  ! {e.get('name', eid)}")
+                self.out(f"  {style.enemy('!')} {style.enemy(e.get('name', eid))}")
                 ambush = e.get("ambush_text")
                 if ambush:
                     self.out(_wrap("      " + ambush))
@@ -185,10 +187,17 @@ class Game:
             self.out("On the ground:")
             for iid in items:
                 it = self.world["items"].get(iid, {})
-                self.out(f"  * {it.get('name', iid)} (use `take {iid}`)")
+                self.out(f"  * {style.item(it.get('name', iid))} "
+                         f"{style.dim('(use `take ' + iid + '`)')}")
         exits = loc.get("exits", {})
         if exits:
-            self.out("Exits: " + ", ".join(f"{d}->{t}" for d, t in exits.items()))
+            parts = []
+            for d, t in exits.items():
+                name = self.world["locations"].get(t, {}).get("name", t)
+                dstr = style.dim(d + "→")
+                nstr = style.loc(name) if t in self.player.visited else style.dim(name)
+                parts.append(f"{dstr}{nstr}")
+            self.out("Exits: " + ", ".join(parts))
         # A companion may have something to say about this particular place.
         self._maybe_companion_bark()
         # Trigger random event
@@ -450,7 +459,7 @@ class Game:
             return
         n = self.world["npcs"][npc_id]
         self.out("")
-        self.out(f"--- {n.get('name', npc_id)} ---")
+        self.out(style.npc(f"--- {n.get('name', npc_id)} ---"))
         for line in n.get("dialogue", []):
             self.out(_wrap(f'  "{line}"'))
         for line in self._rep_dialogue_lines(n):
@@ -461,14 +470,16 @@ class Game:
         for line in self._companion_reply_lines(n):
             self.out(_wrap(f'  "{line}"'))
         if n.get("teaches"):
-            names = [self.world["techniques"].get(t, {}).get("name", t) for t in n["teaches"]]
-            self.out(f"  (Can teach: {', '.join(names)})")
+            names = [style.technique(self.world["techniques"].get(t, {}).get("name", t))
+                     for t in n["teaches"]]
+            self.out(f"  {style.dim('(Can teach:')} {', '.join(names)}{style.dim(')')}")
         if n.get("sells"):
-            self.out("  (Sells:")
+            self.out(style.dim("  (Sells:"))
             for iid in n["sells"]:
                 it = self.world["items"].get(iid, {})
-                self.out(f"     {it.get('name', iid)} — {it.get('value', '?')} stones")
-            self.out("  )")
+                self.out(f"     {style.item(it.get('name', iid))} "
+                         f"{style.dim('—')} {it.get('value', '?')} stones")
+            self.out(style.dim("  )"))
         recs = self._recipes_at(npc_id)
         if recs:
             type_tag = {"forge": "Forges", "brew": "Brews"}.get(
@@ -515,8 +526,8 @@ class Game:
         self.out("")
         if source:
             self.out(_wrap(f"  * {source}"))
-        self.out(f"  [Lore recorded — {cat}] {title}")
-        self.out(_wrap(f"    (read it later with `read {lore_id}`)"))
+        self.out(f"  {style.lore(f'[Lore recorded — {cat}]')} {style.lore(title)}")
+        self.out(_wrap(style.dim(f"    (read it later with `read {lore_id}`)")))
         return True
 
     def _lore_dialogue_grant(self, npc: Dict[str, Any], npc_id: str) -> None:
@@ -917,7 +928,11 @@ class Game:
         items.remove(iid)
         self.player.add_item(iid, 1)
         iname = self.world["items"].get(iid, {}).get("name", iid)
-        self.out(f"You pick up {iname}.")
+        self.out(f"You pick up {style.item(iname)}.")
+        # Deliberately don't auto-progress quests here — the fiction of a
+        # collect-chain is "go fetch the thing and *come back to tell me*",
+        # and closing the quest at pickup time trivialises the return beat.
+        # `progress_quests` runs on the next `talk` to the giver instead.
 
     # ------------------------------------------------------------------
     # ------------------------------------------------------------------
@@ -1132,15 +1147,60 @@ class Game:
         self.cmd_read("")
 
     # ------------------------------------------------------------------
+    # Order in which inventory groups are printed. Entries are the item's
+    # `type` field; anything not matched falls into the "Other" bucket at
+    # the end.
+    _INVENTORY_GROUPS = [
+        ("Weapons",       {"weapon"}),
+        ("Robes & Armor", {"armor", "robe"}),
+        ("Accessories",   {"accessory"}),
+        ("Pills",         {"pill"}),
+        ("Manuals",       {"manual"}),
+        ("Materials",     {"material"}),
+        ("Treasures",     {"treasure"}),
+        ("Quest items",   {"quest"}),
+    ]
+
     def cmd_inventory(self, _arg: str) -> None:
-        self.out(f"Spirit stones: {self.player.spirit_stones}")
+        self.out(f"Spirit stones: {style.item(str(self.player.spirit_stones))}")
         if not self.player.inventory:
-            self.out("Your sleeves are empty.")
+            self.out(style.dim("Your sleeves are empty."))
             return
-        self.out("Inventory:")
-        for iid, n in sorted(self.player.inventory.items()):
+        # Bucket items by the group they belong to.
+        buckets: Dict[str, list] = {}
+        for iid, n in self.player.inventory.items():
+            if n <= 0:
+                continue
             it = self.world["items"].get(iid, {})
-            self.out(f"  {n:>3}  {it.get('name', iid)}  — {it.get('description','')}")
+            itype = (it.get("type") or "other").lower()
+            bucket_name = None
+            for name, types in self._INVENTORY_GROUPS:
+                if itype in types:
+                    bucket_name = name
+                    break
+            if bucket_name is None:
+                bucket_name = "Other"
+            buckets.setdefault(bucket_name, []).append((iid, n, it))
+        # Print in the declared order, then Other at the end if present.
+        ordered = [n for n, _ in self._INVENTORY_GROUPS] + ["Other"]
+        self.out(style.title("Inventory:"))
+        for group in ordered:
+            entries = buckets.get(group)
+            if not entries:
+                continue
+            self.out(f"  {style.bold(group)}")
+            for iid, n, it in sorted(entries, key=lambda x: x[2].get("name", x[0])):
+                count = f"{n:>3}"
+                name = style.item(it.get("name", iid))
+                desc = it.get("description", "")
+                # Equipped indicator for gear.
+                equipped = ""
+                for slot, eid in self.player.equipped.items():
+                    if eid == iid:
+                        equipped = style.good(" [equipped]")
+                        break
+                self.out(f"    {count}  {name}{equipped} "
+                         f"{style.dim('— ' + desc[:70] + ('…' if len(desc) > 70 else ''))}")
 
     def cmd_techniques(self, _arg: str) -> None:
         if not self.player.techniques:
@@ -1159,53 +1219,213 @@ class Game:
         nxt = cultivation.next_realm(self.world, self.player)
         gb = self.player.gear_bonuses(self.world)
         self.out("")
-        self.out(f"Name:    {self.player.name}")
-        self.out(f"Realm:   {cr.get('name','?')}  —  {cr.get('description','')}")
+        self.out(f"Name:    {style.bold(self.player.name)}")
+        self.out(f"Realm:   {style.realm(cr.get('name','?'))}  —  {cr.get('description','')}")
         if nxt:
-            self.out(f"  Qi: {self.player.qi}/{cr.get('qi_required','?')} "
-                     f"(next: {nxt.get('name','?')})")
+            self.out(f"  {style.qi_bar(self.player.qi, cr.get('qi_required', self.player.max_qi))} "
+                     f"{style.dim('(next: ' + nxt.get('name','?') + ')')}")
         else:
-            self.out(f"  Qi: {self.player.qi}  (no higher realm known)")
+            self.out(f"  Qi: {self.player.qi}  {style.dim('(no higher realm known)')}")
         eff_max_hp = self.player.eff_max_hp(self.world)
-        hp_tag = f" (base {self.player.max_hp} +{gb['hp']} gear)" if gb["hp"] else ""
-        self.out(f"HP:      {self.player.hp}/{eff_max_hp}{hp_tag}")
+        hp_tag = style.dim(f" (base {self.player.max_hp} +{gb['hp']} gear)") if gb["hp"] else ""
+        self.out(f"{style.hp_bar(self.player.hp, eff_max_hp)}{hp_tag}")
         def _line(label: str, base: int, bonus: int) -> str:
             if bonus:
-                return f"  {label}: {base + bonus}  (base {base} +{bonus} gear)"
+                return (f"  {label}: {base + bonus}  "
+                        f"{style.dim(f'(base {base} +{bonus} gear)')}")
             return f"  {label}: {base}"
-        self.out("Stats:")
+        self.out(style.title("Stats:"))
         self.out(_line("ATK", self.player.atk, gb["atk"]))
         self.out(_line("DEF", self.player.defense, gb["def"]))
         self.out(_line("SPD", self.player.spd, gb["spd"]))
         self.out(f"XP:      {self.player.xp}")
         self.out(f"Stones:  {self.player.spirit_stones}")
-        self.out(f"Location:{self.world['locations'].get(self.player.location,{}).get('name', self.player.location)}")
-        self.out(f"Visited: {len(self.player.visited)} / {len(self.world['locations'])} locations")
+        self.out(f"Location:{style.loc(self.world['locations'].get(self.player.location,{}).get('name', self.player.location))}")
+        self.out(style.dim(f"Visited: {len(self.player.visited)} / {len(self.world['locations'])} locations"))
         # Equipped
         equipped_names = []
         for slot in EQUIP_SLOTS:
             iid = self.player.equipped.get(slot, "")
             if iid:
                 nm = self.world["items"].get(iid, {}).get("name", iid)
-                equipped_names.append(f"{slot}={nm}")
+                equipped_names.append(f"{slot}={style.item(nm)}")
         if equipped_names:
             self.out("Gear:    " + "; ".join(equipped_names))
         if self.player.reputation:
-            self.out("Reputation:")
+            self.out(style.title("Reputation:"))
             for sid, v in sorted(self.player.reputation.items()):
-                sname = self.world["sects"].get(sid, {}).get("name", sid)
-                self.out(f"  {sname}: {v:+d} ({rep_rank(int(v))})")
+                s = self.world["sects"].get(sid, {})
+                sname = style.sect_aligned(s.get("alignment",""), s.get("name", sid))
+                self.out(f"  {sname}: {style.rep_value(int(v))} ({rep_rank(int(v))})")
         comp = self.player.companion
         if comp:
             cname = self.world["npcs"].get(comp.get("id", ""), {}).get("name",
                                                                         comp.get("id", "Companion"))
-            tag = " [DOWNED]" if comp.get("downed") else ""
+            tag = style.alert(" [DOWNED]") if comp.get("downed") else ""
             aff = self.player.affinity(comp.get("id", ""))
-            self.out(f"Companion: {cname} ({comp.get('hp',0)}/{comp.get('max_hp',0)} HP){tag}  "
-                     f"— bond: {affinity_tier(aff)} ({aff:+d})")
+            self.out(f"Companion: {style.companion(cname)} "
+                     f"({style.hp_bar(comp.get('hp',0), comp.get('max_hp',0))}){tag}  "
+                     f"— bond: {style.good(affinity_tier(aff))} ({aff:+d})")
+
+    def cmd_color(self, arg: str) -> None:
+        """Toggle or set ANSI colour output.
+        `color`        -> toggle
+        `color on`     -> enable
+        `color off`    -> disable
+        """
+        a = (arg or "").strip().lower()
+        if a in ("on", "true", "yes", "1"):
+            style.set_enabled(True)
+        elif a in ("off", "false", "no", "0", "none"):
+            style.set_enabled(False)
+        else:
+            style.set_enabled(not style.enabled())
+        self.out(f"Colour is now {style.good('on') if style.enabled() else style.dim('off')}.")
 
     def cmd_quest(self, _arg: str) -> None:
         self.out(quests.quest_status(self.world, self.player))
+
+    def cmd_where(self, _arg: str) -> None:
+        """What can the player actually *do* at the current location right
+        now? Lists each active quest whose next step can progress here —
+        with the step's verb and target — and flags vendors, teachers,
+        and crafters present. The answer to "I'm here; what's open?"."""
+        loc_id = self.player.location
+        loc = self._loc()
+        if not loc:
+            self.out("(You are nowhere. There is nothing to do.)")
+            return
+        header = style.title(f"At {style.loc(loc.get('name', loc_id))}:")
+        self.out("")
+        self.out(header)
+
+        # 1) Active quest steps that can progress here. We compute the
+        # EFFECTIVE step index — walk forward from the stored idx, skipping
+        # any step already satisfied without side effects. That way
+        # `where` shows the honest next-thing-to-do even if the engine
+        # hasn't formally advanced the quest yet (e.g. a collect step
+        # whose item is already in the sleeve, waiting for the ceremonial
+        # return-talk).
+        actionable: list[tuple[str, str]] = []
+        for qid, stored_idx in self.player.active_quests.items():
+            q = self.world["quests"].get(qid, {})
+            steps = q.get("steps", [])
+            idx = stored_idx
+            # Walk forward through satisfied steps, but never past the last
+            # one — the final step (typically a return-talk to the giver)
+            # is the narrative close even when it's technically already
+            # satisfied (e.g. the player talked to the giver to accept
+            # the quest in the first place). Without this stop, a quest
+            # in "ready to close" state disappears from `where`.
+            while idx < len(steps) - 1 and quests._step_satisfied(steps[idx], self.player):
+                idx += 1
+            if idx >= len(steps):
+                continue
+            step = steps[idx]
+            stype = step.get("type", "")
+            target = step.get("target", "")
+            here = False
+            hint = ""
+            if stype == "visit" and target == loc_id:
+                here = True
+                hint = "just being here will close this step"
+            elif stype == "talk" and target in (loc.get("npcs") or []):
+                # NPC must actually be visible (rep gate may hide them).
+                if target in self._visible_here("npcs", "npcs"):
+                    here = True
+                    nname = self.world["npcs"].get(target, {}).get("name", target)
+                    hint = f"talk to {nname}"
+            elif stype == "collect" and target in (loc.get("items_on_ground") or []):
+                here = True
+                iname = self.world["items"].get(target, {}).get("name", target)
+                hint = f"take {iname} from the ground"
+            elif stype == "collect" and self.player.has_item(target,
+                                                             int(step.get("count", 1))):
+                # Collect step already satisfied; next step is waiting for
+                # the player to return to the giver. Not "actionable here"
+                # unless the giver happens to live here.
+                pass
+            elif stype == "defeat" and target in (loc.get("enemies") or []):
+                if target in self._visible_here("enemies", "enemies"):
+                    here = True
+                    ename = self.world["enemies"].get(target, {}).get("name", target)
+                    hint = f"defeat {ename}"
+            if here:
+                actionable.append((q.get("name", qid), hint))
+
+        if actionable:
+            self.out(style.quest("  Active quests you can advance:"))
+            for qname, hint in actionable:
+                self.out(f"    - {style.quest(qname)}  {style.dim('— ' + hint)}")
+        else:
+            if self.player.active_quests:
+                self.out(style.dim("  No active quest step resolves here."))
+            else:
+                self.out(style.dim("  You have accepted no quests."))
+
+        # 2) NPCs here with mechanical offers (quest, teach, sell, craft).
+        npcs = self._visible_here("npcs", "npcs")
+        offers: list[str] = []
+        for nid in npcs:
+            n = self.world["npcs"].get(nid, {})
+            nname = style.npc(n.get("name", nid))
+            tags = []
+            gq = n.get("gives_quest")
+            if gq:
+                # Only advertise a giver when at least one of their quests
+                # is still unaccepted-and-uncompleted and not prereq-gated.
+                ids = [gq] if isinstance(gq, str) else list(gq)
+                for qid in ids:
+                    q = self.world["quests"].get(qid, {})
+                    if not q:
+                        continue
+                    if qid in self.player.completed_quests:
+                        continue
+                    if qid in self.player.active_quests:
+                        continue
+                    prereq = q.get("requires_quest")
+                    if prereq and prereq not in self.player.completed_quests:
+                        continue
+                    # Rep gate: silent if unmet but still count — the NPC
+                    # weighs you, the player just sees a "has quest" nudge.
+                    tags.append("has quest")
+                    break
+            if n.get("teaches"):
+                tags.append("teaches")
+            if n.get("sells"):
+                tags.append("sells")
+            recs = self._recipes_at(nid)
+            if recs:
+                tags.append("crafts")
+            if n.get("companion") and not self.player.companion:
+                tags.append("recruitable")
+            if tags:
+                offers.append(f"    - {nname}  {style.dim('(' + ', '.join(tags) + ')')}")
+        if offers:
+            self.out(style.title("  People of interest here:"))
+            for o in offers:
+                self.out(o)
+
+        # 3) Items on ground, briefly.
+        items = loc.get("items_on_ground") or []
+        pickup_items = []
+        for iid in items:
+            it = self.world["items"].get(iid, {})
+            pickup_items.append(style.item(it.get("name", iid)))
+        if pickup_items:
+            self.out(f"  On the ground: {', '.join(pickup_items)}")
+
+        # 4) Enemies here, briefly.
+        enemies = self._visible_here("enemies", "enemies")
+        if enemies:
+            enames = [style.enemy(self.world["enemies"].get(e, {}).get("name", e))
+                      for e in enemies]
+            self.out(f"  {style.warn('Threats:')} {', '.join(enames)}")
+
+        # If nothing at all applied, say so gracefully.
+        if not actionable and not offers and not items and not enemies:
+            self.out(style.dim("  Quiet. Perhaps a cultivation spot — or just "
+                               "somewhere to pass through."))
 
     # ------------------------------------------------------------------
     # Companion — recruit a qualified NPC to fight at your side. Only one at a
@@ -1331,10 +1551,14 @@ class Game:
         if not rows:
             self.out("No sects are known in this world yet.")
             return
-        self.out("Standing with the sects:")
+        self.out(style.title("Standing with the sects:"))
         for name, v, rank, align in rows:
-            align_tag = f" [{align}]" if align else ""
-            self.out(f"  {name:<32s}  {v:+3d}  {rank}{align_tag}")
+            sname = style.sect_aligned(align, name)
+            align_tag = style.dim(f" [{align}]") if align else ""
+            rank_c = (style.good(rank) if v > 0 else
+                      style.warn(rank) if v < 0 else
+                      style.dim(rank))
+            self.out(f"  {sname:<40s}  {style.rep_value(v):>8s}  {rank_c}{align_tag}")
 
     # ------------------------------------------------------------------
     def cmd_name(self, arg: str) -> None:
@@ -1410,6 +1634,10 @@ class Game:
         "s": "cmd_status",
         "quest": "cmd_quest",
         "quests": "cmd_quest",
+        "where": "cmd_where",
+        "here": "cmd_where",
+        "color": "cmd_color",
+        "colour": "cmd_color",
         "reputation": "cmd_reputation",
         "rep": "cmd_reputation",
         "standing": "cmd_reputation",
@@ -1462,21 +1690,29 @@ class Game:
         loc_name = self.world["locations"].get(
             self.player.location, {}).get("name", self.player.location)
         parts = [
-            f"HP {self.player.hp}/{hp_max}",
-            f"Qi {self.player.qi}/{qi_cap}",
-            realm_short,
-            loc_name,
+            style.hp_bar(self.player.hp, hp_max),
+            style.qi_bar(self.player.qi, qi_cap),
+            style.realm(realm_short),
+            style.loc(loc_name),
         ]
         comp = self.player.companion
         if comp and not comp.get("downed"):
             cname = self.world["npcs"].get(comp.get("id", ""), {}).get(
                 "name", comp.get("id", "Companion")).split()[0]
-            parts.append(f"+{cname} {comp.get('hp','?')}/{comp.get('max_hp','?')}")
+            chp = comp.get("hp", "?")
+            chp_max = comp.get("max_hp", "?")
+            parts.append(style.companion(f"+{cname} {chp}/{chp_max}"))
         elif comp and comp.get("downed"):
-            parts.append("+companion:downed")
+            parts.append(style.alert("+companion:downed"))
         return "[" + " | ".join(parts) + "] > "
 
     def repl(self) -> None:
+        # Turn on ANSI colour if the caller hasn't already decided. play.py
+        # sets this first via --color / --no-color; otherwise auto-detect
+        # from TTY + NO_COLOR/CLICOLOR. Tests that construct Game directly
+        # never take this path, so their captured output is colour-free.
+        if not style.is_explicit():
+            style.auto_detect()
         self.banner()
         while True:
             try:

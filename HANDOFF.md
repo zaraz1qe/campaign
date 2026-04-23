@@ -124,6 +124,233 @@ validated, committed.
 
 # Session log
 
+## Session 17 — 2026-04-23 — "The Colour of a Sect"
+
+### What I built
+- **Second UX-only session.** Session 16 shipped the ASCII map,
+  examine verb, and prompt enrichment. This one layers the next
+  three wants on top: ANSI colour, inventory grouping, and a
+  `where` command. Engine-only again; no JSON changed; no
+  save-compat concerns.
+- **ANSI colour.** New `game/style.py` is a narrow 200-line palette
+  module with semantic helpers rather than a full SGR kit. Call
+  sites reach for `style.npc(name)`, `style.enemy(name)`,
+  `style.quest("[QUEST ACCEPTED]")` — consistent names across
+  the engine, easy to change palette in one place. Off by default;
+  REPL auto-detects from TTY + `NO_COLOR` / `CLICOLOR` /
+  `CLICOLOR_FORCE`. `play.py --no-color` / `--color` flags force
+  one way or the other (marked explicit so TTY detection won't
+  undo a CLI choice). New in-game `color on|off` command toggles
+  live. Colour is applied across structured output paths:
+  - `look` — location title (bold bright white), region (dim
+    cyan), NPC names (bright green), enemy names + `!` marker
+    (bright red), items on ground (cyan), exits rendered as
+    `direction→Location Name` with direction dimmed.
+  - Prompt — HP bar green/yellow/red by fraction, Qi bar cyan
+    by fraction, realm magenta, location cyan, companion
+    bright-green+bold or alert-red if downed.
+  - `talk` — NPC header green, teach/sell lines dimmed around
+    the item/technique names (item cyan, technique magenta).
+  - Quest/lore announcements — `[QUEST ACCEPTED]` yellow,
+    `[QUEST COMPLETE]` bright green, `[Lore recorded]` gold,
+    `[Reputation]` green on gain / yellow on loss with the
+    rank name coloured to match; `[Bond]` bright green.
+  - `reputation` / `status` — sect names coloured by
+    alignment (cyan righteous, red demonic, yellow neutral),
+    rep values signed + coloured.
+  - `inventory` — item names cyan, `[equipped]` tag green,
+    descriptions dimmed.
+- **Inventory grouping.** `cmd_inventory` was a flat alphabetical
+  list. Now buckets items into Weapons / Robes & Armor /
+  Accessories / Pills / Manuals / Materials / Treasures / Quest
+  items / Other, printed in that stable order with bold group
+  headers. Each row: right-padded count, coloured name, `[equipped]`
+  flag when the item is in a player slot, description truncated
+  at 70 chars (ellipsised). The game's 88 items fall across 8
+  meaningful groups instead of one 88-line blob.
+- **`where` / `here` command.** New verb answering the player's
+  most common implicit question: *"I'm here; what do I actually
+  do?"*. Reads active_quests, walks forward through satisfied
+  steps in a read-only look-ahead, and names whichever step's
+  target resolves at the current location — visit, talk, collect,
+  defeat — with a natural-language hint: *"talk to Weilan of the
+  Red Pestle"*, *"take A Cup of Pale-Lake Silt from the ground"*,
+  *"defeat Black Banner Shao"*, *"just being here will close this
+  step"*. The look-ahead is critical: a fetch-and-return quest
+  sits at step 0 until the engine formally advances it, and
+  without the look-ahead the player sees "no step resolves here"
+  at the giver's own doorstep. Stops look-ahead one short of the
+  final step so a ready-to-close-on-return-talk surfaces as a
+  cue to talk to the giver. Also surfaces three parallel
+  context blocks:
+  - **People of interest here** — each visible NPC flagged with
+    any of `has quest` (unaccepted non-prereq'd offer),
+    `teaches`, `sells`, `crafts`, `recruitable`.
+  - **On the ground** — items visible for pickup.
+  - **Threats** — enemies visible at the location.
+  Aliased `here`. When nothing applies at all, says so gracefully:
+  *"Quiet. Perhaps a cultivation spot — or just somewhere to
+  pass through."*
+- **One bug I spotted + deliberately did not fix.** `cmd_take`
+  doesn't call `_note_quests`, so a collect step's mechanical
+  completion waits for the next `talk`/`go` to formally close.
+  I briefly fixed it (added the call), which cascaded a breakage
+  in two existing smoke tests that assumed return-talk is the
+  closing beat. Reverted. The fiction of "fetch and come back
+  to tell me" is narratively right even if the engine has the
+  quest mechanically complete earlier. The `where` look-ahead
+  paves over the mechanical lag from the player's side.
+- **Help updated.** `help` now documents `where` / `here`,
+  `color [on|off]`, and the `x <thing>` / `exam <thing>`
+  shorthands from session 16.
+- **Smoke test.** `tools/smoke_polish.py` — 10 scenarios:
+  colour off by default in tests (no ANSI escapes in captured
+  output); style helpers no-op when off and wrap when on;
+  `auto_detect` honors `NO_COLOR` and `CLICOLOR_FORCE`; `color
+  on/off` toggles and marks explicit; inventory groups all
+  render with correct ordering (Weapons before Pills before
+  Materials before Treasures); equipped indicator surfaces for
+  slotted items; `where` names actionable quest steps with
+  specific hints at Pale Lake Shore; `where` look-ahead shows
+  return-talk at Weilan's shrine after silt is in hand;
+  `where` surfaces NPCs / items / threats; reputation renders
+  cleanly off and colorised on. All 11 prior smoke tests
+  remain green.
+
+### Current state
+- Engine deltas: `game/engine.py` +~160 LOC (cmd_where new,
+  cmd_color new, cmd_inventory rewritten with grouping,
+  cmd_status/cmd_reputation/cmd_talk/cmd_look/_grant_lore coloured,
+  DISPATCH updated, help text updated). `game/quests.py` +~10 LOC
+  (colour-applied to QUEST ACCEPTED / QUEST COMPLETE / Lore
+  recorded / Bond / Reputation tags). `game/style.py` new (~220 LOC).
+  `play.py` now +~8 LOC handling --no-color/--color. No new Player
+  state, no new JSON, no save-compat concerns.
+- Validator: **29 loc / 30 npc / 22 enemy / 43 tech / 88 item /
+  4 sect / 22 quest / 45 event / 37 lore / 15 recipe.** No
+  deltas vs session 16.
+- All 11 prior smoke tests green; new `smoke_polish.py` green.
+  Twelve total.
+- Interactive `python3 play.py`:
+  - Colour auto-enables on a TTY; `--no-color` opts out.
+  - Prompt's HP bar goes green → yellow → red as the bar
+    empties.
+  - `inventory` prints bucketed, colourised; a freshly-kitted
+    player sees their 9 items spread across 8 groups instead
+    of flat.
+  - `where` at the Scarlet Lotus Shrine with the silt in hand
+    names "talk to Weilan of the Red Pestle" as the open beat.
+  - `rep` colours Scarlet Lotus red and Azure Cloud cyan, with
+    positive rep in green, negative in red.
+
+### What I'd do next if I had another hour
+1. **Combat polish — status-effect timers in the turn prompt.**
+   Combat already shows HP bars and action menu. Active status
+   effects (`poison N turns`, `bleed N turns`, `buff_atk N turns`)
+   fire their application line but the player has to remember
+   how long each lasts. A compact tag line above the action menu
+   would close the loop.
+2. **Save slot listing + metadata.** `save <slot>` and `load
+   <slot>` work but there's no `saves` command to list what's
+   on disk. Printing slot name + timestamp + realm + location
+   would make multi-save play livable. One small command.
+3. **`look` compass overlay.** Above the "Exits:" line, a
+   three-line mini-compass:
+       `         N: Foothills`
+       `    W: Village    E: River`
+       `         S: Hermit`
+   would make each `look` carry the map summary for the current
+   cell inline. Cheap. Very clicky.
+4. **Non-cardinal grid BFS (the session-16 carryover).** For
+   regions with a non-cardinal bridge (e.g. Merchant Crossing
+   → River of Swords via `across`), downstream cells don't
+   appear on the grid even when visited. Multi-BFS with offset
+   placements would fix it. Moderate complexity.
+5. **An "unfinished business" nudge.** `status` could list the
+   top 3 active-quest next-step hints at the bottom so the
+   player's player-sheet doubles as a todo list. Reuses the
+   `where` look-ahead logic.
+6. **`buy` / `sell` UI.** Right now the vendor listing is
+   embedded in `talk`. A dedicated `shop` command at a vendor
+   location (or `buy` with no arg) would print a clean
+   categorized vendor view with prices coloured by affordability.
+7. **Map colour (optional).** The ASCII map grid is monochrome.
+   Could color current-cell green, unvisited cells dim, sect-
+   owned cells by alignment. Low priority — legibility is
+   already good.
+
+### Things I noticed but didn't fix
+- **String padding with ANSI codes is off.** `{sname:<40s}` in
+  `cmd_reputation` pads based on character length INCLUDING
+  escape sequences, so when colour is on the columns misalign
+  slightly. Purely cosmetic; the output is still readable.
+  A proper fix would strip ANSI for width calc, or use a
+  padding helper that knows about SGR. Low-priority.
+- **`where` and `examine` are now-similar in spirit.** Both
+  are inspection verbs. `where` answers "what's here for me
+  to do?", `examine` answers "what is this thing?". Kept
+  separate because one lists current-location state and the
+  other resolves a named target. A unified `info` command
+  that dispatches by presence/absence of an argument could
+  subsume both; I prefer the two-verb split — easier to
+  discover, separate muscle memories.
+- **`cmd_take` doesn't auto-progress quests.** Noted above and
+  reverted after it broke tests. The look-ahead in `where`
+  compensates on the UX side. A future "always progress after
+  mutating commands" pass could go deeper but would need
+  careful test updates.
+- **`style.is_explicit` is a tiny piece of global state.** The
+  engine has no singletons elsewhere. It's here because the
+  colour decision needs to flow from CLI → engine → REPL
+  without a constructor threading-through. Fine for a
+  single-process CLI game; would be an antipattern in a
+  library. Don't generalise it.
+- **Inventory description truncation is fixed at 70 chars.**
+  Good for most terminals. A future `COLUMNS` env respect
+  would adapt, but we're not there yet.
+- **Quest-item bucket.** Added as a separate group. Currently
+  5 items are type "quest" (bell, stone, folded paper, silt,
+  sealed bud). The cracked brass bell was previously in
+  "Other" — now it lives with the rest of the narrative props.
+
+### Don'ts (lessons learned)
+- **Don't silently auto-advance quests in `cmd_take`.** It
+  *seems* like the right thing — a collect step's `has_item`
+  check is true the moment the item enters the inventory — but
+  it steamrolls the return-talk narrative beat that gives
+  fetch-chains their shape. Two existing arcs (Huilin, Weilan)
+  have smoke tests that encode this specifically. Reverted the
+  change; the `where` look-ahead handles the UX concern without
+  touching quest mechanics.
+- **Don't colour-assert strings literally.** The smoke test
+  checks `"Scarlet Lotus Pavilion" in text` and `"+3" in text`
+  — both valid whether colour is on or off, because SGR escapes
+  wrap but do not substitute into the visible characters. If I
+  had asserted `"[Scarlet Lotus Pavilion]"` with expected
+  brackets I'd have coupled the test to presentation detail.
+  Substring assertions on the *content* are the robust shape.
+- **Don't conflate "colour enabled" with "explicit choice".**
+  First draft had the REPL always call `auto_detect()` on boot
+  — which silently overrode a player's `--no-color` CLI flag
+  because auto_detect happened after the flag set `_enabled=False`
+  (TTY said yes, flag said no). Added an `_explicit` flag so
+  `is_explicit()` gates the REPL's auto-detect. Cleaner than
+  a hundred checks at call sites.
+- **Don't let `help` drift.** Every session that adds a verb
+  should update the help text in the same commit. It's the
+  first thing a new player types. Session 15 Huilin/Weilan
+  arcs didn't touch help (nothing verb-level to document);
+  session 16 did (map / examine); this one does (where /
+  color). The discipline matters.
+- **Don't gild what nobody looks at.** The game has a lot of
+  text. Colouring absolutely everything would be noise. The
+  palette here is tight and semantic — a player should be
+  able to glance at output and tell hostile from friendly,
+  reward from damage, gain from loss, without reading every
+  word. Restraint is the point.
+
+---
+
 ## Session 16 — 2026-04-23 — "The Map That Does Not Lie"
 
 ### What I built

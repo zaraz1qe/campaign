@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Dict, Any, List
 
 from .state import Player, rep_rank, affinity_tier
+from . import style
 
 
 def _step_satisfied(step: Dict[str, Any], player: Player) -> bool:
@@ -46,7 +47,9 @@ def offer_quest(world: Dict[str, Dict[str, Any]], player: Player, quest_id: str)
             pieces.append(f"{sname} {s:+d}")
         return f"\n  (They weigh you, and do not speak of it. Required: {', '.join(pieces)}.)"
     player.active_quests[quest_id] = 0
-    return f"\n[QUEST ACCEPTED] {q['name']}\n  {q.get('description','')}"
+    tag = style.quest("[QUEST ACCEPTED]")
+    qname = style.quest(q["name"])
+    return f"\n{tag} {qname}\n  {q.get('description','')}"
 
 
 def progress_quests(world: Dict[str, Dict[str, Any]], player: Player) -> List[str]:
@@ -62,7 +65,7 @@ def progress_quests(world: Dict[str, Dict[str, Any]], player: Player) -> List[st
             idx += 1
             if idx < len(steps):
                 nxt = steps[idx]
-                notes.append(f"[{q['name']}] step complete — next: "
+                notes.append(f"[{style.quest(q['name'])}] step complete — next: "
                              f"{nxt.get('type','?')} {nxt.get('target','')}")
         player.active_quests[qid] = idx
         if idx >= len(steps):
@@ -80,10 +83,12 @@ def progress_quests(world: Dict[str, Dict[str, Any]], player: Player) -> List[st
             if ss: r_parts.append(f"{ss} spirit stones")
             if xp: r_parts.append(f"{xp} XP")
             if items:
-                names = [world["items"].get(i, {}).get("name", i) for i in items]
+                names = [style.item(world["items"].get(i, {}).get("name", i))
+                         for i in items]
                 r_parts.append("items: " + ", ".join(names))
             rwd = ", ".join(r_parts) or "(no reward)"
-            notes.append(f"[QUEST COMPLETE] {q['name']} — reward: {rwd}")
+            notes.append(f"{style.good('[QUEST COMPLETE]')} "
+                         f"{style.quest(q['name'])} — reward: {rwd}")
             # Knowledge is a reward too. A quest that grants lore writes
             # it straight into the player's memory — one line per newly
             # learned entry; silent on entries already known.
@@ -97,8 +102,8 @@ def progress_quests(world: Dict[str, Dict[str, Any]], player: Player) -> List[st
                 if not l:
                     continue
                 player.known_lore.add(lid)
-                notes.append(f"  [Lore recorded — {l.get('category','lore')}] "
-                             f"{l.get('title', lid)}")
+                notes.append(f"  {style.lore('[Lore recorded — ' + l.get('category','lore') + ']')} "
+                             f"{style.lore(l.get('title', lid))}")
             # Affinity: if a companion stood with you through this trial,
             # the shared quest deepens the bond. Downed doesn't disqualify
             # — they walked the road even if they fell at its end.
@@ -109,11 +114,12 @@ def progress_quests(world: Dict[str, Dict[str, Any]], player: Player) -> List[st
                     new_aff = player.adjust_affinity(cid, 2)
                     new_tier = affinity_tier(new_aff)
                     cname = world["npcs"].get(cid, {}).get("name", "your companion")
+                    cname_c = style.companion(cname)
                     if new_tier != old_tier:
-                        notes.append(f"  [Bond] {cname} — the shared trial "
-                                     f"raises your oath to {new_tier}.")
+                        notes.append(f"  {style.good('[Bond]')} {cname_c} — the shared trial "
+                                     f"raises your oath to {style.good(new_tier)}.")
                     else:
-                        notes.append(f"  [Bond] {cname} — the oath between "
+                        notes.append(f"  {style.good('[Bond]')} {cname_c} — the oath between "
                                      f"you deepens (+2 affinity).")
             # Apply reputation changes. Show old->new rank when the change
             # crosses a threshold so the player feels it.
@@ -128,15 +134,16 @@ def progress_quests(world: Dict[str, Dict[str, Any]], player: Player) -> List[st
                 old_rank = rep_rank(old)
                 new_rank = rep_rank(new)
                 sname = world["sects"].get(sid, {}).get("name", sid)
+                tag = style.good("[Reputation]") if delta > 0 else style.warn("[Reputation]")
+                dstr = style.rep_delta(delta)
                 if old_rank == new_rank:
-                    notes.append(f"  [Reputation] {sname} {delta:+d}  "
-                                 f"(now {new:+d}, {new_rank})")
+                    notes.append(f"  {tag} {sname} {dstr}  "
+                                 f"(now {style.rep_value(new)}, {new_rank})")
                 else:
-                    notes.append(f"  [Reputation] {sname} {delta:+d}  "
-                                 f"— risen from {old_rank} to {new_rank}"
-                                 if delta > 0 else
-                                 f"  [Reputation] {sname} {delta:+d}  "
-                                 f"— fallen from {old_rank} to {new_rank}")
+                    arrow = "risen" if delta > 0 else "fallen"
+                    notes.append(f"  {tag} {sname} {dstr}  "
+                                 f"— {arrow} from {old_rank} to "
+                                 f"{style.good(new_rank) if delta > 0 else style.warn(new_rank)}")
     return notes
 
 
