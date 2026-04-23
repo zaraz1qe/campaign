@@ -1,0 +1,44 @@
+[
+  {
+    "id": "cracked_brass_bell",
+    "name": "Cracked Brass Bell",
+    "type": "quest",
+    "description": "A hand-bell of dark brass, crown to lip a single span. A hair-crack runs from its rim to the crown on one side — a split you can slide a fingernail into. It should not ring, and does not, though it is heavy with water and with something else. The strap is wet grey silk the age of a bad marriage. Huilin's master's bell, the lake finally giving it back.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["quest", "huilin", "bell"]
+  },
+  {
+    "id": "folded_tea_invitation",
+    "name": "A Folded Tea-Invitation",
+    "type": "quest",
+    "description": "A square of rice-paper, folded into a pale-flower shape Huilin made in a single unhurried motion. The outside bears one character in the monk's unhurried hand — 'bo' (owe). Huilin would not say what is written inside, only that Baixu will understand the handwriting, and that you are not to unfold it on the road. 'It is addressed,' he said, 'and an address is not a letter until the right hand opens it.'",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["quest", "huilin"]
+  },
+  {
+    "id": "wind_named_stone",
+    "name": "Wind-Named Stone",
+    "type": "quest",
+    "description": "A palm-sized river-pebble worn smooth by water that has not touched it in forty years. When Huilin's master sat at the Cragspine altar, he set this stone at the centre of the nine incense stubs and asked the wind to name a thing. The wind did not, and his master did not come down. The stone has sat in the altar's wind-scoured depression since, small and patient. Lifted, it is heavier than it should be, and warmer.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["quest", "huilin", "sky_spire"]
+  },
+  {
+    "id": "silent_bell_charm",
+    "name": "Silent Bell Charm",
+    "type": "accessory",
+    "slot": "accessory",
+    "hp_bonus": 12,
+    "spd_bonus": 1,
+    "def_bonus": 1,
+    "description": "Huilin's master's bell, its crack-line filled with river-iron by a smith in the Willowmere smithy and its strap re-woven by Huilin himself from the grey silk the lake returned. It does not ring — it cannot, the crack is still a crack — but when danger comes near it grows warm against the breastbone in the way a small animal's sleeping body does, which is warning enough. Huilin gave it back to you with both hands. That is a gift.",
+    "value": 240,
+    "tags": ["accessory", "quest_reward", "huilin", "bell"]
+  }
+]

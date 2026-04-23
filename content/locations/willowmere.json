@@ -87,8 +87,8 @@
     "exits": { "east": "pale_lake_shore" },
     "npcs": [],
     "enemies": ["drowned_willow_revenant"],
-    "events": ["moon_face_in_the_water", "the_willow_remembers"],
-    "items_on_ground": ["moonflower_bud"],
+    "events": ["moon_face_in_the_water", "the_willow_remembers", "shrine_bell_surface_breathes"],
+    "items_on_ground": ["moonflower_bud", "cracked_brass_bell"],
     "qi_density": 5,
     "tags": ["shrine", "haunted", "cultivation_spot", "village"]
   }

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "shrine_bell_surface_breathes",
+    "location": "drowned_willow_shrine",
+    "chance": 0.18,
+    "text": "A ring of bubbles the size of a copper coin rises through the lake-water around the willow's submerged trunk, breaks the surface, and is gone. Under the sound you cannot quite hear there is another sound — the shape a small bell makes when it has been struck, except this one is not struck. The willow's leaves do not move. Neither do you, for a breath.",
+    "effect": { "qi": 1 }
+  },
+  {
+    "id": "pavilion_monks_bowl",
+    "location": "elder_baixus_pavilion",
+    "chance": 0.15,
+    "text": "Baixu's west sill holds a brown tea-bowl in a dish of river-pebbles. No one is pouring into it; no one has for a long time. As you pass it now, the bowl rings once — a single low chime, the way brass does when the room's temperature has fallen by a single degree. Baixu, if he is here, does not turn to look. If he is not, the pavilion listens with you.",
+    "effect": {}
+  },
+  {
+    "id": "plateau_wind_holds_its_breath",
+    "location": "spirit_gale_plateau",
+    "chance": 0.18,
+    "text": "For a breath and a half the gale — which has not stopped since Cloudroot Pass — simply holds. In the pause every pebble, every loose flake of mica on the white stone, sits absolutely still. You feel the wind waiting for a question it has been asked before. Then the gale resumes, louder, as if making up what it had withheld.",
+    "effect": { "qi": 2 }
+  },
+  {
+    "id": "cragspine_stone_warms",
+    "location": "cragspine_shrine",
+    "chance": 0.15,
+    "text": "In the altar's wind-scoured depression, a palm-sized river pebble sits among the nine incense stubs. It has not moved in forty years. As you pass, a thin fog of breath rises from its surface and curls once, like a finger beckoning, before the wind takes it. The stone is warm.",
+    "effect": {}
+  }
+]

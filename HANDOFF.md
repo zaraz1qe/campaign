@@ -124,6 +124,217 @@ validated, committed.
 
 # Session log
 
+## Session 14 — 2026-04-23 — "The Silent Bell's Return"
+
+### What I built
+- **Huilin's quest — three of them.** Session 13's handoff flagged
+  Wandering Monk Huilin as the most under-used voiced NPC in the
+  game: three rep_dialogue tiers (Azure Cloud / Scarlet Lotus /
+  Five Poisons), three companion_reply lines, three teach options,
+  two sells, four standing dialogue lines — and no `gives_quest`.
+  His whole personality was the Brother of the Silent Bell, and
+  the bell was never paid off. This session pays it off. Three-
+  quest arc threading mortal-tier Willowmere → QC-tier Azure Cloud
+  Pavilion → Foundation-tier Cragspine Shrine, each quest flowering
+  from a line Huilin had already said in the game's opening hour.
+- **Quest 1 — The Bell Beneath the Willow.** Huilin's title is
+  "Brother of the Silent Bell." The bell is silent because it
+  cracked, rim to crown, the night Brother Mo — Huilin's master —
+  rang it one stroke late at the wedding that became the drowning
+  at what's now the Drowned Willow Shrine. Brother Mo gave the
+  cracked bell back to the water and walked up Sky-Spire to ask
+  the wind why. Never came down. The cracked bell now sits on
+  `items_on_ground` at the shrine. Visit → collect → talk Huilin.
+  Reward: 80 stones, 35 XP, moonflower_tonic + minor_healing_pill,
+  lore `the_bell_that_came_too_late`.
+- **Quest 2 — A Bowl on the Broken Bridge.** Huilin's rep_dialogue
+  at ACS +3 had a single line about a bowl he and Baixu shared on
+  the Broken Bridge "the year he was my age, and I was already
+  old." Pay-off: Huilin folds a rice-paper into a pale-flower
+  shape (new quest-flavor item — `folded_tea_invitation`), the
+  player carries it to Baixu, returns to Huilin. Engine stays
+  visit-and-talk-based (no hand-item-to-NPC mechanic); the
+  folded paper is an in-fiction prop, not a mechanically
+  consumed item. Reward: 160 stones, 70 XP, willowmere_cordial,
+  ACS +1, lore `the_broken_bridge_tea`. Baixu's pavilion
+  description expanded to mention the tea-bowl on his west sill
+  ("not set for a guest, exactly, but not put away either"); new
+  event `pavilion_monks_bowl` fires on visits and rings the bowl
+  once without a hand.
+- **Quest 3 — The Name the Wind Would Not Give.** Huilin's most
+  quoted standing line ("I once climbed the Heaven-Reaching Spire.
+  The wind there has a name; it would not give it to me.") finally
+  has a quest. Gate: ACS rep +2 (the player has been earning it
+  through quest 2 plus whatever else). Player climbs to the
+  Cragspine Shrine (already in-world, a Foundation-tier cultivation
+  spot), retrieves the `wind_named_stone` from the altar's
+  wind-scoured depression — a stone Brother Mo set there forty years
+  ago to ask the wind his question and never retrieved. Reward: 320
+  stones, 150 XP, `silent_bell_charm` (new accessory — HP+12,
+  SPD+1, DEF+1; the bell, repaired, strap re-woven), spirit-stone
+  pouch, ACS +1, lore `the_wind_that_named_itself` (the capstone:
+  the wind did name the thing; the name is the absence of a
+  name; Huilin stops looking).
+- **Content totals**: 4 new items (3 quest items + 1 accessory
+  reward), 3 new lore entries, 3 new quests, 4 new events
+  (shrine_bell_surface_breathes at the shrine,
+  pavilion_monks_bowl at Baixu's, plateau_wind_holds_its_breath
+  at the plateau boss arena, cragspine_stone_warms at the altar).
+  No new NPCs, no new enemies, no new locations — this session
+  was pure deepening, zero surface expansion.
+- **NPC dialogue.** Huilin's dialogue array grew from 4 lines to 6,
+  adding the master's name (Mo) and the bell's history directly
+  into his standing conversation — so a player who meets Huilin
+  *before* accepting the quest still gets the story, and the
+  quest then reads as a payoff rather than an introduction.
+  Description expanded with a single telling physical detail:
+  "A small square of silk hangs at his belt where a bell ought to
+  be; the silk is dry, old, and entirely empty." Baixu picked up
+  one new standing line ("Tell him that, if you ever pass a monk
+  who asks you about a bowl") — it's ambiguous in isolation, but
+  becomes Baixu's in-fiction reply the moment a player returning
+  from him tells Huilin what the old man said.
+- **Multi-quest giver (2nd).** Huilin's `gives_quest` became a
+  list of three — he is the second NPC in the game after Zhao to
+  own a full three-quest arc. Engine contract already supported
+  this (session 13); no engine touch this session.
+- **Smoke test.** `tools/smoke_huilin.py` — 7 scenarios: content
+  load, list-gives, bell on the ground at the shrine + moonflower
+  still there, stone on the ground at Cragspine + sky_qi_crystal
+  still there, full three-quest arc with rep-gated quest 3 (both
+  negative and positive gate), Silent Bell Charm equips with the
+  claimed bonuses, save/load round-trip of arc state. All green.
+
+### Current state
+- Validator: **29 loc / 30 npc / 22 enemy / 43 tech / 84 item / 4
+  sect / 19 quest / 42 event / 33 lore / 15 recipe.** Deltas from
+  session 13: +4 items, +3 quests, +4 events, +3 lore. Everything
+  else unchanged.
+- All 8 prior smoke tests remain green; the new `smoke_huilin.py`
+  is green. Interactive `python3 play.py` boots cleanly and
+  Huilin's first talk now offers the bell quest.
+- Save-compat preserved. Zero new Player fields this session.
+  Existing saves load; an old save that never talked to Huilin
+  just starts the arc next time it does.
+- Quest distribution going in → going out: **Huilin** went from
+  0 quests to 3, Willowmere's Drowned Willow Shrine picked up a
+  second reason to exist (the cracked bell now sits next to the
+  moonflower bud), **Baixu's pavilion** picked up an event and a
+  reason to re-visit mid-game, **Cragspine Shrine** went from
+  one item on the ground to two and from one event to two. The
+  game's most under-used voiced NPC now owns a spine as long as
+  Zhao's.
+
+### What I'd do next if I had another hour
+1. **Expand Apothecary Weilan.** Still one teach, still carrying
+   session 12's flag forward. She is at the Scarlet Lotus Shrine;
+   she ought to teach 2-3 techniques, sell 2-3 pills, and
+   probably own at least one errand. An easy next-session win.
+2. **A second Baixu errand.** Post-`the_missing_disciple`,
+   close the loop with the rival envoy who held Meilin. Still
+   open. Could thread a second Azure Cloud arc that pairs the
+   *nephew* (Meilin) route with an elder-level follow-up.
+3. **The name the wind did not give.** The capstone lore says
+   the name is "under the shape of the wanted sound" — a thing
+   at the bottom of Pale Lake, without a name, that does not
+   approve of matches it has not been consulted in. That is a
+   future boss, or a future quest giver who is the villager
+   who first consults it. If a session wants a new enemy this
+   is the one to write.
+4. **Library parity for adjacent sects.** Five Poisons has
+   `poisoners_garden` (neutral lore vessel); Scarlet Lotus has
+   `scarlet_lotus_shrine` (sect sutra vessel). Each could hold
+   its own 1-2 manual scholars. Not urgent — the library
+   pattern is proven and data-driven.
+5. **A Black Banner contract.** Bannerman Shao is dead but the
+   banner is older than the gang. A Pavilion (or Rulan) quest
+   to chase down who holds the banner next. Still in s13's
+   suggestions; still worth writing.
+6. **Three-quest arcs for every sect.** Azure Cloud has Zhao
+   (library) + Huilin-adjacent (monk). Five Poisons has Oath
+   of Fangs (one errand). Scarlet Lotus has Red Ledger (two
+   errands) + Red Path (one errand). Adding a second multi-
+   quest arc to Five Poisons (Shan or Wuwei) or Scarlet
+   Lotus (Rulan) would make sect progression feel symmetrical.
+
+### Things I noticed but didn't fix
+- **Quest item placement is save-invariant.** `cracked_brass_bell`
+  sits at the shrine in `items_on_ground`; the world re-loads
+  fresh each session, so if a player reloads after taking it the
+  bell will be there again. Same pre-existing behaviour as
+  `sister_willows_record` and `broken_terrace_medallion`. The
+  quest itself is fine (collect checks `has_item`). Worst case
+  a completionist stacks two copies of a zero-value prop.
+  Flagging again — a world-state save pass is the session-14
+  carry-forward from session 13 that I didn't take on.
+- **`folded_tea_invitation` is never actually in the player's
+  inventory.** The quest description narrates it, but the
+  engine's visit-talk-talk step-chain doesn't require holding
+  the item. I left it as a defined item (with flavour text) so
+  the player who inspects the lore can read what the paper says
+  — but a future engine pass could add a "give item to NPC"
+  mechanic and then this quest could use it properly.
+- **Huilin's quest 1 is mortal-reachable.** The Drowned Willow
+  Shrine has a QC revenant, but a mortal player CAN sneak in,
+  grab the bell on the way back from the moonflower errand, and
+  get the reward. Intended: the quest is meant to read as "go
+  where I will not go" — it's a grief errand, not a combat
+  errand. If the player fought the revenant on the way in for
+  the Willowmere moonflower quest, grabbing the bell is narratively
+  appropriate.
+- **Baixu's one new dialogue line will always print** once Baixu
+  is spoken to, pre- or post-arc. That's fine — it reads
+  ambiguously enough to work as either foreshadowing (before
+  the quest) or fulfilment (during/after). Could later be gated
+  to the arc if it ever becomes noise.
+- **Huilin's description still says "an iron staff scarred by
+  old battles."** The flavor works, but the monk who has been
+  a bell-less strap for a whole lifetime could stand to have
+  more contradictions in his posture. Not a fix — a future
+  expansion note.
+
+### Don'ts (lessons learned)
+- **Don't add new geography when you can pay off existing
+  geography.** The directive for this session was explicit:
+  stop making the surface bigger. Huilin's arc uses three
+  pre-existing locations (Drowned Willow Shrine, Baixu's
+  Pavilion, Cragspine Shrine) and adds zero new ones. Each
+  of those three places now has a second reason to exist.
+  That's the payoff the handoff was pointing at.
+- **Don't use a quest item as a mechanic when it's doing
+  narrative work.** The folded tea-invitation was almost a
+  real item-exchange — "hand it to Baixu" — but the engine
+  doesn't have that mechanic and adding it was scope-creep.
+  Making it a defined item the player *knows about from
+  Huilin's lore* but *never holds* works — it's a diegetic
+  prop, not a gameplay resource. When the engine grows a
+  give-item-to-npc verb someday, upgrade then.
+- **Don't separate "the quest" from "the dialogue."** Huilin's
+  rep-3 ACS line about Baixu's bowl is older than this arc —
+  it was sitting in the rep_dialogue since before Huilin had
+  any quest. I resisted writing a completely new dialogue
+  tier for the arc and used what was already there. The
+  player who comes in at ACS +3 already knows the line; the
+  arc pays it off. The player who comes in cold learns the
+  line from the arc. Both paths work.
+- **Don't gate the capstone so tight nobody reaches it.**
+  Quest 3 needs ACS rep +2. The arc itself grants ACS +1
+  from quest 2, so a player arriving with zero ACS rep can
+  do quests 1 and 2 and then has to earn one more ACS
+  somewhere (Study the Sutra, Envoy's Letter, Missing
+  Disciple, Locked Shelves — all grant ACS rep). That's
+  one small loop, not a wall. I checked that it's a wall-let,
+  not a wall.
+- **Don't wait for step-complete messages on the close-talk.**
+  The engine order is `offer_quest` → `_note_quests`. So on a
+  talk that closes step N, the next quest is NOT offered on
+  that same talk — the player talks again. I wrote the smoke
+  test thinking it was one-talk, caught it, fixed the test to
+  match reality. Same pattern as Zhao's smoke test from
+  session 13. Worth remembering.
+
+---
+
 ## Session 13 — 2026-04-23 — "The Committee of 1184"
 
 ### What I built

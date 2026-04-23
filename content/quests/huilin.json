@@ -1,0 +1,58 @@
+[
+  {
+    "id": "the_bell_beneath_the_willow",
+    "name": "The Bell Beneath the Willow",
+    "giver": "wandering_monk_huilin",
+    "description": "Huilin has set his iron staff across his knees and looked at it as if he might set it down for the first time since a boy. 'There is a bell at the bottom of Pale Lake,' he says, 'under the roots of the willow at the shrine. It was my master's. He gave it back to the water the night a wedding should have been a blessing and was a drowning instead. I have passed that shrine eight times in forty years and not gone to the bank. Go where I will not go. Bring the bell up. Bring it here.' He will not say more until you return.",
+    "steps": [
+      { "type": "visit",   "target": "drowned_willow_shrine" },
+      { "type": "collect", "target": "cracked_brass_bell" },
+      { "type": "talk",    "target": "wandering_monk_huilin" }
+    ],
+    "reward": {
+      "spirit_stones": 80,
+      "items": ["moonflower_tonic", "minor_healing_pill"],
+      "xp": 35
+    },
+    "grants_lore": ["the_bell_that_came_too_late"]
+  },
+  {
+    "id": "a_bowl_on_the_broken_bridge",
+    "name": "A Bowl on the Broken Bridge",
+    "giver": "wandering_monk_huilin",
+    "description": "Huilin has the bell on the mat between you now, strap dried, the crack-line scrubbed. He folds a square of rice-paper into a pale flower with one motion and puts it into your hand. 'Elder Baixu of the Azure Cloud keeps a bowl on his west sill I have not drunk from in fifty years. It is his, and it is mine, and neither of us has ever let it travel further than the Broken Bridge. Carry this folded paper to him. Do not unfold it. Say only the old brother sends word; he will know which old brother. Come back and tell me what he says.'",
+    "requires_quest": "the_bell_beneath_the_willow",
+    "steps": [
+      { "type": "visit",   "target": "elder_baixus_pavilion" },
+      { "type": "talk",    "target": "elder_baixu" },
+      { "type": "talk",    "target": "wandering_monk_huilin" }
+    ],
+    "reward": {
+      "spirit_stones": 160,
+      "items": ["willowmere_cordial"],
+      "xp": 70
+    },
+    "rep_change": { "azure_cloud_sect": 1 },
+    "grants_lore": ["the_broken_bridge_tea"]
+  },
+  {
+    "id": "the_name_the_wind_would_not_give",
+    "name": "The Name the Wind Would Not Give",
+    "giver": "wandering_monk_huilin",
+    "description": "Huilin does not ask you to sit this time. He asks if you have stood above the cloud-line. 'At the Cragspine Shrine — the nine-stub altar above the gale — there is a stone my master left in the wind-scoured depression at the centre. He took it up to ask the wind a name. The wind did not give it. He did not come down. I am too old to climb, and I will be too old next year; bring the stone down. The wind will not speak to me without it, and I find I would like — at the end of a long wandering — to be told whether it will speak at all.' He will not meet your eye when you take the errand.",
+    "requires_quest": "a_bowl_on_the_broken_bridge",
+    "requires_rep": { "azure_cloud_sect": 2 },
+    "steps": [
+      { "type": "visit",   "target": "cragspine_shrine" },
+      { "type": "collect", "target": "wind_named_stone" },
+      { "type": "talk",    "target": "wandering_monk_huilin" }
+    ],
+    "reward": {
+      "spirit_stones": 320,
+      "items": ["silent_bell_charm", "spirit_stone_pouch"],
+      "xp": 150
+    },
+    "rep_change": { "azure_cloud_sect": 1 },
+    "grants_lore": ["the_wind_that_named_itself"]
+  }
+]

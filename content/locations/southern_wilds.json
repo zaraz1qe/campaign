@@ -137,11 +137,11 @@
     "id": "elder_baixus_pavilion",
     "name": "Elder Baixu's Pavilion",
     "region": "Azure Cloud Range",
-    "description": "An open pavilion at the cliff's edge, ringed by white pines. Wind chimes sing endlessly. Elder Baixu sits cross-legged, his eyes the color of frosted river stones.",
+    "description": "An open pavilion at the cliff's edge, ringed by white pines. Wind chimes sing endlessly. Elder Baixu sits cross-legged, his eyes the color of frosted river stones. On the west sill, in a shallow dish of river pebbles, a brown tea-bowl sits alone — not set for a guest, exactly, but not put away either.",
     "exits": { "out": "azure_cloud_inner_courtyard" },
     "npcs": ["elder_baixu"],
     "enemies": [],
-    "events": [],
+    "events": ["pavilion_monks_bowl"],
     "items_on_ground": [],
     "qi_density": 7,
     "tags": ["sect_inner", "elder"]

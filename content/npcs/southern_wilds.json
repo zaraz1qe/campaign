@@ -3,15 +3,22 @@
     "id": "wandering_monk_huilin",
     "name": "Wandering Monk Huilin",
     "title": "Brother of the Silent Bell",
-    "description": "A bald monk with sun-darkened skin and an iron staff scarred by old battles.",
+    "description": "A bald monk with sun-darkened skin and an iron staff scarred by old battles. A small square of silk hangs at his belt where a bell ought to be; the silk is dry, old, and entirely empty.",
     "dialogue": [
       "All paths lead inward, friend. Even the path through bamboo.",
       "I once climbed the Heaven-Reaching Spire. The wind there has a name; it would not give it to me.",
       "If you ever face the Scarlet Lotus, remember: their fire feeds on your fear. Be empty, and you cannot burn.",
-      "I carry only what I cannot set down. The staff — and these beads. If you need either more than I do, name a price."
+      "I carry only what I cannot set down. The staff — and these beads. If you need either more than I do, name a price.",
+      "They call me the Brother of the Silent Bell. It is not my title. It is the bell's — and the bell's, I am told, is at the bottom of a lake west of here that I have walked past eight times without turning my head. I am not proud of the number.",
+      "My master's name was Mo. He rang a bell at a wedding that was a funeral, and the bell cracked in a single strike. He gave it back to the water. I have been, since then, something like a strap with no bell at the end of it."
     ],
     "teaches": ["empty_palm", "silent_bell_strike", "brass_bell_sutra"],
     "sells": ["bamboo_longstaff", "monks_wooden_beads"],
+    "gives_quest": [
+      "the_bell_beneath_the_willow",
+      "a_bowl_on_the_broken_bridge",
+      "the_name_the_wind_would_not_give"
+    ],
     "faction": "shaolin",
     "disposition": "friendly",
     "rep_dialogue": {
@@ -256,7 +263,8 @@
       "So. You came. The bamboo whispered as much.",
       "There is a thing I would ask of you, if you have the heart for it.",
       "Climb the peak only when you are sure of your foundation, child. The mountain has a memory of those who stumbled.",
-      "When your foundation is set, come speak of a blade. A sword without a master is only metal that remembers grief."
+      "When your foundation is set, come speak of a blade. A sword without a master is only metal that remembers grief.",
+      "Your bowl is warm, old brother. Come down and sit; it will not travel further. — Tell him that, if you ever pass a monk who asks you about a bowl. He will understand. He has been waiting fifty years to be asked if the tea is still hot."
     ],
     "teaches": ["azure_cloud_palm", "cloud_step", "crane_wing_parry", "nine_cloud_cranes_flight"],
     "sells": ["azure_cloud_sword", "cloud_silk_robe", "azure_guardian_talisman"],

@@ -24,26 +24,34 @@ A living checklist for what's been done and what to add next.
 - **Companions** (3): Disciple Meilin (Azure Cloud), Venom-Handler Bai
   (Five Poisons), Blood-Sworn Jin (Scarlet Lotus). Affinity/bond system
   active across all three.
-- **Items**: 80 (equipment, pills, materials, treasures, **manuals**)
+- **Items**: 84 (equipment, pills, materials, treasures, **manuals**,
+  Silent Bell Charm)
 - **Recipes**: 15 (Forge-Master Bo: 6, Pillmaster Lu: 4, Apothecary Qi: 5)
-- **Quests**: 16. Single-givers: Kettle's Request, Missing Disciple,
+- **Quests**: 19. Single-givers: Kettle's Request, Missing Disciple,
   Envoy's Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace,
   Red Path, and the five Willowmere starters (Wolves at Shen's Farm,
   Little Yu's Songbird, Three Ingots of River-Iron, Errand of the
   Drowned Willow, A Bottle for the Corner Table). **Multi-quest arcs**:
   Red Ledger (Rulan → Red Feather), **Zhao's Library arc**
   (Study the Sutra → The Locked Shelves → The Committee of 1184 —
-  session 13).
+  session 13), **Huilin's Silent Bell arc** (The Bell Beneath the
+  Willow → A Bowl on the Broken Bridge → The Name the Wind Would
+  Not Give — session 14). Three of the game's mid-game NPCs now
+  own a proper three-quest spine.
 - **Techniques**: 43 total, **35 learnable** across all tiers. Every
   combat effect (poison/bleed/stun/heal/buff_def/buff_atk) has ≥3
   learnable options. Mortal 9 / Qi-Condensation 15 / Foundation 11.
-- **Events**: 38 (ambient + qi-grant + lore-grant; every location has
+- **Events**: 42 (ambient + qi-grant + lore-grant; every location has
   at least one, and the library / foothills / bandit road picked up
-  ambient events in session 13).
-- **Lore**: 30 (earnable via boss defeats, quest rewards, high-rep NPC
+  ambient events in session 13; the drowned shrine, Baixu's pavilion,
+  Cragspine shrine and the Spirit-Gale plateau picked up bell-motif
+  events in session 14).
+- **Lore**: 33 (earnable via boss defeats, quest rewards, high-rep NPC
   trust, village story, and **manuals**). Session-13 additions:
   committee_of_1184, azure_cloud_commentary_1184, lamplighter_of_zhao,
-  gatekeepers_oath, sword_calamity, west_reading_room.
+  gatekeepers_oath, sword_calamity, west_reading_room. Session-14
+  additions: the_bell_that_came_too_late, the_broken_bridge_tea,
+  the_wind_that_named_itself.
 - **Manuals**: 7 (library-only: open shelf 2, mid 3, locked 2 — gated
   by ACS rep, priced against the labour of copying, not the weight
   of the words).
@@ -100,8 +108,12 @@ A living checklist for what's been done and what to add next.
 - [ ] Settle the feud between two villages
 - [ ] Avenge Old Hermit Yun's slain disciple (long arc)
 - [ ] Climb the Sky-Spire (capstone, requires Nascent Soul)
-- [ ] **Huilin's errand** — the monk has voice, teaches, sells, and
-      rep_dialogue but no quest. Still open; flagged for s14.
+- [x] **Huilin's errand** — paid off s14 as a 3-quest arc (The Bell
+      Beneath the Willow → A Bowl on the Broken Bridge → The Name the
+      Wind Would Not Give). Reward: Silent Bell Charm (HP+12, SPD+1,
+      DEF+1), 3 new lore entries, ACS rep +2 across the arc. The Drowned
+      Willow Shrine, Elder Baixu's Pavilion, and the Cragspine Shrine
+      all picked up new events + items-on-ground as part of the arc.
 - [ ] **A second Baixu errand** — post-*the_missing_disciple*;
       close the loop with the rival envoy who held Meilin.
 - [x] The Stormwarden's Test — storm-crow feather from Thunderhead Ridge (s4)
@@ -212,6 +224,51 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-23 (session 14)** — "The Silent Bell's Return" — Huilin's
+  quest. Huilin had voice, teaches, sells, rep_dialogue for three
+  sects, and companion_reply for all three companions — but no
+  gives_quest. Session 13's handoff flagged him as the most
+  under-used voiced NPC in the game. Built him a proper three-quest
+  arc that threads from Willowmere (mortal-tier) through Azure Cloud
+  (QC-tier) to the Sky-Spire Reach (Foundation-tier), paying off
+  three lines of his existing dialogue:
+  - **The Bell Beneath the Willow.** Huilin's title is "Brother of
+    the Silent Bell." The bell is silent because it cracked at the
+    wedding-that-became-a-drowning at what is now the Drowned Willow
+    Shrine. Huilin's master Brother Mo gave it back to the water that
+    night. The cracked bell now sits as `items_on_ground` at the
+    shrine. Reward: minor pills + the_bell_that_came_too_late lore.
+  - **A Bowl on the Broken Bridge.** Huilin's existing dialogue
+    says Baixu owes him a bowl of tea from a meeting on the Broken
+    Bridge fifty years ago. The player carries a folded paper (a
+    flavor item, not mechanically swapped) to Baixu, returns to
+    Huilin. Reward: willowmere_cordial + ACS +1 + the_broken_bridge_tea
+    lore. Baixu's pavilion description now mentions the tea-bowl on
+    his west sill, and a new event rings it once without a hand.
+  - **The Name the Wind Would Not Give.** Huilin said his master
+    climbed the Heaven-Reaching Spire to ask the wind a name — the
+    wind would not give it, and his master did not come down. Player
+    climbs to the Cragspine Shrine (gated ACS +2) and retrieves the
+    wind-named stone from the altar's wind-scoured depression.
+    Reward: the Silent Bell Charm accessory (HP+12, SPD+1, DEF+1),
+    spirit-stone pouch, ACS +1, the_wind_that_named_itself lore.
+  Content: 4 new items (cracked_brass_bell quest item,
+  folded_tea_invitation flavor item, wind_named_stone quest item,
+  silent_bell_charm accessory reward). 3 new lore entries. 3 new
+  quests. 4 new events (shrine_bell_surface_breathes,
+  pavilion_monks_bowl, plateau_wind_holds_its_breath,
+  cragspine_stone_warms). Huilin's NPC description and dialogue
+  expanded — +2 dialogue lines (about his master, about the bowl
+  Baixu keeps) and +1 line for Baixu (tying the pavilion's tea-bowl
+  to "the old brother"). Baixu's pavilion description itself
+  expanded to mention the bowl on the west sill. Huilin's
+  gives_quest became a list of three — the second NPC in the game
+  (after Zhao) to own a full three-quest arc. New smoke test
+  `tools/smoke_huilin.py` — 7 scenarios covering content-load,
+  list-gives, items-on-ground placement, the full arc with
+  rep-gated quest 3, charm-equip, and save/load. All green. All
+  8 prior smoke tests remain green.
+
 - **2026-04-23 (session 13)** — "The Committee of 1184" — the Azure
   Cloud Library deepening. The session's complaint: the library had
   been a textbook example of surface-but-no-depth — a full location,
