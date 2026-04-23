@@ -8,7 +8,8 @@
       { "type": "defeat", "target": "bamboo_viper" },
       { "type": "talk",   "target": "old_hermit_yun" }
     ],
-    "reward": { "spirit_stones": 30, "items": ["minor_healing_pill"], "xp": 20 }
+    "reward": { "spirit_stones": 30, "items": ["minor_healing_pill"], "xp": 20 },
+    "grants_lore": ["song_of_the_bamboo"]
   },
   {
     "id": "study_the_sutra",
@@ -20,7 +21,8 @@
       { "type": "talk",  "target": "librarian_zhao" }
     ],
     "reward": { "spirit_stones": 50, "items": ["spirit_gathering_pill"], "xp": 25 },
-    "rep_change": { "azure_cloud_sect": 1 }
+    "rep_change": { "azure_cloud_sect": 1 },
+    "grants_lore": ["the_word_in_dust"]
   },
   {
     "id": "the_envoys_letter",
@@ -37,7 +39,8 @@
       "azure_cloud_sect": 2,
       "five_poisons_sect": 1,
       "scarlet_lotus_pavilion": -2
-    }
+    },
+    "grants_lore": ["founding_of_azure_cloud"]
   },
   {
     "id": "the_missing_disciple",
@@ -50,6 +53,7 @@
       { "type": "talk",   "target": "elder_baixu" }
     ],
     "reward": { "spirit_stones": 120, "items": ["spirit_gathering_pill", "iron_skin_pill"], "xp": 60 },
-    "rep_change": { "azure_cloud_sect": 2 }
+    "rep_change": { "azure_cloud_sect": 2 },
+    "grants_lore": ["the_sword_river_legend"]
   }
 ]

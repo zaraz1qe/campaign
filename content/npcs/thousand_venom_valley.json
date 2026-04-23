@@ -42,6 +42,12 @@
         "5": ["So. You are a sword of the Azure Cloud and still you come to my hall. That is either courage or confusion; I have not decided which."]
       }
     },
+    "lore_dialogue": {
+      "five_poisons_sect": {
+        "5": "the_five_poisons_refusal",
+        "3": "legend_of_the_first_poisoner"
+      }
+    },
     "companion_reply": {
       "venomhand_bai": [
         "Bai. You came the long way. Good. The scorpions tire of hearing about you second-hand.",

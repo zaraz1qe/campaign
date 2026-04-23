@@ -81,6 +81,21 @@ def progress_quests(world: Dict[str, Dict[str, Any]], player: Player) -> List[st
                 r_parts.append("items: " + ", ".join(names))
             rwd = ", ".join(r_parts) or "(no reward)"
             notes.append(f"[QUEST COMPLETE] {q['name']} — reward: {rwd}")
+            # Knowledge is a reward too. A quest that grants lore writes
+            # it straight into the player's memory — one line per newly
+            # learned entry; silent on entries already known.
+            lore_grants = q.get("grants_lore") or []
+            if isinstance(lore_grants, str):
+                lore_grants = [lore_grants]
+            for lid in lore_grants:
+                if lid in player.known_lore:
+                    continue
+                l = world.get("lore", {}).get(lid)
+                if not l:
+                    continue
+                player.known_lore.add(lid)
+                notes.append(f"  [Lore recorded — {l.get('category','lore')}] "
+                             f"{l.get('title', lid)}")
             # Affinity: if a companion stood with you through this trial,
             # the shared quest deepens the bond. Downed doesn't disqualify
             # — they walked the road even if they fell at its end.

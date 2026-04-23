@@ -124,6 +124,209 @@ validated, committed.
 
 # Session log
 
+## Session 11 — 2026-04-23 — "The Chronicler's Eye"
+
+### What I built
+- **Lore became an earned reward.** Until today the game had 14 good
+  lore entries and only one way to get them: walk into an event that
+  happened to carry `effect.lore`. Most lore was invisible in practice.
+  Bosses dropped items; quests dropped items; high-rep NPCs gave warmer
+  *dialogue*. None of them gave *knowledge*. That was the lever. This
+  session shipped three new grant channels, retrofit the existing
+  world onto them, and wrote six new lore entries to give the system
+  weight.
+- **Three new engine hooks, all data-driven.**
+  - `enemy.on_defeat_lore: str | [str, ...]` — granted in `cmd_fight`
+    on victory, after the XP/loot spray. String or list. Silent on
+    already-known ids.
+  - `quest.grants_lore: str | [str, ...]` — granted inside
+    `quests.progress_quests` on completion. Lands in the
+    `[QUEST COMPLETE]` note block alongside stones/XP/items/rep.
+  - `npc.lore_dialogue: {sect_id: {threshold: lore_id}}` — evaluated
+    in `cmd_talk` via new `_lore_dialogue_grant`. Same
+    highest-met-positive / lowest-met-negative semantics as
+    `rep_dialogue`. One lore id per leaf. The NPC "trusts you enough
+    to tell you a thing" when the standing is right. Each sect's
+    threshold is checked independently, so a single NPC can pay out
+    multiple lore over time as the relationship deepens.
+- **Single-entry helper:** `Game._grant_lore(lore_id, source)` is the
+  shared announcer. Silent if already known or unknown id; otherwise
+  adds to `Player.known_lore`, prints `[Lore recorded — category]
+  title` with a `read <id>` hint. `source` is an optional lead-in
+  line so bosses and NPCs can print different prose ("Among
+  Willow-Step Shen's effects..." vs "Red Feather trusts you enough
+  to tell you a thing.").
+- **Retrofitted five bosses/named enemies with `on_defeat_lore`**:
+  - Willow-Step Shen → `the_willow_step_cut` (the lore existed since
+    session 10 but had no grant path; fixed.)
+  - Heart-Devouring Gale Tiger → `fall_of_jadestep`
+  - Terrace Revenant → `the_terrace_dancers` (new)
+  - Stormcaller Disciple → `the_eight_point_star_ledger` (new)
+  - Scarlet Pavilion Guardian → `the_ledger_of_red_names`
+- **Retrofitted six quests with `grants_lore`**:
+  - Kettle's Request → `song_of_the_bamboo`
+  - Study the Sutra → `the_word_in_dust`
+  - The Envoy's Letter → `founding_of_azure_cloud`
+  - The Missing Disciple → `the_sword_river_legend`
+  - Oath of Fangs → `oath_of_the_grey`
+  - The Stormwarden's Test → `song_of_the_stormwarden`
+  - The Broken Terrace → `mingshus_last_silence` (new)
+  - The Red Path → `scarlet_lotus_oath`
+- **Four NPCs gained `lore_dialogue`**:
+  - Elder Baixu @ ACS +5 → `the_azure_succession_dispute` (new)
+  - Matriarch Shan @ FPS +3 → `legend_of_the_first_poisoner`; @ +5 →
+    `the_five_poisons_refusal` (new) — *tiered*: +3 gets you the
+    origin myth, +5 gets you the ritual text.
+  - Elder Red Feather @ SL +5 → `the_pavilions_four_reasons` (new)
+  - Old Dog of Jadestep @ Jadestep Remnant +2 → `the_terrace_dancers`
+  - Stormwarden Gao @ ACS +3 → `stormcallers_brand` (the lore entry
+    already existed; just had no grant path.)
+- **Six new lore entries** in `content/lore/earned.json`. All
+  written in the game's voice:
+  - `the_azure_succession_dispute` (history) — Jin's uncle, the seven
+    silent days, the charter that was wrong. Anchors Baixu and
+    blood-sworn Jin's otherwise-dangling reference to an uncle.
+  - `mingshus_last_silence` (history) — what *actually* happened
+    when the Gale Tiger fell. A quieter read than the public legend.
+  - `the_pavilions_four_reasons` (sutra) — the contracts the Scarlet
+    Lotus refuses. Gives the demonic sect moral texture.
+  - `the_five_poisons_refusal` (sutra) — the five initiation oaths.
+  - `the_eight_point_star_ledger` (history) — what the
+    Stormcaller's brand actually tracks. Plants a seed: the uncle in
+    iron-grey up on Sky-Spire.
+  - `the_terrace_dancers` (myth) — pre-Jadestep terrace lore; the
+    dancers who will come back for the cliffs.
+- **`read` / `lore` command is now a proper library index.** Empty
+  state: `You have collected no lore yet. (0 / 20 known.)`. With
+  entries, it groups by category, shows a title + id line under each
+  header, and ends with a hint. `read <id>` tags the entry with its
+  `[category]`.
+- **Validator** gained three checks — `enemy.on_defeat_lore`,
+  `quest.grants_lore`, and `npc.lore_dialogue` — all verifying ids,
+  thresholds, and shape. Hand-tested with bad ids; all three are
+  caught.
+- **SCHEMAS.md** updated in three places: NPC section gets
+  `lore_dialogue`; Enemy section gets `on_defeat_lore`; Quest
+  section gets `grants_lore`. Bottom-of-file `lore/` section now
+  has a *How lore is earned* subsection that lists all four grant
+  channels (events, on_defeat_lore, grants_lore, lore_dialogue) and
+  their silent-on-known semantics.
+- **Smoke test `tools/smoke_lore.py`** — 9 scenarios:
+  (A) Shen grants the_willow_step_cut on first defeat;
+  (B) silent on second defeat;
+  (C) Kettle's Request grants song_of_the_bamboo with announcement;
+  (D) Baixu's lore_dialogue fires exactly once at threshold;
+  (E) threshold-picking works (Shan: +3 gives founder myth, +5
+  upgrades to ritual text; the earlier entry stays learned);
+  (F) `read` command groups by category with counter;
+  (G) known_lore save-load round-trip + legacy save compat;
+  (H) all 6 new entries load;
+  (I) Gale Tiger → fall_of_jadestep. All pass. Prior smoke tests
+  (affinity, companion, red_ledger) still green.
+
+### Current state
+- Validator: **23 loc / 22 npc / 17 enemy / 25 tech / 55 item / 4 sect /
+  9 quest / 16 event / 20 lore / 15 recipe.** (+6 lore entries.)
+- `python3 play.py` boots. Fresh player sees `(0 / 20 known.)` on
+  `read`. Every existing boss, quest, and high-rep NPC relationship
+  now pays out knowledge at the story-beats where that knowledge
+  belongs.
+- Save compat: **no new `Player` fields**. `known_lore` has been on
+  `Player` since session 1; it just wasn't grown by anything other
+  than random events. Every existing save loads unchanged.
+- No changes to combat math, rep math, or companion math. The three
+  new hooks are pure additions and silently no-op when a piece of
+  content doesn't carry them.
+
+### What I'd do next if I had another hour
+1. **Huilin's sutra.** The Wandering Monk carries a staff and speaks
+   of the Sutra of Empty Sleeves but has no lore_dialogue. He should
+   give `the_word_in_dust` to any player who passes through the
+   bamboo — but `lore_dialogue` is currently keyed by sect, and
+   Huilin is `faction: shaolin` (not a real sect in world['sects']).
+   Options: (a) add a `shaolin` stub sect; (b) teach him to key
+   against a null-rep ("always") tier; (c) give him a
+   one-off `gives_lore` field that fires on first talk. (c) is
+   the smallest engine touch and is worth it — the "first
+   conversation gifts a line" is a pattern that doesn't quite fit
+   either rep_dialogue or the new lore_dialogue.
+2. **Lore to affinity.** A steadfast companion could reveal their
+   own lore entry at `steadfast` or `soul-sworn`. Jin could tell his
+   uncle's side of `the_azure_succession_dispute`. Meilin could
+   share an Azure Cloud founding poem. Bai could teach the Five
+   Poisons cook-count. Bond-gated lore is a parallel channel to
+   sect-rep-gated lore and would finally make affinity *pay out
+   knowledge* as well as stat bumps.
+3. **A cartographer NPC / map-lore.** Every location could have an
+   optional `lore` id that's earned on first visit — the
+   legends-of-places layer. Would roughly double the lore tapestry
+   with ~20 location-tied micro-entries.
+4. **The third Pavilion quest.** Still on the docket from session 10.
+   Would now naturally grant `the_pavilions_four_reasons` mid-quest
+   instead of gating it on rep +5 (the current channel — nothing
+   wrong with it, but the lore is lush enough to deserve a cutscene).
+5. **Endgame / Core-Formation content.** The Gale Tiger is the only
+   Core-Formation enemy. A proper Nascent Soul region is overdue —
+   explicitly flagged multiple sessions running.
+6. **Sect Conference / Tournament.** The unchecked roadmap titan.
+7. **Tier-up affinity barks.** Still open from session 9.
+
+### Things I noticed but didn't fix
+- **`lore_dialogue` is keyed by sect.** NPCs without a sect affinity
+  can't use it — see Huilin above. That's a deliberate choice (the
+  field mirrors rep_dialogue's shape) but it leaves a small
+  unreachable corner.
+- **A quest's `grants_lore` fires *before* the return-talk when the
+  final step is a talk to the giver.** Because `progress_quests`
+  runs on every action, by the time the player sees the
+  `[QUEST COMPLETE]` spray, the lore is already in their
+  `known_lore`. In practice this is fine — the announcement is in
+  the same output block — but future quests that want a "the
+  elder hands you a scroll" prose beat should note that the
+  announcement comes pinned to `progress_quests`, not to the talk
+  itself.
+- **The Willow-Step Ring has no rep gate** (flagged in session 10;
+  still true.) The on_defeat_lore does not add a new hatch: Shen
+  is already SL-rep-gated, so the lore is effectively SL-gated too.
+- **`lore` and `read` do the same thing.** The dispatch table has
+  both pointing at the same handler. That's intentional — `lore`
+  feels more natural when listing, `read` more natural when reading
+  a specific entry.
+- **No "new since last session" marker.** The `read` output doesn't
+  distinguish freshly-learned from long-known entries. A timestamp
+  or seen-flag would add polish but is not a save-compat friendly
+  change without a new Player field.
+
+### Don'ts (lessons learned)
+- **Don't hook on_defeat_lore inside combat.py.** My first draft put
+  it in `_victory()`; the second read made it clearer that the
+  engine already owns lore plumbing (the event system lives there)
+  and that the cleaner seam is `cmd_fight`, after combat returns
+  "victory". Keeps combat pure, puts all four lore-grant channels
+  (events, defeat, quest, talk) within the engine layer.
+- **Don't forget that `_grant_lore` is silent on already-known.**
+  My second defeat of Shen in smoke test B was expected to print a
+  loot line but *not* a lore-recorded line — if the helper re-
+  announced, the "silent on re-grant" invariant would have leaked
+  into output and the player would see "Lore recorded" twice for
+  the same entry.
+- **Don't forget which location an NPC lives at.** My first pass at
+  smoke test C put the player at verdant_bamboo_sea to `talk
+  old_hermit_yun`, but he's at `old_hermits_hut` (one south). The
+  `_find_in_loc` check refuses gracefully; the assert caught it.
+  Small and familiar, but easy to trip on when retrofitting.
+- **Don't conflate `category` with `sect`.** A `category` is lore
+  metadata (myth/history/poem/sutra), a sect id is a rep key. The
+  grouped `read` output uses category; `lore_dialogue` keys use
+  sect. They are different axes and should stay different.
+- **Don't add a new Player field if an existing one covers the
+  need.** `known_lore` has been on Player since session 1; I
+  almost added `read_lore` (a separate read-marker set) for an
+  "unread" indicator and caught myself. Keeping the shape steady
+  is why saves from session 1 still load.
+
+---
+
 ## Session 10 — 2026-04-22 — "The Red Ledger"
 
 ### What I built

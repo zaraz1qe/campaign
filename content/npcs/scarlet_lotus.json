@@ -52,6 +52,11 @@
         "5": ["Azure Cloud's favoured sword, in my gallery. Tell me, does Baixu know you have come? Tell me true — the pond will check."]
       }
     },
+    "lore_dialogue": {
+      "scarlet_lotus_pavilion": {
+        "5": "the_pavilions_four_reasons"
+      }
+    },
     "companion_reply": {
       "blood_sworn_jin": [
         "Jin. You brought him back to my gallery, wanderer. That was brave. He did not run — that was braver. Sit, Jin. The third cup is yours if your hand will hold it.",

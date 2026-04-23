@@ -15,7 +15,8 @@
       "scarlet_lotus_pavilion": 3,
       "azure_cloud_sect": -2,
       "five_poisons_sect": -1
-    }
+    },
+    "grants_lore": ["scarlet_lotus_oath"]
   },
   {
     "id": "the_red_ledger",

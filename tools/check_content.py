@@ -60,6 +60,18 @@ def main() -> int:
         for tid in e.get("techniques") or []:
             if tid not in world["techniques"]:
                 errors.append(f"enemy '{eid}' uses unknown technique '{tid}'")
+        # on_defeat_lore: string or list of strings; every id must exist.
+        odl = e.get("on_defeat_lore")
+        if odl is not None:
+            items = [odl] if isinstance(odl, str) else odl
+            if not isinstance(items, list):
+                errors.append(f"enemy '{eid}' on_defeat_lore must be a string or list of strings")
+            else:
+                for lid in items:
+                    if not isinstance(lid, str) or not lid.strip():
+                        errors.append(f"enemy '{eid}' on_defeat_lore entry must be a non-empty string")
+                    elif lid not in world["lore"]:
+                        errors.append(f"enemy '{eid}' on_defeat_lore '{lid}' is unknown lore")
 
     # 5. Quest steps reference real things, rewards reference real items.
     for qid, q in world["quests"].items():
@@ -75,6 +87,18 @@ def main() -> int:
         for iid in (q.get("reward", {}).get("items") or []):
             if iid not in world["items"]:
                 errors.append(f"quest '{qid}' reward item '{iid}' unknown")
+        # grants_lore: string or list of strings; every id must exist.
+        gl = q.get("grants_lore")
+        if gl is not None:
+            items = [gl] if isinstance(gl, str) else gl
+            if not isinstance(items, list):
+                errors.append(f"quest '{qid}' grants_lore must be a string or list of strings")
+            else:
+                for lid in items:
+                    if not isinstance(lid, str) or not lid.strip():
+                        errors.append(f"quest '{qid}' grants_lore entry must be a non-empty string")
+                    elif lid not in world["lore"]:
+                        errors.append(f"quest '{qid}' grants_lore '{lid}' is unknown lore")
 
     # 6. Event referenced location exists; lore/item effects reference real ids.
     for evid, ev in world["events"].items():
@@ -244,6 +268,31 @@ def main() -> int:
         rq = q.get("requires_quest")
         if rq and rq not in world["quests"]:
             errors.append(f"quest '{qid}' requires_quest '{rq}' is unknown")
+
+    # 10d. lore_dialogue on NPCs: shape {sect_id: {threshold: lore_id}}.
+    # sect ids, thresholds, and lore ids all validated.
+    for nid, n in world["npcs"].items():
+        ld = n.get("lore_dialogue")
+        if ld is None:
+            continue
+        if not isinstance(ld, dict):
+            errors.append(f"npc '{nid}' lore_dialogue must be an object")
+            continue
+        for sid, tiers in ld.items():
+            if sid not in world["sects"]:
+                errors.append(f"npc '{nid}' lore_dialogue references unknown sect '{sid}'")
+            if not isinstance(tiers, dict):
+                errors.append(f"npc '{nid}' lore_dialogue[{sid}] must be an object of threshold -> lore_id")
+                continue
+            for thr, lid in tiers.items():
+                try:
+                    int(thr)
+                except (TypeError, ValueError):
+                    errors.append(f"npc '{nid}' lore_dialogue[{sid}] threshold '{thr}' must be an int")
+                if not isinstance(lid, str) or not lid.strip():
+                    errors.append(f"npc '{nid}' lore_dialogue[{sid}][{thr}] must be a non-empty lore id")
+                elif lid not in world["lore"]:
+                    errors.append(f"npc '{nid}' lore_dialogue[{sid}][{thr}] references unknown lore '{lid}'")
 
     for nid, n in world["npcs"].items():
         rd = n.get("rep_dialogue")

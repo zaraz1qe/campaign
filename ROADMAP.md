@@ -28,6 +28,8 @@ A living checklist for what's been done and what to add next.
 - **Quests**: 9 (Kettle's Request, Study Sutra, Missing Disciple, Envoy's
   Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace, Red Path,
   **Red Ledger** — the first multi-quest arc)
+- **Lore**: 20 (earnable via boss defeats, quest rewards, and high-rep
+  NPC trust — see Chronicler's Eye, session 11)
 - **Realms**: 8 (Mortal → Ascendant Immortal)
 
 ## How to Add Content (the path of least resistance)
@@ -101,10 +103,14 @@ A living checklist for what's been done and what to add next.
 - [ ] Manuals: rare dropped manuals that unlock specific techniques
 
 ### 7. Lore / Worldbuilding
-- [ ] One legend per region
-- [ ] Sect founding stories
+- [ ] One legend per region (per-location `lore` hook, first-visit grant)
+- [~] Sect founding stories (Azure Cloud, Scarlet Lotus, Five Poisons —
+      all have at least one founder story; Jadestep has two. Need: more
+      of the minor regions' legends.)
 - [ ] Poems (one per sect)
-- [ ] Sutras (4–5 of varying schools)
+- [~] Sutras (have: Empty Sleeves/Word in Dust, Oath of the Grey, Scarlet
+      Lotus Oath, Five Refusals, Four Reasons, Stormwarden. Missing: a
+      righteous-orthodox sutra beyond Azure Cloud.)
 - [ ] Histories of major wars (the Sword Calamity, the Blood Moon Rising)
 
 ---
@@ -132,6 +138,10 @@ A living checklist for what's been done and what to add next.
       Meilin, or Bai when relevant (s10).
 - [x] **requires_quest gate on quests** — quest arcs can chain. A second
       errand stays silent until the first is closed (s10).
+- [x] **Lore as earned reward** — on_defeat_lore on enemies, grants_lore
+      on quests, lore_dialogue on NPCs; the `read` command is now a
+      proper library index grouped by category with a known/total
+      counter (s11).
 - [ ] **Faction war state**: more than spawns — sect patrols that pursue
       between locations, trade embargoes, sect-tournament triggers
 - [ ] **Auto-respawn enemies** so locations don't go empty after one fight
@@ -155,6 +165,40 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-23 (session 11)** — "The Chronicler's Eye." Lore finally
+  became an earned reward, not just library flavor. Three new data-
+  driven grant channels: `enemy.on_defeat_lore` (victory-paid), 
+  `quest.grants_lore` (completion-paid), `npc.lore_dialogue` (trust-
+  paid, shape mirrors `rep_dialogue` with lore ids at the leaves). 
+  All three are additive and silent on already-known ids. Retrofit 5
+  bosses, 8 quests, and 4 NPCs — Shen → Willow-Step Cut, Gale Tiger
+  → Fall of Jadestep, Terrace Revenant → new Terrace Dancers, 
+  Stormcaller Disciple → new Eight-Point Star Ledger, Pavilion 
+  Guardian → Ledger of Red Names; Kettle's Request → Song of the 
+  Bamboo, Study Sutra → Word in Dust, Envoy's Letter → Founding of 
+  Azure Cloud, Missing Disciple → River of Swords legend, Oath of 
+  Fangs → Oath of the Grey, Stormwarden's Test → Song of the 
+  Stormwarden, Broken Terrace → new Mingshu's Last Silence, Red Path
+  → Scarlet Lotus Oath; Baixu (ACS +5) → Azure Succession Dispute
+  [new], Shan (FPS +3/+5, tiered) → First Poisoner myth + Five
+  Refusals [new], Red Feather (SL +5) → Four Reasons [new], Old Dog
+  (Jadestep +2) → Terrace Dancers, Stormwarden Gao (ACS +3) → 
+  Stormcaller's Brand. Six new lore entries in 
+  `content/lore/earned.json`: Azure Succession Dispute, Mingshu's
+  Last Silence, Pavilion's Four Reasons, Five Poisons' Refusals, 
+  Eight-Point Star Ledger, Terrace Dancers. Engine: new 
+  `Game._grant_lore(id, source)` helper handles the announcement
+  and silent re-grant; `_lore_dialogue_grant` evaluates a `talk`
+  against sect thresholds. `cmd_read` / `cmd_lore` grouped by
+  category with a `known/total` counter and per-entry category
+  tag. Validator gained three checks (on_defeat_lore types,
+  grants_lore types, lore_dialogue shape + lore-id resolution).
+  SCHEMAS.md updated in three sections plus a new "How lore is
+  earned" subsection at the bottom. Smoke test 
+  `tools/smoke_lore.py` — 9 scenarios covering every channel,
+  the "silent on known" invariant, the tier-picking at Shan, the
+  `read` UI, and save-compat. Save-compat preserved — zero new
+  Player fields; `known_lore` was already there.
 - **2026-04-22 (session 10)** — "The Red Ledger." First multi-quest arc,
   plus a new engine layer that makes companions *visible in dialogue*. New
   quest **The Red Ledger** from Elder Red Feather — a 4-step follow-up to

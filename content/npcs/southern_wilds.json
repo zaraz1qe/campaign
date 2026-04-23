@@ -200,6 +200,11 @@
         "2": ["A red silk knot at your sleeve, cultivator. Do not come to this pavilion again with it on. I warn you once as a courtesy; what comes next will come from younger hands."]
       }
     },
+    "lore_dialogue": {
+      "azure_cloud_sect": {
+        "5": "the_azure_succession_dispute"
+      }
+    },
     "companion_reply": {
       "blood_sworn_jin": [
         "So. The nephew walks with a stranger now. Sit down, Jin. The cushion is the same one your uncle taught you to straighten. It remembers you whether I do or not.",

@@ -78,6 +78,20 @@ Optional fields can be omitted. Unknown fields are ignored (forward-compatible).
     "disciple_meilin": "Meilin at your shoulder. Good — she is better at the road than I was at her age."
   },
 
+  // Optional lore-grant dialogue. When the player's rep with a sect meets
+  // a threshold here, the NPC silently records the named lore into the
+  // player's memory during `talk`. Shape mirrors rep_dialogue but values
+  // are a single lore id per threshold. Positive thresholds fire when rep
+  // >= threshold; negative fire when rep <= threshold. The highest met
+  // positive (or lowest met negative) is the tier used per sect. Only new
+  // entries are announced; already-known lore is silent. Good for high-
+  // trust teachers who reveal a sect-internal story to disciples who have
+  // proven themselves.
+  "lore_dialogue": {
+    "azure_cloud_sect": { "5": "the_azure_succession_dispute" },
+    "scarlet_lotus_pavilion": { "-3": "the_pavilions_four_reasons" }
+  },
+
   // Optional companion block. Makes this NPC recruitable via the `recruit`
   // command. At most one companion walks with the player at a time. A
   // recruited NPC still lives at their home location (still visible/talk-able);
@@ -127,6 +141,13 @@ Optional fields can be omitted. Unknown fields are ignored (forward-compatible).
   // Optional single-line atmospheric announcement shown under the enemy
   // in `look` when they are visible. Useful for ambush-spawned foes.
   "ambush_text": "A crimson silk scarf flutters from a crow-perch as you pass. There is no bird.",
+
+  // Optional lore-on-defeat. When the player defeats this enemy, every
+  // entry here is granted to the player (silent if already known). Used
+  // for story bosses, named apostates, and unique spirit beasts — the
+  // kinds of kills that leave a token, a scar, or a name that the world
+  // would not have otherwise handed over. String or list of strings.
+  "on_defeat_lore": ["the_willow_step_cut"],
 
   "xp": 30,
   "tags": ["beast", "venomous"]
@@ -237,7 +258,12 @@ Unequipping gear that bumps `max_hp` clamps current HP down if over.
   // Optional prerequisite quest — this quest is not offered until the
   // named quest sits in `Player.completed_quests`. Used to chain an arc:
   // the second errand stays silent until the first is closed.
-  "requires_quest": "the_red_path"
+  "requires_quest": "the_red_path",
+
+  // Optional lore granted on quest completion. One entry per quest is
+  // typical — the story-scroll you carry home from the errand. Silent on
+  // already-known entries; announced once otherwise. String or list.
+  "grants_lore": ["scarlet_lotus_oath"]
 }
 ```
 
@@ -404,3 +430,30 @@ the Scarlet shrine; a demon-path prodigal at the sect he left.
   "text": "Long ago, when the heavens were young..."
 }
 ```
+
+### How lore is earned (engine)
+
+A piece of lore becomes known to the player (added to `Player.known_lore`)
+through any of four channels. Each entry granted *once*; repeat grants
+are silent.
+
+1. **Events.** An `event.effect.lore: "<id>"` fires when the event
+   triggers on arrival. Oldest channel; random-feel.
+2. **Enemies (`on_defeat_lore`).** A boss or named enemy can carry a
+   string or list of lore ids. Granted after victory's loot/XP spray.
+   The typical home for story-bosses: defeating them earns you the
+   scroll they were guarding.
+3. **Quests (`grants_lore`).** A quest can grant lore on completion,
+   alongside stones/XP/items/rep. Makes the story-beat of finishing a
+   quest tangible — you carry a new entry in your memory, not just a
+   pill.
+4. **NPC trust (`lore_dialogue`).** An NPC can pin a lore id behind a
+   sect-rep threshold. When the player talks to them and the threshold
+   is met, they record the lore. Shape mirrors `rep_dialogue` but each
+   leaf is a single lore id. The NPC is "trusting you enough to tell
+   you a thing."
+
+The `lore` / `read` command lists all known lore grouped by category,
+with a `(known/total)` counter. `read <id>` opens a single entry. New
+lore announcements print a `[Lore recorded — category] title` line
+plus a hint to `read <id>`.

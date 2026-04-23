@@ -308,9 +308,70 @@ class Game:
                 out_name = self.world["items"].get(out_id, {}).get("name", out_id)
                 self.out(f"     {rid} → {out_name}")
         self.player.talked_to.add(npc_id)
+        # An NPC may entrust a piece of lore to a player at the right standing.
+        # Silent when already known; fires only on the first qualifying talk.
+        self._lore_dialogue_grant(n, npc_id)
         if n.get("gives_quest"):
             self.out(quests.offer_quest(self.world, self.player, n["gives_quest"]))
         self._note_quests()
+
+    def _grant_lore(self, lore_id: str, source: str = "") -> bool:
+        """Grant a lore entry to the player once, printing a richer announcement.
+        Returns True if the lore was newly discovered, False if already known or
+        unknown. `source` is a short verb-phrase like "the old dog teaches you"
+        that leads the announcement — kept optional so callers can pass plain
+        context or none at all."""
+        if not lore_id:
+            return False
+        if lore_id in self.player.known_lore:
+            return False
+        l = self.world.get("lore", {}).get(lore_id)
+        if not l:
+            return False
+        self.player.known_lore.add(lore_id)
+        title = l.get("title", lore_id)
+        cat = l.get("category", "lore")
+        self.out("")
+        if source:
+            self.out(_wrap(f"  * {source}"))
+        self.out(f"  [Lore recorded — {cat}] {title}")
+        self.out(_wrap(f"    (read it later with `read {lore_id}`)"))
+        return True
+
+    def _lore_dialogue_grant(self, npc: Dict[str, Any], npc_id: str) -> None:
+        """Grant lore from an NPC's `lore_dialogue` block when rep thresholds
+        match. Shape: `lore_dialogue: {sect_id: {threshold: lore_id}}`. For each
+        sect the highest met positive threshold (or lowest met negative) is the
+        tier the NPC trusts you at — they reveal the lore pinned there. Only
+        new lore prints; already-known entries are silent. Each sect evaluates
+        independently, so a single NPC can grant one per sect over time."""
+        ld = npc.get("lore_dialogue") or {}
+        if not isinstance(ld, dict):
+            return
+        nname = npc.get("name", npc_id)
+        for sid, tiers in ld.items():
+            if not isinstance(tiers, dict):
+                continue
+            value = self.player.rep(sid)
+            chosen_thr = None
+            for thr_s in tiers:
+                try:
+                    thr = int(thr_s)
+                except (TypeError, ValueError):
+                    continue
+                if thr >= 0 and value >= thr:
+                    if chosen_thr is None or thr > chosen_thr:
+                        chosen_thr = thr
+                elif thr < 0 and value <= thr:
+                    if chosen_thr is None or thr < chosen_thr:
+                        chosen_thr = thr
+            if chosen_thr is None:
+                continue
+            lore_id = tiers.get(str(chosen_thr)) or tiers.get(chosen_thr)
+            if not isinstance(lore_id, str):
+                continue
+            self._grant_lore(lore_id,
+                             f"{nname} trusts you enough to tell you a thing.")
 
     def _rep_gate_msg(self, requires: Dict[str, int]) -> str:
         """Return '' if the player meets all rep requirements; otherwise a
@@ -420,11 +481,21 @@ class Game:
             self.out("No such foe here.")
             return
         result = combat.fight(self.world, self.player, eid, self.io)
-        self._note_quests()
         if result == "victory":
-            # Optionally remove the enemy from the location list (one-shot foes
-            # can be respawned by being re-added to the list in a content patch).
-            pass
+            # Some enemies — especially story bosses — leave behind knowledge
+            # as well as loot. Grant any `on_defeat_lore` entries once. A
+            # token, a scar, a scrap of cloth with a name stitched inside:
+            # the world adjusts, and the player carries something they
+            # would not have had if they had never stood over this body.
+            enemy_def = self.world["enemies"].get(eid, {})
+            ename = enemy_def.get("name", eid)
+            lore_ids = enemy_def.get("on_defeat_lore") or []
+            if isinstance(lore_ids, str):
+                lore_ids = [lore_ids]
+            for lid in lore_ids:
+                self._grant_lore(lid,
+                                 f"Among {ename}'s effects you find something you are meant to read.")
+        self._note_quests()
 
     # ------------------------------------------------------------------
     def cmd_cultivate(self, _arg: str) -> None:
@@ -790,13 +861,25 @@ class Game:
     # ------------------------------------------------------------------
     def cmd_read(self, arg: str) -> None:
         if not arg:
-            if not self.player.known_lore:
-                self.out("You have collected no lore yet.")
+            known = self.player.known_lore
+            total = len(self.world.get("lore", {}))
+            if not known:
+                self.out(f"You have collected no lore yet.  (0 / {total} known.)")
                 return
-            self.out("Lore in your memory:")
-            for lid in sorted(self.player.known_lore):
+            # Group by category so the scroll becomes a small library index.
+            by_cat: Dict[str, list] = {}
+            for lid in sorted(known):
                 l = self.world["lore"].get(lid, {})
-                self.out(f"  - {l.get('title', lid)}")
+                cat = l.get("category", "lore")
+                by_cat.setdefault(cat, []).append(lid)
+            self.out(f"Lore in your memory  ({len(known)} / {total} recorded):")
+            for cat in sorted(by_cat):
+                self.out(f"  -- {cat} --")
+                for lid in by_cat[cat]:
+                    l = self.world["lore"].get(lid, {})
+                    self.out(f"     {l.get('title', lid)}  ({lid})")
+            self.out("")
+            self.out("  (Read a specific entry: `read <id>`.)")
             return
         lid = arg.strip().lower().replace(" ", "_")
         if lid not in self.player.known_lore:
@@ -804,7 +887,8 @@ class Game:
             return
         l = self.world["lore"].get(lid, {})
         self.out("")
-        self.out(f"=== {l.get('title', lid)} ===")
+        cat = l.get("category", "lore")
+        self.out(f"=== {l.get('title', lid)}  [{cat}] ===")
         self.out(_wrap(l.get("text", "")))
 
     def cmd_lore(self, _arg: str) -> None:

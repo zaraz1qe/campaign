@@ -27,6 +27,7 @@
       { "item": "broken_terrace_medallion", "chance": 0.05 }
     ],
     "xp": 70,
+    "on_defeat_lore": ["the_terrace_dancers"],
     "tags": ["undead", "cultivator", "sky_spire"]
   },
   {
@@ -57,6 +58,7 @@
       { "item": "skybreaker_blade", "chance": 0.07 }
     ],
     "xp": 80,
+    "on_defeat_lore": ["the_eight_point_star_ledger"],
     "tags": ["human", "cultivator", "sky_spire"]
   },
   {
@@ -73,6 +75,7 @@
       { "item": "skybreaker_blade", "chance": 0.35 }
     ],
     "xp": 220,
+    "on_defeat_lore": ["fall_of_jadestep"],
     "tags": ["beast", "boss", "spirit", "sky_spire"]
   }
 ]

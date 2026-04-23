@@ -67,6 +67,7 @@
       { "item": "blood_lotus_petal", "chance": 0.30 }
     ],
     "xp": 110,
+    "on_defeat_lore": ["the_willow_step_cut"],
     "tags": ["human", "cultivator", "scarlet_lotus", "apostate", "quest_target"]
   },
   {
@@ -86,6 +87,7 @@
       { "item": "scarlet_pavilion_token", "chance": 0.15 }
     ],
     "xp": 140,
+    "on_defeat_lore": ["the_ledger_of_red_names"],
     "tags": ["human", "cultivator", "scarlet_lotus", "boss"]
   }
 ]
