@@ -1,0 +1,37 @@
+[
+  {
+    "id": "centipede_shed_skin",
+    "name": "A Fresh Centipede Shed",
+    "type": "quest",
+    "description": "A long, translucent husk in forty-seven sections — though the count is hard to keep, because the husk is fragile and the joints are still wet enough to fold. It smells faintly of cold iron and of the powder a writing-brush leaves on a dry sleeve. Held to the light, the segments are not quite uniform; the seventh and the twenty-third are paler, and the antennae are still curled tight, the way the centipede curls them only when it has shed in fear. Apothecary Qi will read what the body of the centipede is no longer there to say.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["material", "quest", "five_poisons"]
+  },
+  {
+    "id": "black_pillar_leaf",
+    "name": "A Leaf of the Black-Pillar Vine",
+    "type": "quest",
+    "description": "A leaf the colour and weight of slate, but as flexible in the hand as wet silk. The veins on its underside trace a pattern that resembles, faintly, the inside of a hand — the small lines of a palm — and the leaf is warm where a leaf has no business being warm. The Black-Pillar vine grows only on the underside of the gorge ceiling where the spiders permit a hand to reach; it permits no leaves to be picked except into a hand it has already learned. The leaf will keep its softness for one night. After that it is only a stone.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["material", "quest", "five_poisons", "rare"]
+  },
+  {
+    "id": "keepers_brocade_sash",
+    "name": "Keeper's Brocade Sash",
+    "type": "accessory",
+    "slot": "accessory",
+    "atk_bonus": 1,
+    "def_bonus": 3,
+    "hp_bonus": 12,
+    "on_hit_effect": "poison",
+    "on_hit_power": 1,
+    "requires_rep": { "five_poisons_sect": 2 },
+    "description": "A narrow grey sash the colour of wet basin-bronze, brocaded down its centre with a single running thread the colour of the basin-water at lamp-hour: not black, not green, the colour between them that has no name. Apothecary Qi ties the knot herself — a small flat double the keepers learn before they learn to read — and the knot does not slip but loosens always to the wearer's right hand. The four lesser basins, it is said, will not strike a hand that carries this knot. The hand that carries this knot does not lift the ladle for itself.",
+    "value": 320,
+    "tags": ["accessory", "five_poisons", "rare", "quest_reward"]
+  }
+]

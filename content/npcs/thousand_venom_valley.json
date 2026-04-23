@@ -82,17 +82,56 @@
     "id": "poisoner_qi",
     "name": "Apothecary Qi",
     "title": "Keeper of the Five Basins",
-    "description": "A small, round, ink-stained woman who always seems to be mid-sentence with someone who is not in the room. Her sleeves jingle faintly: vials, or teeth.",
+    "description": "A small, round, ink-stained woman who always seems to be mid-sentence with someone who is not in the room. Her sleeves jingle faintly: vials, or teeth. At her right wrist hangs a small grey silk knot the Matriarch tied for her years ago — the keeper's knot, not the matriarch's; she has not taken it off since.",
     "dialogue": [
       "Pearl? Pill? Pollen? I have them all and none of them are a bargain. Choose bravely.",
       "A poison that cannot be cured is only an accident. We sell the cure and the cause both — it is only fair.",
-      "The Nine Serpents Pill is a guest in the dantian. Welcome it; do not bow to it."
+      "The Nine Serpents Pill is a guest in the dantian. Welcome it; do not bow to it.",
+      "Five basins, child. The Matriarch's hand is the first. The other four are mine. Do not pity the count; it suits me. The rolls are honest about a great deal and quiet about a small remainder. I am better in the second book.",
+      "The third basin's centipede is forty-seven this winter. The fifth basin's spider has not spun in nine days. The fourth basin's scorpion has thrown a daughter — first daughter in twelve years. The second basin's toad is, for the first time since I have kept her, content. Three out of four wanting; the keeping does not run out of work.",
+      "If you ever stand at the third basin while I am reading the husk, do not speak. The centipede counts only one voice in the hall at a time, and the voice she counts is the one she has known since the second day of her life. The other voices she sets aside, but only if they leave her room to."
     ],
     "teaches": ["serpent_strike", "web_of_silk", "black_lattice_palm"],
     "sells": ["antidote_pearl", "nine_serpents_pill", "minor_healing_pill",
               "venom_fanged_dagger", "viper_scale_sash"],
+    "gives_quest": [
+      "the_centipede_in_its_skin",
+      "the_spider_who_will_not_spin",
+      "the_scorpions_first_bite"
+    ],
     "faction": "five_poisons_sect",
-    "disposition": "friendly"
+    "disposition": "friendly",
+    "rep_dialogue": {
+      "five_poisons_sect": {
+        "5": [
+          "You sat the Black-Pillar leaf at my elbow at moonless midnight, child. The fourth basin's daughter chose your hand; the basin remembers. Do not be surprised if, in a year, you walk in on a moonless night and the cup has been set out for three.",
+          "I will not give you the keeper's knot — Shan ties those, and only those — but I have a small grey thread in the second drawer that is older than the knot and not for the rolls. Ask me for it the next time you come, if you come quietly enough that the basins do not remark."
+        ],
+        "2": [
+          "You walked the gorge for the centipede's husk and you walked it again for the Black-Pillar. The basins do not learn quickly, but they have learned you. The lamps stay a little brighter when you come in.",
+          "Bai will tell you nothing useful about the spider's silk. That is a lie; she will tell you everything useful and pretend she has not. Listen to her hands, not her sentences."
+        ],
+        "-2": [
+          "You smell of something the basins do not approve of. I will not name it; you have not asked. Set the ladle down and walk a small loop until the smell goes off you. The bronze is patient, but only with the patient."
+        ]
+      },
+      "scarlet_lotus_pavilion": {
+        "-2": [
+          "The Pavilion's red sits poorly on this floor. The basins have a memory the Matriarch's politics do not always indulge. Take a step back from the third basin, please; the centipede is reading you and the count is not flattering."
+        ]
+      }
+    },
+    "lore_dialogue": {
+      "five_poisons_sect": {
+        "5": "the_keepers_silence",
+        "2": "the_spider_who_remembers_silk"
+      }
+    },
+    "companion_reply": {
+      "venomhand_bai": "Bai. The Garden walks into the Hall, and on a working day. The lattice has been tidy in your absence; it does not need the apology you are not making. The fifth basin's spider is gravid; I learned it from your hand last week and not from your mouth. Thank you, again, for that.",
+      "disciple_meilin": "A daughter of the cranes at my ledger-table. Sit, sword-sister. I will not show you the count of the basins — it is not a thing the cranes are asked to read — but I will pour you a cup of plain water from the second jar, which is the courtesy the Hall offers a sword that has crossed the steles without bare-edged hand. The Matriarch will have heard you arrive. She does not always speak first.",
+      "blood_sworn_jin": "The Pavilion's blood-thread at my elbow. I will not wave my ladle at you, child; the basin-creatures dislike the gesture. Sit on the second stool — the first is for keepers, the third is for the Matriarch's ear — and do not lean on the third basin's rim. The centipede is reading shadows, today, and yours falls in a way she has not learned."
+    }
   },
   {
     "id": "venomhand_bai",
@@ -103,7 +142,8 @@
       "Mind where you step. The ground remembers every bite.",
       "Matriarch Shan says the best road for a venom-handler is an outside road. It was not advice; it was a warning.",
       "I have tested a poison on every finger of this hand. None of them are lying.",
-      "If you find me too quiet on the road, it means a plant spoke louder. Don't take offense."
+      "If you find me too quiet on the road, it means a plant spoke louder. Don't take offense.",
+      "Apothecary Qi keeps four basins for the Matriarch's one. Three of her four are at her this season — the centipede, the spider, the scorpion. The fourth — the toad — is, for once, content; do not begrudge the keeper that small mercy. If she sends you to me about the spider, I have the answer, and have had it for nine days. I was waiting to be asked."
     ],
     "faction": "five_poisons_sect",
     "disposition": "neutral",

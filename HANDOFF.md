@@ -124,6 +124,259 @@ validated, committed.
 
 # Session log
 
+## Session 20 — 2026-04-23 — "The Four Lesser Basins"
+
+### What I built
+- **Audit first.** The session-19 handoff named Apothecary Qi as
+  the obvious next deepening target ("3 dlg / 3 teaches / 5 sells,
+  no rep_dialogue, no companion_reply, no quest"). Re-ran the NPC
+  density audit to confirm: Qi was the lowest-scoring NPC in the
+  game who is NOT also under-developed for a clear reason. The
+  three player-companions (Bai 8, Jin 7, Meilin 8) score lower
+  but adding a pre-companion arc would gate their existing
+  recruitment and risk save-compat. Qi is a pure additive target.
+  Score 11 going in → 33 going out, comfortably mid-pack now.
+- **Arc: "The Four Lesser Basins."** Three connected quests
+  about Qi's working life as the Keeper of the Five Basins —
+  Shan tends the first basin (the serpent, paid off in s19);
+  Qi tends the other four (centipede, toad, scorpion, spider).
+  The arc visits THREE of them; the fourth (toad) is content
+  this season — a deliberate negative-space line in Qi's voice.
+  The arc's shape is deliberately the inverse of Shan's:
+  Shan's three quests were the Matriarch's — about the sect's
+  *politics* (the Pavilion, the cranes, the rite for the
+  serpent). Qi's three are the keeper's — about the *work*,
+  the basins, the daily reading of bodies. Each quest sends
+  the player to one of the sect's three locations beyond the
+  hall: the gorge, the garden, the gorge again.
+- **Q1 — "The Centipede in Its Skin"** (mortal-friendly, prereq
+  oath_of_fangs, no rep gate). The third basin's centipede has
+  shed; a beetle dragged most of the husk into the Venom Gorge
+  before Qi could shut her mouth. The shed reads only while
+  fresh — the seventh segment for temper, the twenty-third for
+  the dantian-mirror, the antennae for time itself. Player
+  walks the gorge, finds the husk, returns. Qi reads it. FPS+1.
+  Lore: `the_centipede_in_its_skin` (the sutra on what a husk
+  reveals — a small treatise of the kind apothecaries keep in
+  the body, not in the book). Item: `centipede_shed_skin` on
+  the gorge floor.
+- **Q2 — "The Spider Who Will Not Spin"** (prereq Q1, no rep
+  gate). The fifth basin's spider hasn't spun in nine days.
+  Two answers fit and look identical for nine days more:
+  dying, or gravid. The book that distinguishes them is in
+  Shan's library — and Qi, who is the keeper but not a
+  daughter of the rolls, cannot read in that hall. Bai of the
+  Garden has read it, in a copy she keeps under the iron
+  lattice. Player goes to the garden, asks Bai (who has the
+  answer "and has had it for nine days, waiting to be asked"),
+  returns to Qi. The arc point: Qi's competence is gated by
+  the sect's literacy hierarchy — the keeper's reading is
+  middlewomanned by the gardener. FPS+1. Lore:
+  `the_spider_who_remembers_silk`.
+- **Q3 — "The Scorpion's First Bite"** (Foundation-ready,
+  FPS+3 gate, prereq Q2). Qi's capstone. The fourth basin's
+  scorpion has thrown a daughter — first daughter in twelve
+  years. The first venom of a basin-born scorpion must be
+  milked into a sealed cup at moonless midnight by three
+  pairs of hands; the third pair is chosen by the daughter
+  herself, by stepping toward one of the hands offered. The
+  cup must be wrapped in a leaf of the Black-Pillar vine,
+  which grows on the ceiling-webs of the Venom Gorge where
+  the spiders permit only a hand they have learned. The
+  player has been so learned, by the centipede's husk in Q1.
+  Player returns to the gorge, picks the leaf (the second
+  on-ground item there), brings it to Qi. The rite is
+  performed offstage that midnight. FPS+1. Capstone item:
+  **Keeper's Brocade Sash** (accessory: ATK+1, DEF+3, HP+12,
+  on-hit poison 1, FPS+2 rep-gated — defence-leaning,
+  deliberately distinct from Shan's offence-leaning sash).
+  Lore: `the_scorpions_first_bite` (the rite, the twelve-year
+  cadence, the basin's memory) AND `the_keepers_silence`
+  (Qi's own philosophy — twice she has been asked to be
+  entered into the rolls; twice she has declined; "the rolls
+  are honest about a great deal and quiet about a small
+  remainder; I am better in the second book").
+- **Content totals**: 3 new items (2 quest materials, 1
+  capstone accessory), 4 new lore entries, 3 new quests, 3
+  new events (`centipede_shed_at_the_root` and
+  `black_pillar_breath` at Venom Gorge,
+  `qi_kneels_at_the_third_basin` at Five Poisons Hall). Zero
+  new NPCs / locations / techniques / enemies — pure
+  deepening of existing geography, voice, and the
+  under-developed third NPC of the sect's three locations.
+- **Apothecary Qi's voice.** Dialogue grew 3 → 6 lines: the
+  "five basins, four are mine, the rolls are honest about a
+  great deal and quiet about a small remainder" speech (lamps
+  the keeper's whole arc in one breath); the basin-state
+  inventory ("third centipede 47, fifth spider 9 days, fourth
+  scorpion's daughter, second toad content"); the third-basin
+  silence rule (don't speak when she's reading the husk).
+  Description picked up a new beat — the small grey silk knot
+  at her right wrist, the keeper's knot, distinct from Shan's
+  many-coloured matriarch's knot at the left wrist (paid off
+  in `the_keepers_silence` lore). Added rep_dialogue at
+  **FPS +2** (post-Q1/Q2 working tier), **FPS +5** (post-arc
+  tier — including the "small grey thread in the second
+  drawer that is older than the knot" hook for a future
+  giftgiving micro-arc), and **SLP -2**. lore_dialogue at
+  FPS +5 reveals `the_keepers_silence`; FPS +2 reveals
+  `the_spider_who_remembers_silk` (early enough to feel
+  earned mid-arc). Three new companion_reply entries — Bai
+  ("the Garden walks into the Hall, and on a working day"),
+  Meilin ("a daughter of the cranes at my ledger-table"),
+  Jin ("do not lean on the third basin's rim; the centipede
+  is reading shadows"). gives_quest is now a list of three
+  — Qi joins Shan, Zhao, Huilin, Weilan as the FIFTH
+  multi-quest giver in the game.
+- **Bai foreshadowing line.** One new dialogue line on Bai
+  about Qi: "Apothecary Qi keeps four basins for the Matriarch's
+  one. Three of her four are at her this season... If she sends
+  you to me about the spider, I have the answer, and have had
+  it for nine days. I was waiting to be asked." Same trick as
+  Wuwei's Yanyu line in s19, Baixu's Weiyan line in s15:
+  ambient before the arc, fulfilment during.
+- **Smoke test.** `tools/smoke_qi.py` — 8 scenarios: content
+  load (items / lore / quests / events); Qi's gives_quest
+  list structure with exact ordering; voice deepening
+  assertions (>=6 dlg, FPS rep_dialogue tier, FPS lore_dialogue
+  tier, 3 companion_replies for the 3 player-companions);
+  gorge ground-items + atmospherics intact (regression for
+  pre-existing centipede enemies); full three-quest arc
+  end-to-end with FPS+3 gate (positive AND negative case);
+  Keeper's Sash equip with claimed bonuses AND distinctness
+  from Shan's sash (DEF > Shan, ATK < Shan); Bai's "nine days"
+  foreshadowing line present; save/load round-trip. All green.
+  All 14 prior smoke tests remain green. Fifteen total.
+- **Live REPL verification.** Drove the arc through `g.step`
+  with real `go`/`talk`/`take` commands (not just direct
+  `g.player.location` assignment). All three quests accept,
+  advance, complete; capstone sash lands; FPS climbs 2 → 5;
+  all 4 lore entries granted. The arc plays.
+
+### Current state
+- Validator: **29 loc / 30 npc / 22 enemy / 43 tech / 95 item /
+  4 sect / 28 quest / 51 event / 45 lore / 15 recipe.** Deltas
+  from session 19: +3 items, +3 quests, +3 events, +4 lore.
+  No new NPCs / enemies / locations / techniques.
+- All 14 prior smoke tests remain green; new `smoke_qi.py`
+  green. Fifteen total.
+- Save-compat preserved. Zero new Player fields. An old save
+  that finished `oath_of_fangs` will see Qi offer Q1 the next
+  time the player talks to her at the Five Poisons Hall.
+- **Quest distribution going in → going out**: Five Poisons Sect
+  4 → 7 quests. Now ties Azure Cloud as the densest sect in
+  the game (Azure Cloud: 6 + Baixu's Envoy = 7 if you count
+  Ruwen). FIVE NPCs in the game now own multi-quest arcs
+  (Zhao, Huilin, Weilan, Shan, Qi). The Five Poisons Sect
+  finally feels like "a place with people, not just a place
+  with a matriarch" — exactly what s19's handoff asked for.
+- **Venom Gorge** went from a 1-event, 0-item connector to a
+  3-event, 2-item destination — and is now part of TWO arcs
+  (Q1 + Q3 visit it). The gorge is no longer a passage; it
+  has reasons to be walked.
+- **Five Poisons Hall** now has 2 events (basin_viper_silence,
+  qi_kneels_at_the_third_basin) — Shan's working hands and
+  Qi's both have an ambient beat at the hall. Players who
+  loiter see the sect's interior life rather than a quest
+  desk.
+
+### What I'd do next if I had another hour
+1. **Apothecary Qi's small-gift micro-arc.** Her FPS +5 tier
+   names "a small grey thread in the second drawer, older
+   than the knot, not for the rolls." That's a one-quest
+   hook — a player who returns at high standing asks for the
+   thread, and Qi gives them an item that has no mechanical
+   teeth (a `keepers_thread` treasure-prop with lore). A
+   ten-minute job that closes the loop on the FPS+5 line.
+2. **The fourth basin (toad) micro-arc.** Qi mentions the
+   second-basin toad is, for once, content. A future micro-
+   arc could be the season the toad isn't — a one-quest piece
+   for a low-rep mortal who has done none of the others. The
+   set of "all four basins acknowledged" would close the
+   keeper's spine.
+3. **The third Moon-Silt apothecary** (still flagged from
+   s19). FPS +5 lore_dialogue on Shan hints at this — the
+   apothecary is named in the ledger but unlocated. A
+   tracking arc that takes the player out of the valley.
+4. **Venomhand Bai's pre-companion arc.** Bai now has an
+   audible content presence (Q2 of Qi's arc), but her
+   recruitment is still rep-gated only. A one-or-two quest
+   "prove yourself to the gardener" arc — gated NOT on
+   companion recruitment but as an alternative trust path —
+   would round out the sect's third NPC. Parallel to how
+   Jin has the Red Path arc as his pre-recruit content.
+5. **Yanyu as a recovering NPC** at the Azure Cloud Inner
+   Courtyard (still flagged from s19). One arc complete +
+   one NPC visible = a sect that *aftermaths*. The Inner
+   Courtyard has 1 NPC (Meilin) and 1 event — ripe for
+   one more body.
+6. **Apothecary-tier items orphan check.** `shans_dispensary_ledger`
+   is still in items.json with no placement. If we don't
+   reach for it within 2 sessions, either drop it or place
+   it as a high-rep gift from Shan.
+
+### Things I noticed but didn't fix
+- **`scorpions_first_bite` rite is offstage.** Like Shan's
+  capstone, the rite itself happens after the player hands
+  Qi the leaf. The keeper performs it that midnight; the
+  player is not present. This is the right shape — a basin's
+  first bite is the keeper's intimacy, not the player's
+  spectacle — but it does mean the third quest's
+  player-facing payoff is the lore + sash, not a scene. If
+  a future session adds a "ceremonial witness" mechanic
+  (i.e., a step that fires only at certain in-game times),
+  Qi's Q3 would be a natural retrofit candidate.
+- **The fourth basin (toad) is acknowledged but not played.**
+  Qi's dialogue mentions the toad is content this season.
+  That's a deliberate negative-space line — three of four
+  basins in the arc, the fourth as a one-line absence — but
+  it's also a hook, not a closure. See "next hour" item 2.
+- **Bai's Q2 closes on talk-Bai, not return-talk-Qi.** Same
+  `talked_to`-is-persistent quirk that bit Huilin/Weilan/
+  Shan's arcs. Q2 closes when the player talks to Bai, and
+  the next talk-Qi (in fact, every talk-Qi) carries the
+  next offer. Smoke-test asserts this contract. Narratively
+  fine: the player still goes back to Qi because Q3 waits.
+- **No new technique was added.** Qi's existing teach-list
+  (serpent_strike, web_of_silk, black_lattice_palm) covers
+  her venom-handler role and adding more would dilute her
+  niche. If a future session wants to deepen the FP technique
+  roster, Bai is the better target — she has 0 teaches.
+
+### Don'ts (lessons learned)
+- **Don't have Qi's Q2 collect an item if the answer is
+  verbal.** Earlier draft had Bai give the player a "spider
+  shed fragment" to carry. That's a third-pocket item with
+  no mechanical role. Cut it. Talk-Bai is the satisfying
+  beat; the answer is what changes hands. Tangible items
+  should justify their weight in the inventory line.
+- **Don't reuse a location for a third arc-step without
+  thinking about the player's mental map.** Q1 sends the
+  player to the gorge; Q3 sends them back. That's fine —
+  the gorge is a place that earns re-walking — but adding
+  a Q4 to the same gorge would start to feel like fetching
+  the same item twice. The garden, the hall, and the
+  crossing are all candidates for future Qi micro-arcs;
+  the gorge has had its two trips.
+- **Don't ladder Qi's sash off Shan's sash bonuses.** First
+  draft of `keepers_brocade_sash` was just Shan's sash with
+  small numerical tweaks. Cut. Shan's sash is offence-
+  leaning (ATK+2, DEF+1) because Shan teaches striking
+  forms; Qi's is defence-leaning (ATK+1, DEF+3, HP+12)
+  because the keeper holds the ladle, not the blade. The
+  numerical shape should follow the NPC's character.
+- **Don't put both new lore entries behind a single quest
+  step.** Q3 grants TWO lore (the_scorpions_first_bite +
+  the_keepers_silence) — but both are tightly bound to the
+  capstone act. The_keepers_silence stands as the philosophy
+  beat; the_scorpions_first_bite as the procedural beat.
+  Splitting them across two steps would have spread the
+  beat too thin. The pair lands together because the
+  player-action is one beat (handing over the leaf, the
+  rite happens after).
+
+---
+
 ## Session 19 — 2026-04-23 — "The Grey That Does Not Lie"
 
 ### What I built

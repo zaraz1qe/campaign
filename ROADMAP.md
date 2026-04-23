@@ -24,10 +24,11 @@ A living checklist for what's been done and what to add next.
 - **Companions** (3): Disciple Meilin (Azure Cloud), Venom-Handler Bai
   (Five Poisons), Blood-Sworn Jin (Scarlet Lotus). Affinity/bond system
   active across all three.
-- **Items**: 92 (equipment, pills, materials, treasures, **manuals**,
-  Silent Bell Charm, Moon-Red Pill, Sister-Spoon, Five-Venoms Sash)
+- **Items**: 95 (equipment, pills, materials, treasures, **manuals**,
+  Silent Bell Charm, Moon-Red Pill, Sister-Spoon, Five-Venoms Sash,
+  Keeper's Brocade Sash)
 - **Recipes**: 15 (Forge-Master Bo: 6, Pillmaster Lu: 4, Apothecary Qi: 5)
-- **Quests**: 25. Single-givers: Kettle's Request, Missing Disciple,
+- **Quests**: 28. Single-givers: Kettle's Request, Missing Disciple,
   Envoy's Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace,
   Red Path, and the five Willowmere starters (Wolves at Shen's Farm,
   Little Yu's Songbird, Three Ingots of River-Iron, Errand of the
@@ -38,20 +39,29 @@ A living checklist for what's been done and what to add next.
   Willow → A Bowl on the Broken Bridge → The Name the Wind Would
   Not Give — session 14), **Weilan's Bitter Remedy arc** (A Cup
   of Sleeping Water → The Bud That Will Not Open → The Pestle My
-  Sister Used Last — session 15). Four of the game's mid-game NPCs
-  now own a proper three-quest spine. Scarlet Lotus is now the
-  best-quested sect in the game after the Willowmere hub.
+  Sister Used Last — session 15), **Shan's Grey arc** (The Honest
+  Venom → The Sword That Would Not Strike → The Hand That Empties
+  the Heart — session 19), **Qi's Four Lesser Basins arc** (The
+  Centipede in Its Skin → The Spider Who Will Not Spin → The
+  Scorpion's First Bite — session 20). Five of the game's mid-game
+  NPCs now own a proper three-quest spine; Shan owns four
+  (oath_of_fangs + the Grey arc). Five Poisons Sect ties Azure
+  Cloud as the densest sect after Qi's arc (7 quests each).
 - **Techniques**: 43 total, **35 learnable** across all tiers. Every
   combat effect (poison/bleed/stun/heal/buff_def/buff_atk) has ≥3
   learnable options. Mortal 9 / Qi-Condensation 15 / Foundation 11.
-- **Events**: 45 (ambient + qi-grant + lore-grant; every location has
-  at least one. Session 15 additions: pale_lake_silt_stirs at the
+- **Events**: 51 (ambient + qi-grant + lore-grant; every location has
+  at least one. Session 20 additions: centipede_shed_at_the_root +
+  black_pillar_breath at Venom Gorge, qi_kneels_at_the_third_basin
+  at Five Poisons Hall. Session 15: pale_lake_silt_stirs at the
   lake, sealed_bud_under_the_bell at Crimson Creek,
   weilan_hums_at_the_pestle at the Scarlet Lotus Shrine).
-- **Lore**: 37 (earnable via boss defeats, quest rewards, high-rep NPC
-  trust, village story, and **manuals**). Session-15 additions:
-  the_pond_that_sleeps, the_red_that_does_not_clot, the_pestle_unbroken,
-  the_sisters_unspoken_cure. Session-14 additions:
+- **Lore**: 45 (earnable via boss defeats, quest rewards, high-rep NPC
+  trust, village story, and **manuals**). Session-20 additions:
+  the_centipede_in_its_skin, the_spider_who_remembers_silk,
+  the_scorpions_first_bite, the_keepers_silence. Session-15
+  additions: the_pond_that_sleeps, the_red_that_does_not_clot,
+  the_pestle_unbroken, the_sisters_unspoken_cure. Session-14 additions:
   the_bell_that_came_too_late, the_broken_bridge_tea,
   the_wind_that_named_itself. Session-13 additions:
   committee_of_1184, azure_cloud_commentary_1184, lamplighter_of_zhao,
@@ -228,6 +238,85 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-23 (session 20)** — "The Four Lesser Basins" —
+  Apothecary Qi's three-quest arc. Continuation of session 19's
+  Five Poisons deepening. Audit re-confirmed Qi as the cleanest
+  next target (lowest non-companion NPC density score; explicitly
+  flagged in s19's handoff). Arc inverts Shan's: Shan's three
+  quests were the matriarch's (politics — the Pavilion, the
+  cranes, the rite for the serpent); Qi's three are the keeper's
+  (work — the basins, the daily reading of bodies). Each quest
+  visits one of the sect's three out-of-hall locations:
+  - **The Centipede in Its Skin** (mortal-friendly, prereq
+    oath_of_fangs). The third basin's centipede shed; a beetle
+    dragged the husk into the Venom Gorge before Qi could shut
+    her mouth. The shed reads only fresh — segment counts give
+    the centipede's age, the seventh segment its temper, the
+    twenty-third the dantian-mirror, the antennae the year.
+    Player walks the gorge, finds the husk, returns. FPS+1.
+    Lore: the_centipede_in_its_skin (the sutra apothecaries
+    keep in the body, not the book).
+  - **The Spider Who Will Not Spin** (prereq Q1). The fifth
+    basin's spider hasn't spun in nine days. Two answers fit
+    — dying or gravid — and they look identical for nine days
+    more. The book that distinguishes is in the Matriarch's
+    library; Qi cannot read in that hall. Bai of the Garden
+    has read it, in a copy under the iron lattice. Player
+    walks the garden, asks Bai (who has had the answer "for
+    nine days, waiting to be asked"), returns to Qi. FPS+1.
+    Lore: the_spider_who_remembers_silk. Plumbs the sect's
+    literacy hierarchy — the keeper's reading middlewomanned
+    by the gardener.
+  - **The Scorpion's First Bite** (Foundation-ready, FPS+3
+    gate, prereq Q2). Qi's capstone. The fourth basin's
+    scorpion has thrown a daughter — first daughter in twelve
+    years. The first venom is milked at moonless midnight by
+    three pairs of hands; the cup is wrapped in a leaf of
+    the Black-Pillar vine that grows on the Venom Gorge's
+    ceiling-webs where the spiders permit only a hand they've
+    learned. The player has been so learned, by the centipede's
+    husk in Q1. Player returns to the gorge, picks the leaf,
+    brings it to Qi. The rite is performed offstage. FPS+1.
+    Capstone: Keeper's Brocade Sash (accessory: ATK+1, DEF+3,
+    HP+12, on-hit poison 1, FPS+2 rep-gated — defence-leaning,
+    distinct from Shan's offence-leaning sash). Lore:
+    the_scorpions_first_bite + the_keepers_silence (Qi's
+    philosophy — twice asked to be entered into the rolls,
+    twice declined; "I am better in the second book").
+  Content: 3 new items (centipede_shed_skin and black_pillar_leaf
+  as on-ground quest materials at the Venom Gorge; keepers_brocade_sash
+  as capstone), 4 new lore entries, 3 new quests, 3 new events
+  (centipede_shed_at_the_root and black_pillar_breath at the
+  Venom Gorge, qi_kneels_at_the_third_basin at the Hall).
+  Apothecary Qi's voice grew 3 → 6 dialogue (the "rolls / second
+  book" speech, the basin-state inventory, the third-basin
+  silence rule); description picked up the keeper's grey silk
+  knot at her right wrist (mirror to Shan's many-coloured at
+  the left); rep_dialogue at FPS +2, FPS +5, SLP -2;
+  lore_dialogue at FPS +5 (the_keepers_silence) and FPS +2
+  (the_spider_who_remembers_silk); 3 new companion_reply
+  entries (Bai, Meilin, Jin). gives_quest became a list of
+  three — Qi joins Zhao, Huilin, Weilan, Shan as the FIFTH
+  multi-quest giver in the game. Bai picked up one new
+  dialogue line about Qi ("Apothecary Qi keeps four basins
+  for the Matriarch's one... I have the answer, and have
+  had it for nine days. I was waiting to be asked.") —
+  ambient before the arc, fulfilment during. Same trick as
+  Wuwei's Yanyu line in s19, Baixu's Weiyan line in s15.
+  New smoke test tools/smoke_qi.py — 8 scenarios covering
+  content load, list-gives structure with exact ordering,
+  voice-deepening assertions, gorge ground-items + atmospherics
+  intact, full three-quest arc with FPS+3 rep gate (both
+  positive and negative cases), Keeper's Sash equip with
+  claimed bonuses AND distinctness from Shan's sash, Bai's
+  "nine days" foreshadowing line present, save/load round-trip.
+  All green. All 14 prior smoke tests remain green; 15 total.
+  Five Poisons Sect now ties Azure Cloud as the densest sect
+  in the game (4 → 7 quests). The Venom Gorge went from a
+  1-event/0-item connector to a 3-event/2-item destination
+  used by two of Qi's three quests — no longer a passage,
+  it now has reasons to be walked.
+
 - **2026-04-23 (session 19)** — "The Grey That Does Not Lie" —
   Matriarch Shan's three-quest arc. Back to content after three
   UX-only sessions. Five Poisons was the most quest-starved sect

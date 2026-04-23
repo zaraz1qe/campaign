@@ -1,0 +1,60 @@
+[
+  {
+    "id": "the_centipede_in_its_skin",
+    "name": "The Centipede in Its Skin",
+    "giver": "poisoner_qi",
+    "description": "Apothecary Qi sets down a vial without sealing it, which is for her a kind of crisis. 'The centipede shed last night. The third basin's centipede — forty-seven winters now if my count is honest, and my count is, except where it isn't. The shed *tells* — it tells the year of the legs, the temper of the next milking, the colour of the pollen the basin will accept this month — but you have to read it while it is still fresh. A shed dries in three nights. Mine, of course, is not in the basin. The keepers turned out the bedding at dawn and a beetle the size of my thumb dragged half of it into the gorge before I could shut my mouth. I cannot send a sect-junior; the gorge spiders know us and the small things sulk if a sleeve they do not like comes too close. You are a guest, and the gorge has not yet decided about you. Walk in. Find the shed. Bring it. Quickly. Quickly is *quietly*; do not run.'",
+    "requires_quest": "oath_of_fangs",
+    "steps": [
+      { "type": "visit",   "target": "venom_gorge" },
+      { "type": "collect", "target": "centipede_shed_skin" },
+      { "type": "talk",    "target": "poisoner_qi" }
+    ],
+    "reward": {
+      "spirit_stones": 140,
+      "items": ["antidote_pearl", "antidote_pearl", "nine_serpents_pill"],
+      "xp": 60
+    },
+    "rep_change": { "five_poisons_sect": 1 },
+    "grants_lore": ["the_centipede_in_its_skin"]
+  },
+  {
+    "id": "the_spider_who_will_not_spin",
+    "name": "The Spider Who Will Not Spin",
+    "giver": "poisoner_qi",
+    "description": "Qi is not smiling, which is rare; Qi smiles at most things, including funerals. 'The spider in the fifth basin has not spun in nine days. Nine. In the wild this is a death watch — the spinneret stops because the body is closing the books. In the basin it can mean the same. Or it can mean she is gravid, and the silk has gone to the egg-sac she will not show me until the day she shows me. The book that says which is which is in the Matriarch's library, and I — I am the keeper, child; I am not a daughter of the rolls. I do not read in that hall. Bai walks the garden at the spider hour; she has the answer in her hand most weeks and does not know she does. Go ask her — gently; she is not used to being asked. Bring me what she gives you and I will know whether the basin is ending a life or beginning one.'",
+    "requires_quest": "the_centipede_in_its_skin",
+    "steps": [
+      { "type": "visit", "target": "poisoners_garden" },
+      { "type": "talk",  "target": "venomhand_bai" },
+      { "type": "talk",  "target": "poisoner_qi" }
+    ],
+    "reward": {
+      "spirit_stones": 220,
+      "items": ["moon_red_pill", "antidote_pearl", "crimson_cinnabar_pill"],
+      "xp": 95
+    },
+    "rep_change": { "five_poisons_sect": 1 },
+    "grants_lore": ["the_spider_who_remembers_silk"]
+  },
+  {
+    "id": "the_scorpions_first_bite",
+    "name": "The Scorpion's First Bite",
+    "giver": "poisoner_qi",
+    "description": "Qi has cleared a small space on the ledger-table — three stones, a folded square of grey silk, an empty bronze cup the size of a thumbnail. 'The fourth basin's scorpion has thrown a daughter. First daughter in twelve years, child. Twelve. The first venom of a basin-born scorpion is a small thing and a great one — the first bite goes into the cup, and the cup is sealed and laid in the sect's count, and the sister-mother is not asked again for a year. The rite is for moonless midnight and three pairs of hands. I have my two. The third the daughter chooses; she will choose the hand that walks the gorge without hurry. The Black-Pillar vine grows on the gorge's ceiling-webs where the spiders allow no foot but a foot they remember — and they remember yours, now, since the centipede's shed. One leaf of the Black-Pillar is what the cup is wrapped in before sealing. Bring me the leaf. We will sit at the basin together when the lamps are lowest.'",
+    "requires_quest": "the_spider_who_will_not_spin",
+    "requires_rep": { "five_poisons_sect": 3 },
+    "steps": [
+      { "type": "visit",   "target": "venom_gorge" },
+      { "type": "collect", "target": "black_pillar_leaf" },
+      { "type": "talk",    "target": "poisoner_qi" }
+    ],
+    "reward": {
+      "spirit_stones": 360,
+      "items": ["keepers_brocade_sash", "spirit_stone_pouch", "nine_serpents_pill"],
+      "xp": 145
+    },
+    "rep_change": { "five_poisons_sect": 1 },
+    "grants_lore": ["the_scorpions_first_bite", "the_keepers_silence"]
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "centipede_shed_at_the_root",
+    "location": "venom_gorge",
+    "chance": 0.25,
+    "text": "Under a vine-root at the gorge's east wall, a fragment of pale husk catches the green half-light — translucent, jointed, longer than a spread hand. A beetle the size of a thumb is mid-effort dragging a smaller piece toward a crack in the stone. The beetle stops when you stop. The husk does not move. Somewhere above, in the spider-webs of the gorge ceiling, a single drop of water lets go of its leaf and lands on stone with a sound the gorge does not echo.",
+    "effect": {}
+  },
+  {
+    "id": "qi_kneels_at_the_third_basin",
+    "location": "five_poisons_hall",
+    "chance": 0.25,
+    "text": "Apothecary Qi crosses the floor without lifting her ladle. She kneels at the third basin — the centipede's — and lays her palm flat on the rim, and counts, by the small movement of her thumb against the bronze, something the rest of the hall is not party to. The basin's centipede unfurls its antennae once, slowly, toward her wrist. After a moment Qi rises. Her sleeves do not jingle. She nods, once, to the basin, and not to anyone in the hall.",
+    "effect": {}
+  },
+  {
+    "id": "black_pillar_breath",
+    "location": "venom_gorge",
+    "chance": 0.2,
+    "text": "Far above, a length of black-leafed vine — clinging to the underside of the gorge ceiling where no foot has ever climbed — exhales a single cool breath that travels the wall down to where you stand. It smells of wet bronze and the dust at the bottom of an old jar. The spiders along the wall stop their work for the breath's length, then resume — slightly slower than before, as if listening for the next one.",
+    "effect": { "qi": 4 }
+  }
+]
