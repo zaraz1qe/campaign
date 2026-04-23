@@ -228,6 +228,58 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-23 (session 16)** — "The Map That Does Not Lie" — UX
+  refine pass. First session in the series focused on mechanics/
+  visuals rather than content. Three coupled moves:
+  - **ASCII region map.** `map` was a misnomer — it just listed
+    immediate exits. Rewritten as a proper visual ASCII grid
+    renderer in a new `game/mapview.py`. BFS-places visited
+    locations on a cardinal grid (N/S/E/W, with up/down folded
+    onto N/S so the Sky-Spire Reach renders as a vertical
+    stack). Draws `───` between cells only when an actual exit
+    exists (no false "grid adjacency is connection" lies).
+    Locations visited render as `[Name]`, unvisited-but-exit-
+    visible neighbours render as `[Name?]`, current location is
+    `[Name*]`. Non-cardinal exits (`in`/`out`/`across`/named
+    portals like `library`, `forge`, `elder`) are listed under
+    "Other connections" below the grid. Hub-style sect interiors
+    whose navigation is entirely non-cardinal get an "Also in
+    this region" roster so the visited cells don't vanish. New
+    commands: `map` (current region), `map all` (every visited
+    region stacked), `map <substring>` (matching region by name
+    substring), `map exits` (old-style linear listing preserved
+    for explicit access).
+  - **`examine <thing>` / `look at <thing>` / `x <thing>`.** The
+    game had no read-only inspect verb. A player who saw an
+    item on the ground had to `take` it to learn anything about
+    it; an NPC had to be `talk`-ed to (which ticks `talked_to`
+    and can advance quests). New `cmd_examine` resolves a
+    substring/id query against items-on-ground, inventory,
+    NPCs here, enemies here, and known lore — in that priority
+    order — and prints a compact card with name, context,
+    description, and the mechanical bits (effect, equipment
+    bonuses, value, rep/realm gates). Zero side effects: no
+    pickups, no talked_to ticks, no combat triggers. Aliased
+    as `examine`, `exam`, `inspect`, `x`; `look <thing>` and
+    `look at <thing>` route through it while bare `look` keeps
+    its "describe surroundings" behaviour.
+  - **Prompt enrichment.** The prompt was `[HP n/n  Qi n/n] > `.
+    Extended to `[HP n/n | Qi n/n | Realm | Location] > `,
+    with a companion suffix `+Name hp/max` when a companion is
+    bonded and standing (or `+companion:downed` when they fell
+    in the last fight and haven't been revived). The player
+    now always knows their standing, their location, and their
+    ally's condition without any command.
+  New `tools/smoke_mapview.py` — 8 scenarios covering: current-
+  region render with current-cell marker, unvisited-neighbour
+  `?` marker, no-false-connector regression (Pale Lake vs
+  Hermit's Hut), non-cardinal hub rendering (Azure Cloud
+  interior), `map all` stacking, `map <substring>` matching,
+  `examine` against items/NPCs/enemies/miss with zero side
+  effects, prompt content including companion. All green. All
+  10 prior smoke tests remain green. No content changed; no
+  JSON touched; no save-compat concerns.
+
 - **2026-04-23 (session 15)** — "The Bitter Remedy" — Weilan's
   three-quest arc. Session 12, 13 AND 14 all flagged Apothecary
   Weilan as the next obvious deepening target: she had voice, a

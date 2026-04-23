@@ -124,6 +124,206 @@ validated, committed.
 
 # Session log
 
+## Session 16 — 2026-04-23 — "The Map That Does Not Lie"
+
+### What I built
+- **First UX-only session.** Fifteen sessions of content deepening
+  left the game wide and deep on story/systems and bland on the
+  verbs a player uses every turn. This session ships three
+  coupled UX improvements, touching only the engine. No JSON
+  changes, no save-compat concerns, no content touched.
+- **Real ASCII region map.** `game/mapview.py` is a new 240-line
+  module that renders the current region as an ASCII grid.
+  BFS-places visited locations on a cardinal grid (N/S/E/W),
+  with up/down folded onto N/S for Sky-Spire Reach's vertical
+  structure. Draws `───` horizontal connectors between cells
+  only when an actual exit exists between them (no grid-
+  proximity false positives — Pale Lake Shore and Hermit's
+  Hut share a row on the Southern Wilds grid but no line gets
+  drawn because they share no exit). Cells render as
+  `[Name*]` (current), `[Name]` (visited), `[Name?]` (an exit
+  points here but you haven't been yet). Sect-hub regions
+  whose interior is all named portals (`library`/`forge`/
+  `elder`/`in`/`out`) get an "Also in this region" roster
+  under the grid so the hub cells remain visible; all
+  non-grid exits surface in an "Other connections" block
+  below, including cross-region exits marked with `[→ Region]`.
+  Four `map` sub-commands: bare `map` (current region), `map
+  all` (every visited region stacked), `map <substring>`
+  (match region by name substring), `map exits` (old linear
+  listing preserved for those who want it). The old
+  `cmd_map` is still accessible under `map exits`.
+- **`examine` — the read-only inspect verb.** The game had no
+  way to learn about a thing without committing to it. `take`
+  picked it up; `talk` advanced quests. `examine <thing>`
+  (aliased `inspect`, `exam`, `x`) resolves the query against
+  items-on-ground → inventory → NPCs here → enemies here →
+  known lore, in that order, and prints a compact card with
+  name, context, description, and the mechanical bits that
+  matter (effect, slot, stat bonuses, on-hit effect, value,
+  rep gate, realm gate). Zero side effects: no pickups, no
+  `talked_to` ticks, no combat triggers, no quest progression.
+  Match order: exact id → id substring → name substring, so
+  `examine bannerman` lands on `bannerman_shao` (id substring)
+  rather than on `bandit_scout` (whose name is "Black Banner
+  Scout"). `look <thing>` and `look at <thing>` route through
+  this verb; bare `look` keeps its "describe surroundings"
+  behaviour and the rest of its `look` hooks (first-visit text,
+  event trigger, companion bark, quest progression).
+- **Enriched prompt.** Was: `[HP 30/30  Qi 0/50] > `. Now:
+  `[HP 30/30 | Qi 0/50 | Mortal | Verdant Bamboo Sea] > `.
+  Adds the realm short-name (stripped of spaces — "Mortal",
+  "QiCondensation", "FoundationEstablishment") and the current
+  location's display name. A bonded companion who is standing
+  appends `+Firstname hp/max` (e.g. `+Meilin 50/58`); a downed
+  companion appends `+companion:downed`. The player never has
+  to run `status` or `party` to see their standing again —
+  it's always above the caret.
+- **Help updated.** `help` now documents all four `map` variants,
+  `look <thing>` / `examine`, and the `x <thing>` / `exam
+  <thing>` shorthands.
+- **Smoke test.** `tools/smoke_mapview.py` — 8 scenarios:
+  current-region render + current-cell `*` marker; unvisited
+  neighbour `?` marker; no-false-connector regression against
+  the Pale-Lake/Hermit's-Hut grid-proximity trap; hub-region
+  rendering (Azure Cloud's interior shows up via "Also in this
+  region"); `map all` stacking; `map <substring>` matching
+  (including a "not visited" message when the matched region
+  hasn't been entered); `examine` against items-on-ground,
+  inventory (with count surfacing when > 1), NPCs (with a
+  side-effect check that `talked_to` is NOT ticked), enemies
+  (with a side-effect check that HP is unchanged), and graceful
+  miss on unknown names; prompt content including HP/Qi/realm/
+  location + companion when standing + "downed" when fallen.
+  All green.
+
+### Current state
+- Engine deltas: `game/engine.py` +~130 LOC (new cmd_examine,
+  rewritten cmd_map, enhanced _prompt, help text, DISPATCH
+  registrations). `game/mapview.py` new (240 LOC). `play.py`
+  unchanged. No new state fields; old saves load unchanged.
+- Validator: **29 loc / 30 npc / 22 enemy / 43 tech / 88 item /
+  4 sect / 22 quest / 45 event / 37 lore / 15 recipe.** No
+  deltas vs session 15 — content is untouched.
+- All 10 prior smoke tests remain green; new `smoke_mapview.py`
+  is green. Eleven total.
+- Interactive `python3 play.py`:
+  - Prompt carries `HP/Qi/Realm/Location` every line.
+  - `map` on a fresh mortal at Verdant Bamboo Sea shows a
+    5-cell Southern Wilds grid with connector lines, a current
+    marker, and "Other connections" for `across`→Merchant and
+    unexplored rooms.
+  - `examine moonflower bud` at the Drowned Willow Shrine shows
+    a clean item card (name / type / context / description /
+    value) without picking it up.
+  - `look at huilin` at Verdant Bamboo Sea prints his
+    description without advancing his quest arc.
+
+### What I'd do next if I had another hour
+1. **ANSI color with --no-color flag.** The engine prints a lot
+   of structured output (NPC names, enemy threats, "[QUEST
+   ACCEPTED]", "[Lore recorded]", item values, rep numbers,
+   affinity tier crossings). A simple color pass — NPCs green,
+   enemies red, lore gold, quest tags cyan, rep numbers colored
+   by sign — would be another big-feeling UX win at small code
+   cost. Wrap with a `--no-color` flag honored via `NO_COLOR`
+   env var for terminals that can't handle it.
+2. **Inventory grouping by type.** The inventory listing is a
+   flat bulleted list. Pills, materials, gear, treasures,
+   manuals, and quest items should group. Simple change, big
+   legibility.
+3. **`where` / `quests here`.** A command that says "you have
+   unfinished business HERE" — which active quest steps the
+   player can advance in the current location. With 22 quests
+   live, this is genuinely useful.
+4. **Save slot listing.** `save` accepts a slot argument but
+   there's no `saves` command to list what's on disk. One-line
+   add.
+5. **Combat prompt polish.** Combat HP bars already exist. The
+   turn-prompt could show active status effects (poison N
+   turns, bleed N turns, buff_atk N turns) — right now the
+   player sees the application line but has to remember the
+   timer.
+6. **Map compass overlay on `look`.** `look` currently ends with
+   `Exits: east->river_of_swords, ...`. A tiny compass like:
+   `    N:Foothills` / `W:Village E:River` / `    S:Hermit` above
+   that line would be another unbroken "where am I" beat.
+7. **`cmd_map` placement robustness.** Currently a BFS-start
+   cell plus its cardinal-reachable neighbours is all that gets
+   placed. If the region has non-cardinal "bridges" (e.g. the
+   Merchant Crossing `across` to River of Swords), cells
+   downstream of the bridge may not appear on the grid even
+   when visited. Possible follow-up: run multiple BFS starts
+   to connect sub-graphs, placing the second start offset from
+   the first. Not urgent — the "Also in this region" list
+   catches them.
+
+### Things I noticed but didn't fix
+- **Location-name trimming is hardcoded.** `_label_for` strips
+  a fixed set of prefixes ("Azure Cloud ", "Willowmere ", etc.)
+  so cells stay short on the grid. A future region would need
+  its prefix added or its cells will wrap/truncate. A cleaner
+  approach would trim on generic patterns; leaving the list for
+  now so nothing is over-trimmed silently.
+- **Region grid is column-width per column.** I pick the max
+  cell width per column, which means a column with one long
+  name makes all cells in that column wide. Fine visually; not
+  optimal for dense regions. Won't matter until a region has
+  ~10 cells in the same column, which no region does.
+- **`map exits` is a backwards-compat hatch.** I left the old
+  linear listing under `map exits` for users who preferred it
+  (and for scripts; tests could also use it). If it goes
+  untouched for a while it can be removed.
+- **No color yet.** The handoff has been asking for it since
+  session 6. I deliberately didn't bundle color into this
+  session — a color pass is a whole thing, and the map was
+  already the substantial move. Colour is the obvious next
+  session's big UX win.
+- **`look at <lore id>` works for known lore only.** If you
+  haven't earned the lore yet, examine misses it. That's the
+  right default (you can't inspect a memory you don't have),
+  but it means `examine the_pond_that_sleeps` silently misses
+  before the quest. `read <id>` remains the canonical path
+  post-earn.
+
+### Don'ts (lessons learned)
+- **Don't trust grid adjacency.** First draft drew `─` between
+  any two cardinal-adjacent placed cells. Pale Lake Shore and
+  Hermit's Hut ended up side-by-side on the grid (both south
+  of their respective parents, in adjacent columns) and got
+  connected by a lie. Fix: check for an actual exit in the
+  right direction between the two cells before drawing. The
+  smoke test locks this regression.
+- **Don't forget id-substring when fuzzy-matching.** Sect
+  content often gives multiple entities names that share a
+  prefix (Black Banner Scout vs Black Banner Shao). A
+  `ql in name.lower()` match picks whichever is listed first,
+  which is rarely what the player meant. Adding `ql in id`
+  between exact-id and name-substring fixed this cheaply —
+  players type the recognisable noun ("bannerman") and that
+  maps to the distinctive id.
+- **Don't let `look` become a quest-triggering verb.** Routing
+  `look at <thing>` through the new `examine` was the right
+  call; routing it through a mutating code path would have
+  broken player intuition (you peek, you don't commit). The
+  smoke test guards this explicitly: examining Baixu must not
+  add him to `talked_to`; examining Bannerman must not start
+  combat.
+- **Don't break the bare `look` contract.** The first pass had
+  `cmd_look(arg)` dispatching to examine whenever any argument
+  was present — which also caught `look at` literally as the
+  arg `"at"`. Strip the leading `at` word-by-word, then treat
+  the remainder as the target. Same for `look` with no
+  argument: fall through to the full surroundings render.
+- **Don't over-engineer the map.** The temptation was to do
+  full multi-BFS sub-graph connection, ANSI colour, and
+  inventory grouping all at once. Scope creep. Shipping the
+  grid + examine + prompt in one tight, well-tested change
+  was the right call. Colour and inventory grouping are
+  session 17 candidates.
+
+---
+
 ## Session 15 — 2026-04-23 — "The Bitter Remedy"
 
 ### What I built

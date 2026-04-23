@@ -7,7 +7,7 @@ import sys
 import textwrap
 import shlex
 
-from . import loader, cultivation, combat, quests
+from . import loader, cultivation, combat, quests, mapview
 from .state import Player, EQUIP_SLOTS, rep_rank, affinity_tier, affinity_bonus
 
 
@@ -70,8 +70,11 @@ class Game:
         self.out(textwrap.dedent("""
         Commands:
           look                            describe surroundings
+          look <thing> / examine <thing>  inspect an item, npc, enemy, or lore entry
           go <direction>                  travel via an exit
-          map                             show known exits
+          map                             ASCII map of the current region
+          map all                         every region you've visited, stacked
+          map exits                       plain list of exits from here
           talk <npc>                      speak with an NPC here
           fight <enemy>                   engage an enemy here
           cultivate                       sit and gather qi
@@ -100,6 +103,7 @@ class Game:
           help                            show this help
           quit                            exit
         Shorthand:  n / s / e / w / u / d  for go directions; '' (Enter) = look
+                    x <thing> / exam <thing> = examine
         """).strip())
 
     # ------------------------------------------------------------------
@@ -135,7 +139,16 @@ class Game:
                 out.append(cid)
         return out
 
-    def cmd_look(self, _arg: str) -> None:
+    def cmd_look(self, arg: str) -> None:
+        # `look at <thing>` / `look <thing>` → examine. Bare `look` keeps its
+        # existing "describe surroundings" behaviour.
+        if arg:
+            q = arg.strip()
+            if q.lower().startswith("at "):
+                q = q[3:].strip()
+            if q:
+                self.cmd_examine(q)
+                return
         loc = self._loc()
         if not loc:
             self.out("(You float in a featureless void. Add some locations!)")
@@ -255,17 +268,176 @@ class Game:
         self.player.location = target
         self.cmd_look("")
 
-    def cmd_map(self, _arg: str) -> None:
-        loc = self._loc()
-        exits = loc.get("exits", {})
-        if not exits:
-            self.out("There are no obvious paths from here.")
+    def cmd_map(self, arg: str) -> None:
+        """Render a visual ASCII region map.
+
+        `map`            — current region
+        `map all`        — every region you have set foot in, stacked
+        `map exits`      — the old text listing of immediate exits only
+        `map <region>`   — a specific region (substring match on name)
+        """
+        arg = (arg or "").strip().lower()
+        # Legacy linear listing on explicit request.
+        if arg in ("exits", "exit", "here"):
+            loc = self._loc()
+            exits = loc.get("exits", {})
+            if not exits:
+                self.out("There are no obvious paths from here.")
+                return
+            self.out("From here you can travel:")
+            for d, t in exits.items():
+                ld = self.world["locations"].get(t, {})
+                mark = "" if t in self.player.visited else "  (unexplored)"
+                self.out(f"  {d:10s} -> {ld.get('name', t)}{mark}")
             return
-        self.out("From here you can travel:")
-        for d, t in exits.items():
-            ld = self.world["locations"].get(t, {})
-            mark = "" if t in self.player.visited else "  (unexplored)"
-            self.out(f"  {d:10s} -> {ld.get('name', t)}{mark}")
+        if arg in ("all", "world", "*"):
+            self.out("")
+            self.out(mapview.render_all_visited(self.world, self.player))
+            return
+        if arg:
+            # Substring region match — find the first region whose name or
+            # lowercased key contains the query.
+            match = None
+            for lid, l in self.world["locations"].items():
+                r = l.get("region") or ""
+                if arg in r.lower():
+                    match = r
+                    break
+            if not match:
+                self.out(f"(No region matches '{arg}'. Try `map`, `map all`, or `map exits`.)")
+                return
+            self.out("")
+            self.out(mapview.render_region(self.world, self.player, match))
+            return
+        self.out("")
+        self.out(mapview.render_region(self.world, self.player))
+
+    # ------------------------------------------------------------------
+    def cmd_examine(self, arg: str) -> None:
+        """Inspect something here or in your inventory without picking it up
+        or committing to an action. Resolves in this order: items on the
+        ground, items in your inventory, NPCs here, enemies here, lore you
+        know. Case- and substring-insensitive on names; exact on ids."""
+        if not arg:
+            self.out("Examine what?")
+            return
+        q = arg.strip()
+        ql = q.lower()
+        loc = self._loc() or {}
+
+        def _matches(entry_id: str, entry: Dict[str, Any]) -> bool:
+            # Exact id match first (fastest path for scripted queries).
+            if entry_id.lower() == ql:
+                return True
+            # Then id substring (catches 'bannerman' for 'bannerman_shao'
+            # even when name is the sect-given 'Black Banner Shao').
+            if ql in entry_id.lower():
+                return True
+            name = (entry.get("name") or "").lower()
+            return ql in name
+
+        def _print_item(iid: str, it: Dict[str, Any],
+                        context: str, count: int = 0) -> None:
+            self.out("")
+            hdr = f"{it.get('name', iid)}"
+            if it.get("type"):
+                hdr += f"  ({it['type']})"
+            self.out(hdr)
+            self.out(f"  {context}" + (f" × {count}" if count > 1 else ""))
+            if it.get("description"):
+                self.out(_wrap(f"  {it['description']}"))
+            # Surface mechanical bits the player can act on.
+            bits: list[str] = []
+            if it.get("effect") and it.get("effect") != "none":
+                p = it.get("power")
+                bits.append(f"use: {it['effect']}" + (f" {p}" if p else ""))
+            if it.get("slot"):
+                b = []
+                for k in ("atk_bonus", "def_bonus", "spd_bonus", "hp_bonus"):
+                    v = it.get(k)
+                    if v:
+                        b.append(f"{k.replace('_bonus','').upper()} {v:+d}")
+                if it.get("on_hit_effect"):
+                    b.append(f"on-hit: {it['on_hit_effect']}"
+                             + (f" {it.get('on_hit_power',1)}"
+                                if it.get("on_hit_power") else ""))
+                slot_str = f"slot: {it['slot']}"
+                if b:
+                    slot_str += "  (" + ", ".join(b) + ")"
+                bits.append(slot_str)
+            if it.get("value"):
+                bits.append(f"value: {it['value']} stones")
+            req_rep = it.get("requires_rep") or {}
+            if req_rep:
+                pieces = []
+                for sid, m in req_rep.items():
+                    sname = self.world["sects"].get(sid, {}).get("name", sid)
+                    pieces.append(f"{sname} {m:+d}")
+                bits.append("requires: " + ", ".join(pieces))
+            if it.get("requires_realm"):
+                bits.append(f"realm: {it['requires_realm']}")
+            if bits:
+                for b in bits:
+                    self.out(f"  {b}")
+
+        # 1. Items on the ground here
+        for iid in loc.get("items_on_ground") or []:
+            it = self.world["items"].get(iid, {})
+            if _matches(iid, it):
+                _print_item(iid, it, "on the ground")
+                return
+
+        # 2. Items in inventory
+        for iid, count in self.player.inventory.items():
+            if count <= 0:
+                continue
+            it = self.world["items"].get(iid, {})
+            if _matches(iid, it):
+                _print_item(iid, it, "in your sleeves", count)
+                return
+
+        # 3. NPCs here
+        for nid in self._visible_here("npcs", "npcs"):
+            n = self.world["npcs"].get(nid, {})
+            if _matches(nid, n):
+                self.out("")
+                self.out(f"{n.get('name', nid)}" +
+                         (f", {n['title']}" if n.get("title") else ""))
+                if n.get("description"):
+                    self.out(_wrap(f"  {n['description']}"))
+                return
+
+        # 4. Enemies here
+        for eid in self._visible_here("enemies", "enemies"):
+            e = self.world["enemies"].get(eid, {})
+            if _matches(eid, e):
+                self.out("")
+                self.out(f"{e.get('name', eid)}  (enemy)")
+                if e.get("description"):
+                    self.out(_wrap(f"  {e['description']}"))
+                pieces = []
+                if e.get("realm"):
+                    pieces.append(f"realm: {e['realm']}")
+                for k in ("hp", "atk", "def", "spd"):
+                    if k in e:
+                        pieces.append(f"{k.upper()} {e[k]}")
+                if pieces:
+                    self.out("  " + "  ".join(pieces))
+                if e.get("ambush_text"):
+                    self.out(_wrap(f"  {e['ambush_text']}"))
+                return
+
+        # 5. Known lore (by id or title substring)
+        for lid in self.player.known_lore:
+            l = self.world.get("lore", {}).get(lid, {})
+            if lid.lower() == ql or ql in (l.get("title", "").lower()):
+                self.out("")
+                self.out(f"{l.get('title', lid)}  ({l.get('category','lore')})")
+                if l.get("text"):
+                    self.out(_wrap(f"  {l['text']}"))
+                return
+
+        self.out(f"(You see nothing called '{q}' to inspect here.)")
 
     # ------------------------------------------------------------------
     def cmd_talk(self, arg: str) -> None:
@@ -1199,6 +1371,10 @@ class Game:
         "?": "cmd_help",
         "look": "cmd_look",
         "l": "cmd_look",
+        "examine": "cmd_examine",
+        "exam": "cmd_examine",
+        "inspect": "cmd_examine",
+        "x": "cmd_examine",
         "go": "cmd_go",
         "map": "cmd_map",
         "talk": "cmd_talk",
@@ -1274,10 +1450,31 @@ class Game:
         getattr(self, method)(arg)
 
     def _prompt(self) -> str:
+        """Compact status line the player always sees above the input caret.
+        Includes HP/Qi bars against the current realm's qi_required, the
+        realm short-name, the current location's display name, and — when
+        a companion walks with you — their own HP state as a condensed
+        suffix. Keep this a single line; it lives above every input."""
         cr = cultivation.current_realm(self.world, self.player)
         qi_cap = cr.get("qi_required", self.player.max_qi)
-        return (f"[HP {self.player.hp}/{self.player.eff_max_hp(self.world)}  "
-                f"Qi {self.player.qi}/{qi_cap}] > ")
+        hp_max = self.player.eff_max_hp(self.world)
+        realm_short = (cr.get("name") or "?").replace(" ", "")
+        loc_name = self.world["locations"].get(
+            self.player.location, {}).get("name", self.player.location)
+        parts = [
+            f"HP {self.player.hp}/{hp_max}",
+            f"Qi {self.player.qi}/{qi_cap}",
+            realm_short,
+            loc_name,
+        ]
+        comp = self.player.companion
+        if comp and not comp.get("downed"):
+            cname = self.world["npcs"].get(comp.get("id", ""), {}).get(
+                "name", comp.get("id", "Companion")).split()[0]
+            parts.append(f"+{cname} {comp.get('hp','?')}/{comp.get('max_hp','?')}")
+        elif comp and comp.get("downed"):
+            parts.append("+companion:downed")
+        return "[" + " | ".join(parts) + "] > "
 
     def repl(self) -> None:
         self.banner()
