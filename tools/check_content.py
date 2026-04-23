@@ -49,8 +49,12 @@ def main() -> int:
         for iid in (n.get("sells") or []):
             if iid not in world["items"]:
                 errors.append(f"npc '{nid}' sells unknown item '{iid}'")
-        if n.get("gives_quest") and n["gives_quest"] not in world["quests"]:
-            errors.append(f"npc '{nid}' gives unknown quest '{n['gives_quest']}'")
+        gq = n.get("gives_quest")
+        if gq:
+            qids = [gq] if isinstance(gq, str) else list(gq)
+            for qid in qids:
+                if qid not in world["quests"]:
+                    errors.append(f"npc '{nid}' gives unknown quest '{qid}'")
 
     # 4. Enemy drops should reference real items, techniques exist.
     for eid, e in world["enemies"].items():

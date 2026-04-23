@@ -311,8 +311,17 @@ class Game:
         # An NPC may entrust a piece of lore to a player at the right standing.
         # Silent when already known; fires only on the first qualifying talk.
         self._lore_dialogue_grant(n, npc_id)
-        if n.get("gives_quest"):
-            self.out(quests.offer_quest(self.world, self.player, n["gives_quest"]))
+        gq = n.get("gives_quest")
+        if gq:
+            # gives_quest may be a single id (legacy) or a list for multi-
+            # quest givers whose later entries are typically chained via
+            # `requires_quest`. offer_quest() is silent on gated or already-
+            # accepted entries, so iteration does not spam the player.
+            ids = [gq] if isinstance(gq, str) else list(gq)
+            for qid in ids:
+                msg = quests.offer_quest(self.world, self.player, qid)
+                if msg:
+                    self.out(msg)
         self._note_quests()
 
     def _grant_lore(self, lore_id: str, source: str = "") -> bool:
@@ -880,16 +889,72 @@ class Game:
                     self.out(f"     {l.get('title', lid)}  ({lid})")
             self.out("")
             self.out("  (Read a specific entry: `read <id>`.)")
+            # Hint about manuals in the satchel.
+            manuals = [iid for iid in self.player.inventory
+                       if self.world["items"].get(iid, {}).get("type") == "manual"]
+            if manuals:
+                self.out("")
+                self.out(f"  You carry {len(manuals)} manual(s). `read <name>` to study.")
             return
-        lid = arg.strip().lower().replace(" ", "_")
-        if lid not in self.player.known_lore:
+        q = arg.strip().lower().replace(" ", "_")
+        # Prefer an inventory manual over a lore lookup — the manual carries
+        # its own passage and will grant whatever lore it contains on first
+        # read. (Re-reading a known manual is a no-op but the passage still
+        # prints, which is the point: Zhao's west-room is a place you linger.)
+        manual_id = self._resolve_item_by_query(q)
+        if manual_id and self.world["items"].get(manual_id, {}).get("type") == "manual":
+            self._read_manual(manual_id, self.world["items"][manual_id])
+            return
+        if q not in self.player.known_lore:
             self.out("You have not heard of that.")
             return
-        l = self.world["lore"].get(lid, {})
+        l = self.world["lore"].get(q, {})
         self.out("")
         cat = l.get("category", "lore")
-        self.out(f"=== {l.get('title', lid)}  [{cat}] ===")
+        self.out(f"=== {l.get('title', q)}  [{cat}] ===")
         self.out(_wrap(l.get("text", "")))
+
+    def _read_manual(self, item_id: str, item: Dict[str, Any]) -> None:
+        """Read a manual item. Prints its passage, grants any `grants_lore`,
+        and teaches `teaches_technique` when realm+rep thresholds are met.
+        The manual stays in inventory — a library is for returning to."""
+        name = item.get("name", item_id)
+        self.out("")
+        self.out(f"=== Reading: {name} ===")
+        passage = item.get("passage") or item.get("description", "")
+        if passage:
+            self.out(_wrap(passage))
+        lore_ids = item.get("grants_lore") or []
+        if isinstance(lore_ids, str):
+            lore_ids = [lore_ids]
+        for lid in lore_ids:
+            self._grant_lore(lid)
+        teach = item.get("teaches_technique")
+        if teach:
+            tech = self.world.get("techniques", {}).get(teach)
+            if not tech:
+                return
+            if teach in self.player.techniques:
+                return
+            req_realm = tech.get("requires_realm") or item.get("requires_realm")
+            if req_realm and not cultivation.realm_meets(
+                    self.world, self.player, req_realm):
+                need = self.world["realms"].get(req_realm, {}).get("name", req_realm)
+                self.out("")
+                self.out(_wrap(
+                    f"  * The manual's deeper passages blur when you try to "
+                    f"hold them. ({tech.get('name', teach)} waits for {need}.)"))
+                return
+            gate = self._rep_gate_msg(tech.get("requires_rep") or {})
+            if gate:
+                self.out("")
+                self.out(_wrap(
+                    f"  * The ink refuses your eye — the art knows its lineage. {gate}"))
+                return
+            self.player.techniques.append(teach)
+            self.out("")
+            self.out(_wrap(
+                f"  * You grasp the technique on the page: {tech.get('name', teach)}."))
 
     def cmd_lore(self, _arg: str) -> None:
         self.cmd_read("")

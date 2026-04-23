@@ -199,15 +199,35 @@
       "Quiet, please. The scrolls are sleeping.",
       "Take this — a copy of the Sutra of Empty Sleeves. It found you; I am only the courier.",
       "You may read anything on the open shelves. The locked shelves are closed for a reason I have not been told, by a committee I am not on. The committee, I believe, died in 1184.",
-      "If you are looking for a particular text — speak its name. The library hears better than I do, and has, on three occasions, found things for guests I was otherwise going to turn away."
+      "If you are looking for a particular text — speak its name. The library hears better than I do, and has, on three occasions, found things for guests I was otherwise going to turn away.",
+      "Copies may be taken. The archivists price them at the labour of copying, not the weight of the words. Words have no weight to the charter. Labour has."
     ],
-    "gives_quest": "study_the_sutra",
+    "gives_quest": ["study_the_sutra", "the_locked_shelves", "the_committee_of_1184"],
+    "sells": [
+      "manual_gatekeepers_oath",
+      "manual_west_reading_room",
+      "manual_sword_calamity_abridged",
+      "manual_azure_cloud_commentary",
+      "manual_ninefold_azure_cuts",
+      "manual_stormwardens_marginalia",
+      "manual_committee_of_1184"
+    ],
     "disposition": "friendly",
     "rep_dialogue": {
       "azure_cloud_sect": {
+        "1":  ["The open shelves are for anyone. The middle shelves — you may take a copy now, if the archivist is at her desk. She is. She is always.",
+               "If you have not read the Abridgment of the Sword Calamity, read it before you read anything else on these shelves. It is the short book that makes all the longer ones shorter still."],
+        "2":  ["I have had the west reading-room prepared. The kettle is warm. The second cushion is set out, as I said it would be. You may linger as long as you like; the lamps know when to light themselves.",
+               "The middle-shelf commentaries are yours for a copy-price. Ask by name; the archivist is faster than the catalogue."],
         "3":  ["The catalogue has begun to list your visits, brother-wanderer. I am not the one who decides such things; the catalogue is older than I am.",
-               "The west reading-room is empty in the afternoons, if you would like solitude. I will leave a kettle."],
+               "The west reading-room is empty in the afternoons, if you would like solitude. I will leave a kettle.",
+               "There is a folio the archivists rebind once a generation. It is not on the public catalogue. Ask for it by its first sentence — *The decision is this peg* — and the west wall will be the one that hears you."],
         "-2": ["I cannot refuse you the open shelves — the charter is old and does not know your name. The locked shelves have been consulted. They know it now."]
+      }
+    },
+    "lore_dialogue": {
+      "azure_cloud_sect": {
+        "2":  "the_west_reading_room"
       }
     }
   },

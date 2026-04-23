@@ -22,7 +22,7 @@
     "npcs": ["ghost_of_patriarch_mingshu"],
     "enemies": ["cloudstep_ape", "terrace_revenant", "apostate_willow_step_shen"],
     "events": ["terrace_bell_tolls"],
-    "items_on_ground": ["broken_terrace_medallion"],
+    "items_on_ground": ["broken_terrace_medallion", "sister_willows_record"],
     "qi_density": 4,
     "tags": ["ruin", "haunted", "sky_spire"]
   },

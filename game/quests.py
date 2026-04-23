@@ -20,10 +20,13 @@ def _step_satisfied(step: Dict[str, Any], player: Player) -> bool:
 
 
 def offer_quest(world: Dict[str, Dict[str, Any]], player: Player, quest_id: str) -> str:
+    # Silent on completed and already-accepted so a multi-quest giver (or a
+    # repeat visitor to a single-quest giver) doesn't print noise on every
+    # talk. The quest board (`quest` command) is the authoritative status view.
     if quest_id in player.completed_quests:
-        return "(You have already completed this task.)"
+        return ""
     if quest_id in player.active_quests:
-        return "(You already accepted this task.)"
+        return ""
     q = world["quests"].get(quest_id)
     if not q:
         return ""

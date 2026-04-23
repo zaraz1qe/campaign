@@ -25,6 +25,45 @@
     "grants_lore": ["the_word_in_dust"]
   },
   {
+    "id": "the_locked_shelves",
+    "name": "The Locked Shelves",
+    "giver": "librarian_zhao",
+    "description": "Zhao, quieter than usual, lifts the blue felt curtain of the west reading-room and pours you a cup. A page of the sect's catalogue — from the shelf the committee of 1184 sealed — went missing in a Black Banner raid on a scholar's caravan two winters ago. The bandit who has it is called Shao; he rides the old stone road east of the Merchant's Crossing, and wears the banner on his sash. Bring back the torn page. The library will be easier with you in it, Zhao says. He does not say easier on whom.",
+    "requires_quest": "study_the_sutra",
+    "steps": [
+      { "type": "defeat", "target": "bannerman_shao" },
+      { "type": "collect", "target": "torn_catalogue_page" },
+      { "type": "talk", "target": "librarian_zhao" }
+    ],
+    "reward": {
+      "spirit_stones": 120,
+      "items": ["manual_west_reading_room", "minor_healing_pill"],
+      "xp": 55
+    },
+    "rep_change": { "azure_cloud_sect": 2 },
+    "grants_lore": ["the_west_reading_room"]
+  },
+  {
+    "id": "the_committee_of_1184",
+    "name": "The Committee of 1184",
+    "giver": "librarian_zhao",
+    "description": "Zhao, with the torn page laid between you on the west table, has been awake all night with it. The catalogue numbers reference a shelf the committee locked; the peg is still in the inner latch. But there is a second record — one of the committee's own, preserved not by the Azure Cloud but by a Jadestep scholar who understood what the Cloud had chosen to forget. It was buried at the Hanging Terraces with the sect that kept it. Bring it home. The library, Zhao says — not for the first time, though the first time aloud — will remember this.",
+    "requires_quest": "the_locked_shelves",
+    "requires_rep": { "azure_cloud_sect": 2 },
+    "steps": [
+      { "type": "visit", "target": "hanging_terraces_of_jadestep" },
+      { "type": "collect", "target": "sister_willows_record" },
+      { "type": "talk", "target": "librarian_zhao" }
+    ],
+    "reward": {
+      "spirit_stones": 260,
+      "items": ["manual_committee_of_1184", "spirit_stone_pouch"],
+      "xp": 100
+    },
+    "rep_change": { "azure_cloud_sect": 3 },
+    "grants_lore": ["the_committee_of_1184", "azure_cloud_commentary_1184"]
+  },
+  {
     "id": "the_envoys_letter",
     "name": "The Envoy's Letter",
     "giver": "azure_envoy_ruwen",

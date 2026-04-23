@@ -24,20 +24,29 @@ A living checklist for what's been done and what to add next.
 - **Companions** (3): Disciple Meilin (Azure Cloud), Venom-Handler Bai
   (Five Poisons), Blood-Sworn Jin (Scarlet Lotus). Affinity/bond system
   active across all three.
-- **Items**: 70 (equipment, pills, materials, treasures)
+- **Items**: 80 (equipment, pills, materials, treasures, **manuals**)
 - **Recipes**: 15 (Forge-Master Bo: 6, Pillmaster Lu: 4, Apothecary Qi: 5)
-- **Quests**: 14 (Kettle's Request, Study Sutra, Missing Disciple, Envoy's
-  Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace, Red Path,
-  Red Ledger — first multi-quest arc — and the five **Willowmere**
-  starters: Wolves at Shen's Farm, Little Yu's Songbird, Three Ingots of
-  River-Iron, Errand of the Drowned Willow, A Bottle for the Corner Table)
+- **Quests**: 16. Single-givers: Kettle's Request, Missing Disciple,
+  Envoy's Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace,
+  Red Path, and the five Willowmere starters (Wolves at Shen's Farm,
+  Little Yu's Songbird, Three Ingots of River-Iron, Errand of the
+  Drowned Willow, A Bottle for the Corner Table). **Multi-quest arcs**:
+  Red Ledger (Rulan → Red Feather), **Zhao's Library arc**
+  (Study the Sutra → The Locked Shelves → The Committee of 1184 —
+  session 13).
 - **Techniques**: 43 total, **35 learnable** across all tiers. Every
   combat effect (poison/bleed/stun/heal/buff_def/buff_atk) has ≥3
   learnable options. Mortal 9 / Qi-Condensation 15 / Foundation 11.
-- **Events**: 33 (ambient + qi-grant + lore-grant; every location has
-  at least one after the session-12 depth pass)
-- **Lore**: 24 (earnable via boss defeats, quest rewards, high-rep NPC
-  trust, and village story — Willowmere adds 4)
+- **Events**: 38 (ambient + qi-grant + lore-grant; every location has
+  at least one, and the library / foothills / bandit road picked up
+  ambient events in session 13).
+- **Lore**: 30 (earnable via boss defeats, quest rewards, high-rep NPC
+  trust, village story, and **manuals**). Session-13 additions:
+  committee_of_1184, azure_cloud_commentary_1184, lamplighter_of_zhao,
+  gatekeepers_oath, sword_calamity, west_reading_room.
+- **Manuals**: 7 (library-only: open shelf 2, mid 3, locked 2 — gated
+  by ACS rep, priced against the labour of copying, not the weight
+  of the words).
 - **Realms**: 8 (Mortal → Ascendant Immortal)
 
 ## How to Add Content (the path of least resistance)
@@ -77,14 +86,24 @@ A living checklist for what's been done and what to add next.
 - [x] The Envoy's Letter — deliver a sealed letter from Azure Cloud to Five Poisons (s6)
 - [x] **The Red Ledger** — Red Feather's second errand; recover a stolen page
       of the Crimson Registry from an apostate hiding at Jadestep (s10)
+- [x] **The Locked Shelves** — Zhao's first follow-up; retrieve a torn
+      catalogue page from Bannerman Shao on the Bandit Road (s13)
+- [x] **The Committee of 1184** — Zhao's second follow-up; recover Sister
+      Willow's Record from the Hanging Terraces of Jadestep (s13)
 - [ ] Multi-part sect tournament (Azure Cloud vs Scarlet Lotus)
 - [ ] Find the lost manual at the bottom of the River of Swords
 - [ ] Investigate why frost wolves descended on the foothills (link to Blood Moon Cult)
-- [ ] Escort Cloth Merchant Mei past the Bandit Road
+- [ ] Escort Cloth Merchant Mei past the Bandit Road  — partially paid off
+      by s13 (Bandit Road now has its own quest giver via Zhao's arc;
+      an escort for Mei would still be worth writing)
 - [ ] Brew the Nine-Cloud Pill (gather 5 ingredients)
 - [ ] Settle the feud between two villages
 - [ ] Avenge Old Hermit Yun's slain disciple (long arc)
 - [ ] Climb the Sky-Spire (capstone, requires Nascent Soul)
+- [ ] **Huilin's errand** — the monk has voice, teaches, sells, and
+      rep_dialogue but no quest. Still open; flagged for s14.
+- [ ] **A second Baixu errand** — post-*the_missing_disciple*;
+      close the loop with the rival envoy who held Meilin.
 - [x] The Stormwarden's Test — storm-crow feather from Thunderhead Ridge (s4)
 - [x] The Broken Terrace — slay the Heart-Devouring Gale Tiger for Mingshu (s4)
 
@@ -117,7 +136,10 @@ A living checklist for what's been done and what to add next.
 - [ ] Spirit weapons (named blades with unique flavor)
 - [ ] Materials for an alchemy/crafting system (deferred, see below)
 - [ ] Treasure maps (lead to specific lore + treasure caches)
-- [ ] Manuals: rare dropped manuals that unlock specific techniques
+- [~] **Manuals**: library manuals now real items that `read` can open —
+      grant lore and/or teach techniques with realm+rep gates; Zhao's
+      shelf has 7 (s13). Open: *dropped* manuals (rare drops from named
+      foes that unlock specific techniques outside any library).
 
 ### 7. Lore / Worldbuilding
 - [ ] One legend per region (per-location `lore` hook, first-visit grant)
@@ -126,9 +148,11 @@ A living checklist for what's been done and what to add next.
       of the minor regions' legends.)
 - [ ] Poems (one per sect)
 - [~] Sutras (have: Empty Sleeves/Word in Dust, Oath of the Grey, Scarlet
-      Lotus Oath, Five Refusals, Four Reasons, Stormwarden. Missing: a
-      righteous-orthodox sutra beyond Azure Cloud.)
-- [ ] Histories of major wars (the Sword Calamity, the Blood Moon Rising)
+      Lotus Oath, Five Refusals, Four Reasons, Stormwarden, Gatekeeper's
+      Oath, Azure Cloud Commentary 1184. Missing: a righteous-orthodox
+      sutra beyond Azure Cloud / Shaolin-flavor.)
+- [~] Histories of major wars (the Sword Calamity abridged shipped s13;
+      Blood Moon Rising still open).
 
 ---
 
@@ -159,6 +183,12 @@ A living checklist for what's been done and what to add next.
       on quests, lore_dialogue on NPCs; the `read` command is now a
       proper library index grouped by category with a known/total
       counter (s11).
+- [x] **Manuals as readable items** — `read <manual>` prints the manual's
+      passage, grants `grants_lore`, and teaches `teaches_technique`
+      with realm+rep gates; the manual stays in inventory (s13).
+- [x] **Multi-quest givers** — `gives_quest` accepts a list so one NPC
+      can own a whole arc; `offer_quest` silent on gated / completed /
+      accepted entries (s13).
 - [ ] **Faction war state**: more than spawns — sect patrols that pursue
       between locations, trade embargoes, sect-tournament triggers
 - [ ] **Auto-respawn enemies** so locations don't go empty after one fight
@@ -182,6 +212,31 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-23 (session 13)** — "The Committee of 1184" — the Azure
+  Cloud Library deepening. The session's complaint: the library had
+  been a textbook example of surface-but-no-depth — a full location,
+  a voiced librarian, and a single consumable scroll. Zhao had already
+  scaffolded the deepening in his own dialogue (locked shelves, the
+  committee of 1184 that died in 1184, things the library "finds" for
+  refused guests) but none of it was paid off mechanically. This
+  session pays it off. One small engine change makes `read <manual>`
+  do the work the `manual` item type had only been tagging for; one
+  other makes `gives_quest` a list so one NPC owns a whole arc.
+  Content: 7 manuals (each with its own passage and lore), 6 new
+  lore entries (Committee of 1184, the Sutra marginalia, the
+  Lamplighter of Zhao, the Sword Calamity abridgment, the Gatekeeper's
+  Oath, the West Reading-Room), 3-quest Zhao arc (Study the Sutra →
+  The Locked Shelves → The Committee of 1184) that finally uses the
+  dead Bandit Road (Bannerman Shao, new mini-boss) and sends the
+  player back up to the Hanging Terraces for Sister Willow's Record.
+  5 new events (library brass bell, catalogue writing itself, locked
+  shelf peg humming, foothills disciple passing, bandit road's distant
+  banner). Azure Cloud went from 2 single-errand quests to a 4-quest
+  region anchored on one NPC's arc; Bandit Road went from 0 quests to
+  1; the Hanging Terraces picked up a second use. Smoke test
+  `tools/smoke_library.py` — 9 scenarios — green. All 7 prior smoke
+  tests remain green.
+
 - **2026-04-23 (session 12)** — "The Willow at the Gate" **+ technique
   deepening pass**. Two things in one session, both pulling on the same
   thread: *stop being a puddle in the early game*. First, the starter

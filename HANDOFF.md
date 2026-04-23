@@ -124,6 +124,266 @@ validated, committed.
 
 # Session log
 
+## Session 13 — 2026-04-23 — "The Committee of 1184"
+
+### What I built
+- **Azure Cloud Library as a place, not a demo.** Before this session
+  the library was a textbook example of surface-but-no-depth: a full
+  location, a voiced librarian, and a single consumable scroll. Zhao's
+  own dialogue had already scaffolded the deepening — locked shelves,
+  a committee that died in 1184, things the library "finds" for
+  refused guests — none of which was paid off mechanically. This
+  session paid it off. Zhao is now a real library gate: 7 manuals, a
+  3-quest arc, 6 new lore entries, and one small engine change that
+  makes `read <manual>` do the work the game's `manual` type had only
+  pretended to do.
+- **Engine: `cmd_read` now reads manuals.** Previously the `manual`
+  item type was a tag on one item and nothing more. Extended
+  `cmd_read` so `read <manual_id or name>` on an inventory manual
+  prints the manual's `passage`, grants its `grants_lore` (silent on
+  re-read), and teaches its `teaches_technique` iff the player meets
+  the technique's `requires_realm` and `requires_rep`. The manual
+  itself is **not** consumed — a library is a place you return to.
+  Also: `read` with no arg now hints at the manuals you carry.
+  (~45 lines in `game/engine.py`; self-contained in `_read_manual`.)
+- **Engine: NPCs can now give multiple quests.** `gives_quest` accepts
+  a string (legacy) or a list (new). `cmd_talk` iterates the list and
+  calls `quests.offer_quest` on each; since `offer_quest` is silent on
+  gated / already-accepted / already-completed entries, a Zhao-style
+  arc can be declared as one ordered list and the player experiences
+  it as three consecutive offers. Also quieted `offer_quest`'s
+  previously-chatty "(You have already completed this task.)" and
+  "(You already accepted this task.)" on repeat visits — the quest
+  board (`quest`) is the authoritative status view now. No existing
+  smoke test depended on those strings. Validator updated to accept
+  list-valued `gives_quest`.
+- **Content — manuals.** 7 new manual items in
+  `content/items/library.json`, each with a `passage` and a
+  `grants_lore` payload (some carry a `teaches_technique` too):
+  - `manual_gatekeepers_oath` — open shelf, 0 stones, no gate.
+    Grants `gatekeepers_oath` (the oath every gatekeeper speaks, and
+    the question the margin asks: why is it still correct?).
+  - `manual_west_reading_room` — open shelf, 0 stones. Grants
+    `the_west_reading_room` AND `the_lamplighter_of_zhao` (Zhao's
+    son, the reason he lights the lamps).
+  - `manual_sword_calamity_abridged` — mid shelf, 120 stones,
+    ACS +1. Grants `the_sword_calamity`.
+  - `manual_azure_cloud_commentary` — mid shelf, 220 stones,
+    ACS +2. Grants `azure_cloud_commentary_1184` (the seven notes
+    in the margin, in seven different hands, one of them yours).
+  - `manual_ninefold_azure_cuts` — mid shelf, 200 stones, ACS +1.
+    **Teaches** `azure_cloud_sword_arc` (subject to that art's own
+    rep gate). Nine cuts, sixty pages of argument about the feet.
+  - `manual_stormwardens_marginalia` — locked shelf, 450 stones,
+    ACS +3. **Teaches** `nine_cloud_cranes_flight` — Gao's reading
+    notes on the Crane-sword sutras, smuggled to the library.
+  - `manual_committee_of_1184` — locked shelf, 0 stones, ACS +3.
+    Grants `the_committee_of_1184` — what the peg actually decided.
+    Not on the public catalogue.
+- **Content — lore (6 new).** Written into
+  `content/lore/library.json`:
+  - `the_committee_of_1184` — the sealed shelf, the peg, the seventh
+    voter (Sister Willow of the Third Gate), buried behind the west
+    wall the reading-room backs on to.
+  - `azure_cloud_commentary_1184` — the marginalia the committee
+    left on the Sutra of Empty Sleeves. The ink is the same red the
+    sect now uses for death-registers.
+  - `the_lamplighter_of_zhao` — why Zhao lights the library's lamps
+    after closing. His son, the Twelfth Street crossing, the
+    palanquin. He has never said.
+  - `the_sword_calamity` — the short, abridged chronicle of the war
+    that made the surviving sects. "We write this short because the
+    long version has not yet forgiven us."
+  - `gatekeepers_oath` — the four-line oath every gatekeeper speaks,
+    written before the charter. "If I fail the gate, let the gate
+    fail gently."
+  - `the_west_reading_room` — the room the architects did not draw,
+    the second cushion always set out, whose is not said.
+- **Content — quests (3-step Zhao arc).** One list-valued
+  `gives_quest` on Zhao delivers:
+  - `study_the_sutra` (existing) — unchanged.
+  - **`the_locked_shelves`** (new, `requires_quest: study_the_sutra`).
+    Retrieve the torn catalogue page from **Bannerman Shao** of the
+    Black Banner on the Bandit Road. Reward: 120 stones,
+    ACS +2, `manual_west_reading_room`, lore `the_west_reading_room`.
+    Finally gives the Bandit Road a quest — Mei's dialogue about
+    the Black Banner has been sitting un-paid-off for weeks.
+  - **`the_committee_of_1184`** (new, `requires_quest: the_locked_shelves`,
+    `requires_rep: ACS +2`). Recover **Sister Willow's Record** from
+    the Hanging Terraces of Jadestep (on the ground — the Jadestep
+    scholar who preserved it buried it with them). Reward: 260
+    stones, ACS +3, `manual_committee_of_1184`, lore
+    `the_committee_of_1184` + `azure_cloud_commentary_1184`.
+- **Content — enemy.** `bannerman_shao` at Bandit Road: Qi-Condensation
+  mini-boss (90 HP, ATK 12, DEF 5, SPD 9). Drops
+  `torn_catalogue_page` (100%), `black_banner_sash` (100% — a new
+  accessory, HP +4 SPD +1), `spirit_stone_pouch` (100%), and
+  `iron_skin_pill` (40%). Also 80 XP — among the better mid-tier
+  targets for a QC player.
+- **Content — items.** 10 new items total: 7 manuals, 2 quest items
+  (`torn_catalogue_page`, `sister_willows_record`), 1 accessory
+  (`black_banner_sash`).
+- **Content — Zhao's dialogue.** New line (labour vs weight of
+  words), new rep_dialogue tiers at ACS +1 (mid shelf open to you)
+  and ACS +2 (west reading-room prepared, second cushion set out,
+  and a line about the committee papers' first sentence). New
+  `lore_dialogue` at ACS +2 for `the_west_reading_room`.
+- **Content — Library location prose.** Rewritten description:
+  three ranks of shelves (open front, mid-shelves behind a brass
+  bell rail, locked-shelf at the west wall with the peg through
+  the latch), blue felt curtain, west reading-room behind. New
+  `first_visit_text` sets the tone. Three new events firing at
+  the library: `library_brass_bell_chime`, `library_catalogue_writes_itself`
+  (your name appearing in the margin as you watch),
+  `locked_shelf_peg_hums`. Plus
+  `foothills_disciple_passes` at the foothills and
+  `bandit_road_distant_banner` at the Bandit Road. Five new events
+  total.
+- **Smoke test.** `tools/smoke_library.py` — 9 scenarios: load ids,
+  open-shelf manual grants lore (stays in inventory, re-read
+  silent), technique manual respects both realm and per-technique
+  rep gates, rep-gated buy refuses until threshold, list-valued
+  `gives_quest` is silent on completed/accepted, the full 3-quest
+  arc completes end-to-end with rewards + lore, Bannerman drops at
+  100%, the record is takeable at the terrace, save/load preserves
+  library-side state. All green.
+
+### Current state
+- Validator: **29 loc / 30 npc / 22 enemy / 43 tech / 80 item / 4
+  sect / 16 quest / 38 event / 30 lore / 15 recipe.** Deltas from
+  session 12: +1 enemy, +10 items, +2 quests, +5 events, +6 lore.
+- All prior smoke tests (affinity, companion, companion_downed,
+  lore, red_ledger, techniques, willowmere) remain green. New
+  smoke test `smoke_library.py` also green.
+- `python3 play.py` boots cleanly. A QC player with ACS rep can
+  now walk into the library, buy a manual, read it for real lore
+  or a new sword art, go east to the Bandit Road to beat up
+  Bannerman Shao for a torn page, come back for the second quest,
+  go up to the Hanging Terraces for a book, come back for the
+  third quest — an actual multi-visit library arc. The Bandit
+  Road has a reason to exist. Zhao is no longer the one-scroll
+  man.
+- Save compat preserved. Zero new Player fields this session.
+  Existing saves load; their manuals (if any from this session's
+  content) re-read silently because the lore flag is already
+  set.
+- Quest distribution going in → going out: Azure Cloud went
+  from 2 quests (both single-errand) to 4, all connected
+  through one NPC's arc; Bandit Road went from 0 quests to 1
+  (via step 1 of the arc); the Hanging Terraces picked up a
+  second use (via step 2). The region that was most under-served
+  by session 12's audit now has the most legible player loop in
+  the mid-game.
+
+### What I'd do next if I had another hour
+1. **Huilin's quest.** Still unstarted. He is the game's best
+   voiced wanderer NPC (3 rep_dialogue, 3 companion_reply, 3
+   teach options, 2 sells, 4 dialogue lines — no gives_quest).
+   The bell at the Drowned Willow Shrine is the obvious hook.
+   Next session's easy win.
+2. **Expand Weilan.** Still one teach. Previous session flagged
+   it; I didn't get to it.
+3. **A second Baixu errand.** Completing `the_missing_disciple`
+   recovers Meilin, but Baixu has no follow-up — the disciple who
+   went missing and was held captive has no post-story. Baixu
+   could ask the player to visit the rival sect's envoy and
+   close that loop. Chain gated by `the_missing_disciple` +
+   ACS +2.
+4. **Adjacent sects: library parity.** Only Azure Cloud has a
+   library. Five Poisons has `poisoners_garden` (a content
+   vessel) and Scarlet Lotus has `scarlet_lotus_shrine`. Each
+   could hold their own "study X" content — neutral lore for
+   the garden, sect-sutra for the shrine. Not urgent; the
+   library is data-driven, it's another day's work.
+5. **Second-session payoff for manuals: bookshelves as NPCs.**
+   The open shelf currently only has two free manuals. The mid
+   shelf and locked shelf are priced or rep-gated. A third
+   axis — "the library finds things for you" — is set up in
+   Zhao's dialogue but not paid off: books that appear in
+   inventory after a quest, or lore that only the library
+   surfaces after a specific death-defeat. Worth one session.
+6. **A Black Banner contract for the Pavilion.** Bannerman Shao
+   is dead but the banner is older than the gang. A Pavilion
+   (or Rulan) quest to chase down who actually holds the banner
+   next would fit the "arcs over errands" theme.
+7. **Faction war state.** The ROADMAP has this unchecked. Azure
+   Cloud +3 now feels earned via this arc. It does not do
+   anything load-bearing at the faction level. Trading, patrols,
+   tournament hooks remain open.
+
+### Things I noticed but didn't fix
+- **items_on_ground does not persist across save/load.** The
+  world dict is re-loaded fresh each session; `sister_willows_record`
+  will re-appear at the Hanging Terraces after a reload even
+  if the player already has it. Not new — `broken_terrace_medallion`
+  has the same behavior. The quest itself is fine because
+  `collect` checks `has_item` (which persists). Worst case a
+  player stacks two copies. Flagging for an eventual world-state
+  save pass.
+- **The mortal-tier player cannot clear Bannerman Shao.** 90 HP
+  at atk 12 is a legitimate QC fight; a mortal will die. That is
+  intentional — the library arc is the mid-game's spine, not
+  the first-hour content. But a very new player who accepts
+  `the_locked_shelves` and rushes the bandit road will bounce.
+  Considered adding an "are you sure" or a rep warning; decided
+  the game's existing pattern (the player finds out what can kill
+  them by dying once) is the correct one.
+- **Zhao's sells list shows rep-gated manuals at 0 / their price
+  in the dialogue.** It does not note the rep gate in the list
+  itself — only at buy-time. The UX is fine (the error message
+  is specific) but a discoverability nudge would be nice. Engine
+  touch: one line in the sells printer.
+- **`cmd_buy` doesn't gate on `requires_realm`.** Only `requires_rep`
+  is checked. Items with realm requirements (weapons, robes) can
+  be bought at any realm and only refuse to *equip*. This is
+  pre-existing. Not worth fixing in this session; manuals that
+  teach techniques are already gated by the technique's own
+  rep + realm on read.
+- **The committee's seventh voter is named in the manual but
+  not elsewhere.** "Sister Willow of the Third Gate" is a
+  candidate for a future Azure Cloud branch (perhaps an
+  apparition in the west reading-room on `cultivate` with ACS
+  +3). Not this session; next.
+
+### Don'ts (lessons learned)
+- **Don't pay off scaffolding by writing around it.** Zhao had
+  established "the committee of 1184" and "the locked shelves"
+  six weeks ago. The temptation when deepening was to write
+  something new — a rival librarian, a new library elsewhere.
+  No: the right move was to pay off what Zhao had already
+  said. The player remembers the half-built thing; finishing
+  it is always worth more than building something adjacent.
+- **Don't forget the validator when you change an engine
+  contract.** `gives_quest` becoming list-able was a
+  one-line engine change but the validator was still assuming
+  string. Caught early because I ran `check_content.py` after
+  every substantial edit. The pattern `for qid in ([x] if
+  isinstance(x, str) else list(x)):` is now established.
+- **Don't treat "already completed" as useful UX on every
+  talk.** The chatty offer_quest responses were fine when NPCs
+  gave one quest each — the line acknowledged closure. With
+  multi-quest lists they became noise on every talk. Silence is
+  the better default; `quest` is the status view.
+- **Don't balance a technique-teaching manual against the
+  technique's native teachers.** Ninefold Azure Cuts teaches
+  azure_cloud_sword_arc. So does Meilin. Both routes are rep
+  +1 and QC. That's fine — some players will meet Meilin first,
+  some will find the manual first. The library is a fallback
+  for the "I never caught up with the disciple" player, not a
+  replacement for her. Didn't make the manual cheaper or
+  easier; didn't make Meilin require more rep. Two paths is
+  correct.
+- **Don't put an item on items_on_ground that is the only path
+  forward for a quest if the location has live enemies.** The
+  `sister_willows_record` is at `hanging_terraces_of_jadestep`
+  which spawns cloudstep_ape, terrace_revenant, and
+  apostate_willow_step_shen. A QC player might take a couple of
+  attempts. That's intended — the Committee arc earns its lore
+  by making you survive the dead sect's terrace. But test it
+  before shipping; the Jadestep enemies are not trivial.
+
+---
+
 ## Session 12 — 2026-04-23 — "The Willow at the Gate" + Technique Deepening
 
 ### What I built

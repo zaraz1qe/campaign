@@ -61,5 +61,40 @@
     "chance": 0.25,
     "text": "Ao's hammer changes rhythm — three quick, one slow, three quick — and the forge's heat banks for a breath. You realise, without being told, that you have just watched a forge-prayer. Ao glances at you; if he sees that you saw, he does not say so.",
     "effect": { "qi": 2 }
+  },
+  {
+    "id": "library_brass_bell_chime",
+    "location": "azure_cloud_library",
+    "chance": 0.22,
+    "text": "The small brass bell on the mid-shelf rail chimes, once, without being struck. Zhao does not look up from his catalogue. A folio somewhere towards the back of the hall settles onto a lower shelf by the width of one page — as if the book had leaned forward to listen, and then thought better of it.",
+    "effect": { "qi": 3 }
+  },
+  {
+    "id": "library_catalogue_writes_itself",
+    "location": "azure_cloud_library",
+    "chance": 0.15,
+    "text": "You look up from the shelf you were browsing and see Zhao's catalogue, two tables away, unattended. A fresh character appears in the top margin — black ink, a careful archivist's hand — as you watch. The character is your name, or the part of it you would give if asked. When you look again, the ink is dry. Zhao, coming back with the tea, appears not to notice.",
+    "effect": {}
+  },
+  {
+    "id": "locked_shelf_peg_hums",
+    "location": "azure_cloud_library",
+    "chance": 0.1,
+    "text": "At the far wall, past the blue felt curtain, the wooden peg driven through the locked shelf's latch hums — a low note, almost a word. The hum holds for a breath, then passes. Zhao refills your cup without looking at the peg. 'Old wood remembers,' he murmurs. 'Mostly it sleeps.'",
+    "effect": {}
+  },
+  {
+    "id": "foothills_disciple_passes",
+    "location": "azure_cloud_foothills",
+    "chance": 0.25,
+    "text": "An outer disciple jogs down the path from the gate, a rolled letter pressed inside his robe, and nods in passing. A minute later he is back again, without the letter, his face set. He does not meet your eyes this time. The mountain above has its own errands; they are not yours.",
+    "effect": {}
+  },
+  {
+    "id": "bandit_road_distant_banner",
+    "location": "bandit_road",
+    "chance": 0.2,
+    "text": "From a ridge a half-li east, a black rag flies briefly against the grey sky — the Black Banner, shown once and taken down. A crow from a broken statue turns its head to watch. The wind smells of old smoke and someone else's cold fire.",
+    "effect": {}
   }
 ]

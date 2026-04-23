@@ -68,5 +68,21 @@
     ],
     "xp": 40,
     "tags": ["beast", "ice"]
+  },
+  {
+    "id": "bannerman_shao",
+    "name": "Black Banner Shao",
+    "description": "A tall, scar-cheeked man in a coat of black lacquer scale, two short swords crossed at his back. The Black Banner flies from his belt-sash — a rag of a flag older than the gang he leads, passed brother-to-brother by whichever of them is willing to kill for it this year. His eyes have the patience of a man who has already won every argument worth having.",
+    "realm": "qi_condensation",
+    "hp": 90, "atk": 12, "def": 5, "spd": 9,
+    "techniques": ["wild_swing"],
+    "drops": [
+      { "item": "torn_catalogue_page", "chance": 1.0 },
+      { "item": "black_banner_sash", "chance": 1.0 },
+      { "item": "spirit_stone_pouch", "chance": 1.0 },
+      { "item": "iron_skin_pill", "chance": 0.4 }
+    ],
+    "xp": 80,
+    "tags": ["human", "bandit", "boss"]
   }
 ]
