@@ -1,0 +1,140 @@
+[
+  {
+    "id": "headman_lu_pingan",
+    "name": "Headman Lu Pingan",
+    "title": "Elder of Willowmere",
+    "description": "A tall, gaunt man in his fifties, in a faded azure robe whose hem has been patched with river-grey cloth where the original wore out. His back is straight as a disciple's, his hands are a farmer's — splayed, scarred, honest. A wooden seal of office hangs at his belt on a cord a child tied for him. He looks at you not like a stranger but like a small storm, calculating.",
+    "dialogue": [
+      "Welcome to Willowmere, cultivator. You are the third traveller this month; the other two did not stop. Both were missed.",
+      "I wore the azure once. Failed the second trial. My master did not say a word; he just handed me a hoe and a name. I have done well enough with both.",
+      "If you walk the north lane, walk it with your sword out. The wolves took the Shen family's goats on the third night of the month, and have been back twice for the fourth."
+    ],
+    "gives_quest": "wolves_at_shens_farm",
+    "teaches": ["farmhands_cleave"],
+    "faction": "azure_cloud_sect",
+    "disposition": "friendly",
+    "rep_dialogue": {
+      "azure_cloud_sect": {
+        "2": [
+          "You walk under the crane. The old sash in my trunk stirs when the wind turns north. Do not tell it I said so."
+        ],
+        "-3": [
+          "I wore the azure once, and you have stained it. Do not ask me for shelter; this village is under the crane, if only in my memory."
+        ]
+      }
+    }
+  },
+  {
+    "id": "herbalist_mingzhu",
+    "name": "Herbalist Mingzhu",
+    "title": "Gatherer of the Pale Marsh",
+    "description": "A small woman in a patched green smock, forearms stained the colour of her stock. Three-quarters of the rafters of her stall are hung with drying herbs — some she can name, some she pretends to. A little boy, her son, sleeps under the counter on a folded reed mat. She smiles often, but her eyes are always busy.",
+    "dialogue": [
+      "Pills today! Cordial, bitter for fever, sweet for wounds, the grey one for things we do not discuss.",
+      "If you wander to the drowned willow — do not sit on the altar. It is not a bench. I have buried one of my cousins for mistaking the two.",
+      "You look as though you could fetch a flower without trampling the others. That is rarer than you would think."
+    ],
+    "sells": ["willowmere_cordial", "minor_healing_pill", "moonflower_tonic"],
+    "gives_quest": "errand_of_the_drowned_willow",
+    "disposition": "friendly"
+  },
+  {
+    "id": "little_yu",
+    "name": "Little Yu",
+    "title": "The Songbird's Keeper",
+    "description": "A skinny girl of perhaps seven summers, with one braid over each shoulder and mud to the knee of both trouser-legs. She is sitting cross-legged by the crippled willow at the centre of the square, looking intently at an empty bamboo cage. She does not look up as you approach until you have already been standing there a while.",
+    "dialogue": [
+      "Grandfather says she will come back. Grandfather says a lot of things.",
+      "Her name is Lady Moonbell. She is green on the back and yellow on the belly and she sings the tune the bamboo sea makes but with the last note different. If you hear a bird do that, she is mine.",
+      "I am not crying. I was practising."
+    ],
+    "gives_quest": "the_lost_songbird",
+    "disposition": "friendly"
+  },
+  {
+    "id": "matron_weiyu",
+    "name": "Tea-Mother Weiyu",
+    "title": "Keeper of the Willow-and-Moon",
+    "description": "A woman in her sixties who wears every one of her years with the small satisfaction of a person who has outlived most of her opinions. Her sleeves are rolled past her elbows; her forearms are speckled with the scars of a thousand kettle-burns. She pours tea as another woman might draw a sword — with the unsaid knowledge that one step wrong will cost someone dearly.",
+    "dialogue": [
+      "Sit, sit. The water already knows your name; the leaves will argue about it for a while.",
+      "Everyone who passes through Willowmere leaves a piece of their story at one of my tables. I am the only person in the village who knows them all, and I keep my mouth sealed — except, of course, for tea.",
+      "The drunk in the corner? He has been here nine years. Do not pity him. Pity the swordsman he once put in the lake — who is also still in the lake, in his fashion.",
+      "Rice wine? Certainly. For yourself, or for Kuo? For Kuo it is on the house, and on your conscience."
+    ],
+    "sells": ["tea_mothers_warm_cup", "willowmere_rice_wine", "minor_healing_pill"],
+    "disposition": "friendly",
+    "rep_dialogue": {
+      "azure_cloud_sect": {
+        "3": [
+          "Sect-brother, sect-sister — the Headman will not say it, so I will: your sash is good for free tea in this house, forever, under the name Pingan will not claim back."
+        ]
+      },
+      "scarlet_lotus_pavilion": {
+        "2": [
+          "A red knot under your sleeve, cultivator. I serve tea to every stranger once. If you come again with the knot, I will pour it, and I will watch you drink it, and that will be the end of our acquaintance."
+        ]
+      }
+    }
+  },
+  {
+    "id": "drunken_rogue_kuo",
+    "name": "Old Kuo",
+    "title": "Half-Drunk of the Corner Table",
+    "description": "A wiry man in a once-fine robe now gone the colour of old tea. His sword-scabbard is patched with twine and leans against his knee the way a friend does. His eyes are red, his hands are steady, and a half-healed scar crosses his brow in a line only one kind of cut makes — a master's. He looks not quite through you, as if placing you among people he has already decided not to remember.",
+    "dialogue": [
+      "Siddown. Drink. Or do not drink. I have done both in one afternoon and recommend neither.",
+      "They call it Drunken Step, like the stagger is the art. The stagger is the mask. Inside the stagger is a straight line a sword cannot find. That is the art. Nobody teaches it properly because nobody admits to being drunk properly.",
+      "Bring me a jar of Weiyu's rice wine and I might remember the opening form. Bring me two jars and I might remember why I stopped teaching it."
+    ],
+    "teaches": ["drunken_step"],
+    "gives_quest": "bottle_for_the_corner_table",
+    "disposition": "neutral",
+    "rep_dialogue": {
+      "azure_cloud_sect": {
+        "2": [
+          "Azure, is it? I trained one of yours once. She was good. She became better. The one she beat in the southern hall was me. I do not hold it against the sect. Much."
+        ]
+      }
+    }
+  },
+  {
+    "id": "blacksmith_ao",
+    "name": "Blacksmith Ao",
+    "title": "Iron-Hand of Willowmere",
+    "description": "A barrel-chested man with a black beard braided into a single rope and a permanent squint from a life spent peering into orange heat. His left arm is thicker than his right by a visible margin. He wears an apron stitched from four separate hides, each a different animal. When he stops the hammer to speak, the silence in the shed feels uneasy, as if it were waiting for him to start again.",
+    "dialogue": [
+      "Cleavers, blades, hat-bands, kettle-handles. I make all of them. None of them pretend to be sect-work. If you want a sword to talk to, walk to the mountain.",
+      "The sword in the stone? My father's. He went to the river one morning and the river kept him. I will not finish it and I will not put it away.",
+      "Bring me river-iron — three ingots, no less — and I will make you a blade that will outlast the village. River iron is hard to find because you have to drown for it. My price accounts for that."
+    ],
+    "sells": ["iron_cleaver", "willowmere_farmers_hat", "plain_iron_sword"],
+    "gives_quest": "the_river_iron"
+  },
+  {
+    "id": "farmer_shen_daiyu",
+    "name": "Farmer Shen Daiyu",
+    "title": "Widow of Shen Homestead",
+    "description": "A small, sturdy woman in a quilted jacket, perhaps forty, perhaps older — it is hard to tell in this light. A straw broom with a nail driven crosswise through the handle leans against the doorframe within arm's reach. Her face is set in the particular calm of a person who has already decided that if the world wishes to end her, it may try.",
+    "dialogue": [
+      "Come in, come in. Sit. The kettle is boiling because I was pretending I had company. Now I do.",
+      "They took three goats on the third night. Two goats on the seventh. They have not taken me. Not yet. I do not intend to offer.",
+      "If you kill them — the alpha is the one with the white mark down the chest. Kill the alpha and the rest will go back up the ridge. That is how wolves work. I know because my husband was a wolf-hunter, before the river.",
+      "If you will not fight them — tell Pingan I am down to my last four chickens. He will know what that means."
+    ],
+    "disposition": "friendly"
+  },
+  {
+    "id": "fisher_ren",
+    "name": "Fisher Ren",
+    "title": "Old Line of the Pale Lake",
+    "description": "An old man with a long grey plait and the kind of stillness that takes decades to earn. His rod is bamboo; his line is grey horsehair; his hook is empty. A folded scroll, water-stained, sits in a clay tube at his hip — a sutra, or a fishing license, or both. He does not seem to fish so much as keep the lake company.",
+    "dialogue": [
+      "The lake gave me three fish this week. I threw back two. The third is in Weiyu's pot by now, I expect.",
+      "You stand as if you have been taught. Who taught you the root-stance? No one? Then sit. There is a thing the willow knows that the bamboo does not.",
+      "The revenant in the willow is not angry. She is only waiting. If you go in, be polite. If you must cut her, bow first."
+    ],
+    "teaches": ["willow_root_stance"],
+    "disposition": "friendly"
+  }
+]

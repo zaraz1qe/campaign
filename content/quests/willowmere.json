@@ -1,0 +1,83 @@
+[
+  {
+    "id": "wolves_at_shens_farm",
+    "name": "The Wolves at Shen's Farm",
+    "giver": "headman_lu_pingan",
+    "description": "Headman Lu Pingan asks you to walk the north lane and settle the matter at the Shen homestead. A grey pack has been taking the goats; the farm widow is down to her last four chickens. Kill the pack alpha — pale blaze down the chest — and the others will go back to the ridge. Return to Pingan when it is done.",
+    "steps": [
+      { "type": "visit",  "target": "shen_homestead" },
+      { "type": "defeat", "target": "grey_pack_alpha" },
+      { "type": "talk",   "target": "headman_lu_pingan" }
+    ],
+    "reward": {
+      "spirit_stones": 80,
+      "items": ["iron_cleaver", "minor_healing_pill"],
+      "xp": 35
+    },
+    "rep_change": { "azure_cloud_sect": 1 },
+    "grants_lore": ["why_willowmere_forgot_its_name"]
+  },
+  {
+    "id": "the_lost_songbird",
+    "name": "Little Yu's Songbird",
+    "giver": "little_yu",
+    "description": "Little Yu's songbird, Lady Moonbell, has escaped her bamboo cage and flown off into the wilds. Yu says she is green on the back and yellow on the belly, and sings the bamboo-song with the last note different. Find her — gently — and return her to the child.",
+    "steps": [
+      { "type": "collect", "target": "lady_moonbell", "count": 1 },
+      { "type": "talk",    "target": "little_yu" }
+    ],
+    "reward": {
+      "spirit_stones": 22,
+      "items": ["tea_mothers_warm_cup", "tea_mothers_warm_cup"],
+      "xp": 15
+    },
+    "grants_lore": ["the_tune_with_the_last_note_different"]
+  },
+  {
+    "id": "the_river_iron",
+    "name": "Three Ingots of River-Iron",
+    "giver": "blacksmith_ao",
+    "description": "Blacksmith Ao will forge a proper blade — but only if you bring him three ingots of river-iron. The carp spirits of Pale Lake guard the vein; Ao does not pretend otherwise. Three ingots, no less. Fewer and the steel runs weak.",
+    "steps": [
+      { "type": "collect", "target": "river_iron_ingot", "count": 3 },
+      { "type": "talk",    "target": "blacksmith_ao" }
+    ],
+    "reward": {
+      "spirit_stones": 50,
+      "items": ["aos_river_blade"],
+      "xp": 40
+    }
+  },
+  {
+    "id": "errand_of_the_drowned_willow",
+    "name": "Errand of the Drowned Willow",
+    "giver": "herbalist_mingzhu",
+    "description": "Herbalist Mingzhu needs a moonflower bud — the pale closed flowers that grow only at the roots of the drowned willow, west along the lake. The altar is haunted; the revenant is not angry, Mingzhu says, only waiting. Walk politely. Bow before you cut. Bring back one bud and she will distill three months' tonic from it.",
+    "steps": [
+      { "type": "visit",   "target": "drowned_willow_shrine" },
+      { "type": "collect", "target": "moonflower_bud", "count": 1 },
+      { "type": "talk",    "target": "herbalist_mingzhu" }
+    ],
+    "reward": {
+      "spirit_stones": 60,
+      "items": ["moonflower_tonic", "moonflower_tonic", "willowmere_cordial"],
+      "xp": 25
+    },
+    "grants_lore": ["the_drowning_of_the_willow"]
+  },
+  {
+    "id": "bottle_for_the_corner_table",
+    "name": "A Bottle for the Corner Table",
+    "giver": "drunken_rogue_kuo",
+    "description": "Old Kuo will not teach the Drunken Step sober, and he will not be sober while he is conscious. He has asked you to fetch him a jar of Weiyu's rice wine from the counter not three paces from his table. Some masters only teach when walked around.",
+    "steps": [
+      { "type": "collect", "target": "willowmere_rice_wine", "count": 1 },
+      { "type": "talk",    "target": "drunken_rogue_kuo" }
+    ],
+    "reward": {
+      "spirit_stones": 10,
+      "items": ["drunken_step_sash"],
+      "xp": 20
+    }
+  }
+]

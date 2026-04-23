@@ -37,7 +37,7 @@
       "There is no such thing as a clean cultivator, wanderer. There are only those who admit the stain and those who hide it. We wear ours.",
       "Pain is swift. Pain is a teacher who does not repeat himself. Come to us with honest wounds, and we will not waste them."
     ],
-    "teaches": ["blood_lotus_palm", "heart_rending_claw"],
+    "teaches": ["blood_lotus_palm", "heart_rending_claw", "crimson_hand_of_silence", "heart_boiling_technique"],
     "sells": ["blood_petal_mantle"],
     "gives_quest": "the_red_ledger",
     "faction": "scarlet_lotus_pavilion",

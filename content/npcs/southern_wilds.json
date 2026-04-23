@@ -10,10 +10,21 @@
       "If you ever face the Scarlet Lotus, remember: their fire feeds on your fear. Be empty, and you cannot burn.",
       "I carry only what I cannot set down. The staff — and these beads. If you need either more than I do, name a price."
     ],
-    "teaches": ["empty_palm"],
+    "teaches": ["empty_palm", "silent_bell_strike", "brass_bell_sutra"],
     "sells": ["bamboo_longstaff", "monks_wooden_beads"],
     "faction": "shaolin",
     "disposition": "friendly",
+    "rep_dialogue": {
+      "azure_cloud_sect": {
+        "3":  ["You walk under the crane. Baixu and I drank tea on the Broken Bridge — the year he was my age, and I was already old. Give him my regards if the chance offers. I owe him a bowl."]
+      },
+      "scarlet_lotus_pavilion": {
+        "2":  ["Red at your wrist, wanderer. The bell has nothing to say to it. Neither have I, until you ask — but until you ask, I will not refuse you tea."]
+      },
+      "five_poisons_sect": {
+        "2":  ["Sister of the Black Lattice. I have drunk with Shan in her hall; she poured it herself. Tell her the staff is still empty and the beads are still full."]
+      }
+    },
     "companion_reply": {
       "disciple_meilin": "The Azure Cloud walks with you. Good. A sword shared is a sword that will not be wielded for the wrong reason.",
       "venomhand_bai": "A sister of the Black Lattice. I have drunk tea with your matriarch; she poured it herself, which is a politeness I still owe her. If you pass that way, tell her.",
@@ -30,7 +41,7 @@
       "When the dantian is empty, fill it with breath. When it is full, fill it with stillness.",
       "I traded my sword for this kettle, and have never regretted the bargain."
     ],
-    "teaches": ["calming_breath"],
+    "teaches": ["calming_breath", "settling_stone_sit"],
     "gives_quest": "the_kettles_request",
     "disposition": "friendly"
   },
@@ -38,12 +49,23 @@
     "id": "raftsman_qiu",
     "name": "Raftsman Qiu",
     "title": "Ferryman of the River of Swords",
-    "description": "A leathery old man with arms like willow branches. He smells of wet rope and pipe-smoke.",
+    "description": "A leathery old man with arms like willow branches. He smells of wet rope and pipe-smoke. A long bamboo pole is worn smooth in three places where his hands have gripped it for forty years. On his raft, a small wooden box has nine small carvings of fish — one for every passenger he has lost.",
     "dialogue": [
       "Cross? Yes, yes. One spirit stone, or one good story. Stories are dearer.",
-      "Sometimes a sword shines from below. I do not look. Once you look, you must remember why."
+      "Sometimes a sword shines from below. I do not look. Once you look, you must remember why.",
+      "Two thousand, the histories say. Four thousand blades; two thousand corpses. Half my life above this river and I have never seen two. I have heard three hundred, once, in a bad storm.",
+      "I had a sword. Of course I had a sword. Every man of my village had a sword. I gave it to the river when I gave the river my son. We are at a balance now; I will not take up either again.",
+      "You want the fastest crossing, or the one where I tell you what the current is saying? Fast is fast; slow is instructive."
     ],
-    "disposition": "neutral"
+    "disposition": "neutral",
+    "rep_dialogue": {
+      "azure_cloud_sect": {
+        "3":  ["Crane-disciple. My daughter's eldest girl is in your outer courtyard. If you see her, tell her I am well, and the river is well, and she should eat more."]
+      },
+      "scarlet_lotus_pavilion": {
+        "2":  ["A red knot at your wrist. I will still pole you across — coin is coin — but you will pay double, and you will sit in the stern where the current can hear you."]
+      }
+    }
   },
   {
     "id": "pillmaster_lu",
@@ -89,18 +111,38 @@
       "A robe is not just cloth, cultivator — it is the first wall between your meridians and someone else's sword."
     ],
     "sells": ["traveler_robe", "hempspun_robe", "plain_iron_sword", "jade_qi_pendant"],
-    "disposition": "friendly"
+    "disposition": "friendly",
+    "rep_dialogue": {
+      "azure_cloud_sect": {
+        "2":  ["Sect-sister, sect-brother — I will not ask where you are going; I will only set the price as if you had told me. The discount is for the road."]
+      },
+      "scarlet_lotus_pavilion": {
+        "1":  ["A red sleeve at my stall. I will sell to you. The silk is the silk. But do not stand too long — the other customers read my smile the wrong way."]
+      },
+      "five_poisons_sect": {
+        "2":  ["Valley-sister. The green-dyed sash is on the back row today; I put it there so the wrong eyes would not buy it. Ask, and the price is fair."]
+      }
+    }
   },
   {
     "id": "gatekeeper_disciple_chen",
     "name": "Gatekeeper Chen",
     "title": "Outer Disciple of the Azure Cloud",
-    "description": "A young man in azure robes, holding a polished broom as if it were a sword.",
+    "description": "A young man in azure robes, holding a polished broom as if it were a sword. His sash is tied a little too tightly — he has been practising the knot alone. A small, perfectly-ironed crane is stitched above his heart; he presses it flat whenever a senior passes.",
     "dialogue": [
       "Welcome to the Azure Cloud, traveler. Mind the steps; they are slippery with cloud.",
-      "Elder Baixu sees few visitors, but he has been... expecting someone today."
+      "Elder Baixu sees few visitors, but he has been... expecting someone today.",
+      "Disciple-Sister Meilin is the one who beat me at the year-end trials. Three times, at that. I do not hold it against her. Only against myself, a little.",
+      "Six more weeks and I take my first trial again. Six more weeks. I am counting. I am supposed to not be counting. I am counting."
     ],
-    "disposition": "friendly"
+    "faction": "azure_cloud_sect",
+    "disposition": "friendly",
+    "rep_dialogue": {
+      "azure_cloud_sect": {
+        "2":  ["Senior. The courtyard sweeps itself today — go in, go in."],
+        "-2": ["Stop. The broom stays across the threshold until someone senior says otherwise. I am sorry; I did not choose the stripe on your name."]
+      }
+    }
   },
   {
     "id": "disciple_meilin",
@@ -112,7 +154,7 @@
       "Have you read the Sutra of Empty Sleeves? It is in the library. It explains a great deal — and almost nothing.",
       "The Elder names me inner disciple and junior sister. He does not name me soft. Remember that, should we ever cross blades."
     ],
-    "teaches": ["white_crane_sword"],
+    "teaches": ["white_crane_sword", "azure_cloud_sword_arc", "flashing_willow_leaf"],
     "faction": "azure_cloud_sect",
     "disposition": "friendly",
     "rep_dialogue": {
@@ -152,13 +194,22 @@
     "id": "librarian_zhao",
     "name": "Librarian Zhao",
     "title": "Keeper of the Azure Cloud Library",
-    "description": "A small, soft-voiced man whose spectacles never quite sit straight.",
+    "description": "A small, soft-voiced man whose spectacles never quite sit straight. Ink has stained his right thumb to the second knuckle; he does not seem to have noticed in several years. A catalogue-brush rests behind his ear in the manner of a younger man's wooden pin.",
     "dialogue": [
       "Quiet, please. The scrolls are sleeping.",
-      "Take this — a copy of the Sutra of Empty Sleeves. It found you; I am only the courier."
+      "Take this — a copy of the Sutra of Empty Sleeves. It found you; I am only the courier.",
+      "You may read anything on the open shelves. The locked shelves are closed for a reason I have not been told, by a committee I am not on. The committee, I believe, died in 1184.",
+      "If you are looking for a particular text — speak its name. The library hears better than I do, and has, on three occasions, found things for guests I was otherwise going to turn away."
     ],
     "gives_quest": "study_the_sutra",
-    "disposition": "friendly"
+    "disposition": "friendly",
+    "rep_dialogue": {
+      "azure_cloud_sect": {
+        "3":  ["The catalogue has begun to list your visits, brother-wanderer. I am not the one who decides such things; the catalogue is older than I am.",
+               "The west reading-room is empty in the afternoons, if you would like solitude. I will leave a kettle."],
+        "-2": ["I cannot refuse you the open shelves — the charter is old and does not know your name. The locked shelves have been consulted. They know it now."]
+      }
+    }
   },
   {
     "id": "forge_master_bo",
@@ -169,8 +220,10 @@
       "Ha. A cultivator who brings their own teeth, claws and stones — my favourite kind.",
       "A blade is half the smith's fire and half the owner's grief. Bring me the materials; I will answer for the fire.",
       "Sect-forged is not the same as sect-blessed. What I make for you will never speak to the Elder, but it will not break against him either.",
-      "Coin is coin. Spirit stones are coin. Fang of a gale tiger is — sit down. We have much to discuss."
+      "Coin is coin. Spirit stones are coin. Fang of a gale tiger is — sit down. We have much to discuss.",
+      "Stance before strike. A sword that finds its target has first made the hip honest. I will show the shrug and the root for free, if you are patient with an old man's hands."
     ],
+    "teaches": ["iron_ox_shrug", "mountain_root_stance"],
     "faction": "azure_cloud_sect",
     "disposition": "friendly"
   },
@@ -185,7 +238,7 @@
       "Climb the peak only when you are sure of your foundation, child. The mountain has a memory of those who stumbled.",
       "When your foundation is set, come speak of a blade. A sword without a master is only metal that remembers grief."
     ],
-    "teaches": ["azure_cloud_palm", "cloud_step"],
+    "teaches": ["azure_cloud_palm", "cloud_step", "crane_wing_parry", "nine_cloud_cranes_flight"],
     "sells": ["azure_cloud_sword", "cloud_silk_robe", "azure_guardian_talisman"],
     "gives_quest": "the_missing_disciple",
     "faction": "azure_cloud_sect",

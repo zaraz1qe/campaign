@@ -1,0 +1,141 @@
+[
+  {
+    "id": "iron_cleaver",
+    "name": "Iron Cleaver",
+    "type": "weapon",
+    "slot": "weapon",
+    "atk_bonus": 3,
+    "description": "A broad, short, brutally honest blade. Half chopper, half sword, forged at a village smithy for people who cannot afford the luxury of specialising. It cuts through rope, wood, bandit, and hope in roughly that order of difficulty.",
+    "value": 28,
+    "tags": ["weapon", "village"]
+  },
+  {
+    "id": "willowmere_farmers_hat",
+    "name": "Willowmere Wide-Brim Hat",
+    "type": "accessory",
+    "slot": "accessory",
+    "def_bonus": 1,
+    "hp_bonus": 4,
+    "description": "A conical straw hat lined on the inside with thin oiled leather. Sheds rain, hides eyes, costs little. Every farmer on the lake owns one; Blacksmith Ao stitches a piece of iron rim into those he sells, in case you meet a stick.",
+    "value": 18,
+    "tags": ["accessory", "village"]
+  },
+  {
+    "id": "willowmere_cordial",
+    "name": "Willowmere Cordial",
+    "type": "pill",
+    "description": "A small clay vial of red-brown liquor, fragrant with ginger and something floral Mingzhu will not name. A village-tier remedy: not strong enough for a sect battle, enough for a village scrape. Tastes of home to one in three drinkers; tastes of grandmothers to the rest.",
+    "effect": "hp_heal",
+    "power": 12,
+    "value": 14,
+    "tags": ["consumable", "village"]
+  },
+  {
+    "id": "moonflower_tonic",
+    "name": "Moonflower Tonic",
+    "type": "pill",
+    "description": "A pale silvery draught distilled from the drowned willow's moonflowers. Mingzhu will sell it but only under her breath, glancing at the door.",
+    "effect": "qi_gain",
+    "power": 18,
+    "value": 30,
+    "tags": ["consumable", "village", "rare"]
+  },
+  {
+    "id": "tea_mothers_warm_cup",
+    "name": "Tea-Mother's Warm Cup",
+    "type": "pill",
+    "description": "A stoppered earthen cup wrapped in a strip of red cloth. Steam comes out when you open it, regardless of how long it has been in your sleeve. Weiyu will neither confirm nor deny how this is done.",
+    "effect": "hp_heal",
+    "power": 8,
+    "value": 6,
+    "tags": ["consumable", "village"]
+  },
+  {
+    "id": "willowmere_rice_wine",
+    "name": "Willowmere Rice Wine",
+    "type": "pill",
+    "description": "A small flat jug of home-distilled rice wine. Warm, sweet, deceptive. Weiyu will sell you one without a word if you do not say who it is for.",
+    "effect": "qi_gain",
+    "power": 6,
+    "value": 10,
+    "tags": ["consumable", "village", "quest"]
+  },
+  {
+    "id": "drunken_step_sash",
+    "name": "Drunken Step Sash",
+    "type": "accessory",
+    "slot": "accessory",
+    "spd_bonus": 2,
+    "hp_bonus": 4,
+    "description": "A red silk sash, half faded, with a brass coin sewn into either end. Old Kuo's — he ties one end to the other and gives it to you when he has remembered. 'The stagger is the mask,' he says. The stagger is in the weighted ends, which make you lean where you did not intend.",
+    "value": 40,
+    "tags": ["accessory", "village", "rare"]
+  },
+  {
+    "id": "aos_river_blade",
+    "name": "Ao's River Blade",
+    "type": "weapon",
+    "slot": "weapon",
+    "atk_bonus": 5,
+    "hp_bonus": 4,
+    "description": "A wide-bodied straight sword of dark river-iron, forged cold and never hot. The spine carries three hammered notches — one for each ingot that went into the steel. Blacksmith Ao names no weapon, so this one carries his. The edge is blunt until you draw it with intent; then the blade agrees.",
+    "value": 180,
+    "tags": ["weapon", "village", "spirit", "quest_reward"]
+  },
+  {
+    "id": "grey_wolf_pelt",
+    "name": "Grey Wolf Pelt",
+    "type": "material",
+    "description": "A coarse grey pelt, tightly furred at the shoulders. Not the same grade as a frost-pelt, but warm and common and always in demand in a village.",
+    "value": 10,
+    "tags": ["material", "village"]
+  },
+  {
+    "id": "alpha_wolf_heart",
+    "name": "Alpha Wolf Heart",
+    "type": "material",
+    "description": "A great dark heart, wrapped in clean rushes. Herbalists believe an alpha's heart strengthens the courage of whoever next eats from the same cook-fire. Farmers believe it means the pack will not return this year.",
+    "value": 40,
+    "tags": ["material", "village", "rare"]
+  },
+  {
+    "id": "pale_carp_scale",
+    "name": "Pale Carp Scale",
+    "type": "material",
+    "description": "A single scale the size of a coin, faintly luminous in shadow. It weighs more than it should. The old fishermen on the lake keep one in their purse — for what reason they will not say, and do not themselves know.",
+    "value": 12,
+    "tags": ["material", "village"]
+  },
+  {
+    "id": "river_iron_ingot",
+    "name": "River-Iron Ingot",
+    "type": "material",
+    "description": "A fist-sized bar of dense grey metal, cool to the touch even in summer. Smiths call it 'drowned iron' because the only known vein runs beneath a lake, and those who mine it rarely come back up twice. Ao accepts it at three ingots per blade.",
+    "value": 60,
+    "tags": ["material", "village", "rare"]
+  },
+  {
+    "id": "drowned_silk_scrap",
+    "name": "Drowned Silk Scrap",
+    "type": "material",
+    "description": "A scrap of pale grey silk, wet to the touch no matter how long it sits in the sun. Whoever owned this wore it long enough that the cloth remembers her weight, her shape, and very faintly her song.",
+    "value": 16,
+    "tags": ["material", "village", "ghost"]
+  },
+  {
+    "id": "moonflower_bud",
+    "name": "Moonflower Bud",
+    "type": "material",
+    "description": "A small closed flower-bud the colour of diluted milk, growing only at the roots of the drowned willow. Opens once a month, on the full moon; closed at all other times. Mingzhu is the only person in three villages who knows how to distill it without poisoning both cup and drinker.",
+    "value": 22,
+    "tags": ["material", "village", "rare"]
+  },
+  {
+    "id": "lady_moonbell",
+    "name": "Lady Moonbell",
+    "type": "treasure",
+    "description": "A small songbird, green on the back and yellow on the belly. She cocks her head at you and sings the bamboo-song with the last note different. If you hold her gently she will not fly. She has a name because a child gave her one.",
+    "value": 0,
+    "tags": ["quest", "village"]
+  }
+]

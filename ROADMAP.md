@@ -8,28 +8,36 @@ A living checklist for what's been done and what to add next.
 ## Current Content Inventory
 (Auto-countable — run `python3 -c "from game import loader; print(loader.stats(loader.load_all()))"`.)
 
-- **Locations**: Verdant Bamboo Sea, Old Hermit's Hut, River of Swords,
-  Merchant's Crossing, Bandit Road, Azure Cloud Foothills, Outer Gate,
-  Inner Courtyard, Library, Elder Baixu's Pavilion, Azure Cloud Forge,
-  Thousand Venom Valley Mouth, Venom Gorge, Hall of Five Poisons,
-  Poisoner's Garden, Cloudroot Pass, Hanging Terraces of Jadestep,
-  Thunderhead Ridge, Skyweaver's Cloister, Cragspine Shrine, Spirit-Gale
-  Plateau, Crimson Creek, Scarlet Lotus Hidden Shrine (23 total)
-- **Regions**: Southern Wilds, Azure Cloud Range, Thousand Venom Valley,
-  Sky-Spire Reach, Scarlet Lotus Reach
+- **Locations**: 29 total. Southern Wilds (9: Verdant Bamboo Sea, Old
+  Hermit's Hut, River of Swords, Merchant's Crossing, Bandit Road, and
+  the new Willowmere hub — Village Square, Willow-and-Moon Teahouse,
+  Willowmere Smithy, Shen Homestead, Pale Lake Shore, Drowned Willow
+  Shrine), Azure Cloud Range (5: Foothills, Outer Gate, Inner Courtyard,
+  Library, Elder's Pavilion, Forge), Thousand Venom Valley (4), Sky-Spire
+  Reach (6), Scarlet Lotus Reach (2).
+- **Regions**: Southern Wilds (now properly populated with a village
+  hub — session 12), Azure Cloud Range, Thousand Venom Valley, Sky-Spire
+  Reach, Scarlet Lotus Reach
 - **Sects**: Azure Cloud Sect (righteous), Scarlet Lotus Pavilion (demonic
   — now with HQ, elders, NPCs, techniques), Five Poisons Sect (neutral/grey),
   Jadestep Sect Remnant (dead-but-haunted)
 - **Companions** (3): Disciple Meilin (Azure Cloud), Venom-Handler Bai
   (Five Poisons), Blood-Sworn Jin (Scarlet Lotus). Affinity/bond system
   active across all three.
-- **Items**: 55 (equipment, pills, materials, treasures)
+- **Items**: 70 (equipment, pills, materials, treasures)
 - **Recipes**: 15 (Forge-Master Bo: 6, Pillmaster Lu: 4, Apothecary Qi: 5)
-- **Quests**: 9 (Kettle's Request, Study Sutra, Missing Disciple, Envoy's
+- **Quests**: 14 (Kettle's Request, Study Sutra, Missing Disciple, Envoy's
   Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace, Red Path,
-  **Red Ledger** — the first multi-quest arc)
-- **Lore**: 20 (earnable via boss defeats, quest rewards, and high-rep
-  NPC trust — see Chronicler's Eye, session 11)
+  Red Ledger — first multi-quest arc — and the five **Willowmere**
+  starters: Wolves at Shen's Farm, Little Yu's Songbird, Three Ingots of
+  River-Iron, Errand of the Drowned Willow, A Bottle for the Corner Table)
+- **Techniques**: 43 total, **35 learnable** across all tiers. Every
+  combat effect (poison/bleed/stun/heal/buff_def/buff_atk) has ≥3
+  learnable options. Mortal 9 / Qi-Condensation 15 / Foundation 11.
+- **Events**: 33 (ambient + qi-grant + lore-grant; every location has
+  at least one after the session-12 depth pass)
+- **Lore**: 24 (earnable via boss defeats, quest rewards, high-rep NPC
+  trust, and village story — Willowmere adds 4)
 - **Realms**: 8 (Mortal → Ascendant Immortal)
 
 ## How to Add Content (the path of least resistance)
@@ -44,6 +52,7 @@ A living checklist for what's been done and what to add next.
 ## Next Up — Big Buckets
 
 ### 1. New Regions to Build (each = ~6–10 locations)
+- [x] **Willowmere** — mortal-tier village hub west of Verdant Bamboo (s12)
 - [ ] **Northern Frost Plains** — Frostfang Tribe, ice-cultivators, mammoth beasts
 - [ ] **Eastern Sea of Cloud** — pirate sects, sword-sailors, sea-dragon
 - [ ] **Western Demon Wastes** — heretical cultivators, blood-cultivation
@@ -87,12 +96,20 @@ A living checklist for what's been done and what to add next.
 - [ ] Ancient: Awakened Stone Beast, Heart-Devouring Vine, Sky Crane
 - [ ] Boss: Sect Patriarch tier (named, unique drops)
 
-### 5. Techniques (target: 50+ total)
+### 5. Techniques (target: 50+ total; now at 43, with 35 learnable)
+- [x] **Session 12 deepening pass** — 15 new learnable techniques: 4 mortal,
+      6 qi-condensation, 5 foundation. Closed the buff_atk gap (was zero,
+      now four — iron_ox_shrug, azure_cloud_sword_arc, nine_cloud_cranes_flight,
+      stormwarden_mantle). Tripled bleed options. Every effect (poison/bleed/
+      stun/heal/buff_def/buff_atk) has ≥3 learnable techniques now.
 - [ ] Saber arts (Blood Moon, Crimson Tide)
 - [ ] Spear arts (Iron Buddha, Heavenly Sword)
-- [ ] Body cultivation arts (Vajra Body, Mountain-Bearing Stance)
+- [~] Body cultivation arts (iron_ox_shrug, mountain_root_stance shipped;
+      Vajra / Mountain-Bearing remain open)
 - [ ] Mental / illusion arts (Phantom Shadow)
-- [ ] Healing arts (Frozen Mirror, Iron Buddha)
+- [~] Healing arts (calming_breath, settling_stone_sit, blood_lotus_palm,
+      heart_boiling_technique, brass_bell_sutra — five options now spanning
+      mortal → foundation; Frozen Mirror / Iron Buddha remain open)
 - [ ] Forbidden arts that hurt the player to use (high risk/reward)
 
 ### 6. Items / Pills / Treasures
@@ -165,6 +182,99 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-23 (session 12)** — "The Willow at the Gate" **+ technique
+  deepening pass**. Two things in one session, both pulling on the same
+  thread: *stop being a puddle in the early game*. First, the starter
+  hub the game had never had — **Willowmere** — a village west of
+  Verdant Bamboo Sea. Second, a combat-roster deepening pass: **15 new
+  learnable techniques** filling the gaps an audit exposed (zero buff_atk
+  techniques prior to this session; one bleed; thin mortal tier).
+
+  **Technique deepening.** New `content/techniques/depth.json` ships 15
+  techniques across all three playable realms. Mortal tier (4): Silent
+  Bell Strike (Huilin, 0 qi pure strike), Settling-Stone Sit (Yun, cheap
+  self-heal meditation), Viper-Sting Jab (Wuwei, the mortal-tier Five
+  Poisons intro), Iron-Ox Shrug (Bo, the first buff_atk in the game).
+  Qi Condensation (6): Azure Cloud Sword-Arc (Meilin, buff_atk sword),
+  Crane-Wing Parry (Baixu, defensive sword), Flashing Willow-Leaf
+  (Meilin, bleed sword that Baixu disapproves of), Black-Lattice Palm
+  (Apothecary Qi, poisonless-but-bleeds palm), Mountain-Root Stance
+  (Bo, heavy buff_def), Crimson Hand of Silence (Red Feather, stun
+  palm). Foundation (5): Nine-Cloud Cranes' Flight (Baixu, ACS-4
+  sword capstone with buff_atk 3), Five-Venoms Brocade Palm (Shan,
+  FPS-4 poison capstone at power 7), Heart-Boiling Technique (Red
+  Feather, SL-3 foundation-tier life-steal), Stormwarden's Mantle
+  (Gao, ACS-3 pure buff_atk 3), Brass-Bell Sutra (Huilin, monastic
+  high-tier heal). Roster goes from 20 → 35 learnable (75% increase).
+  Every combat effect now has ≥3 learnable options. buff_atk went from
+  0 → 4. Mortal tier went from 5 → 9. Foundation tier from 6 → 11.
+  New smoke test `tools/smoke_techniques.py` — 7 scenarios covering
+  loads, teacher wiring, ungated mortal learns, rep-gate refusal,
+  realm-gate refusal, palette coverage, and per-tier buff_atk
+  availability. All green.
+
+  **NPC dialogue depth.** Expanded thin dialogue on four characters
+  (Gatekeeper Chen — now with nerves, a crane stitched above his
+  heart, and rep_dialogue for both directions; Librarian Zhao — a
+  west reading-room, a committee from 1184, the locked shelves that
+  check names; Raftsman Qiu — his son, the lost sword, the box with
+  nine carved fish, rep_dialogue for ACS and SL; Cloth Merchant Mei
+  — rep_dialogue across three sects for three different kinds of
+  quiet handling). Added rep_dialogue to Wandering Monk Huilin for
+  Azure / Scarlet / Five Poisons — the monk finally reacts to the
+  player's sect standing. Expanded Forge-Master Bo and Gatekeeper
+  Wuwei with extra dialogue lines to match their new teaching roles.
+
+  **Event depth.** `content/events/depth.json` ships 9 new ambient
+  events filling locations that had zero: Old Hermit's Hut (the
+  kettle watches the water), Azure Cloud Outer Gate (the courtesy
+  bell tolls), Azure Cloud Inner Courtyard (eight basic cuts
+  drilling), Azure Cloud Forge (sparks write and un-write), Elder
+  Baixu's Pavilion (wind-chimes change key), Hall of Five Poisons
+  (incense shifts colour; a scorpion walks), Skyweaver's Cloister
+  (the tenth scar hums), Spirit-Gale Plateau (four yellow eyes open
+  and close), Willowmere Smithy (Ao's three-quick-one-slow forge-
+  prayer). Every location in the game now has ≥1 event.
+
+  **Willowmere (the starter hub).** A new village — Willowmere
+  — hangs west of Verdant Bamboo Sea as six locations (Village Square,
+  Willow-and-Moon Teahouse, Willowmere Smithy, Shen Homestead, Pale Lake
+  Shore, Drowned Willow Shrine). Eight new NPCs (Headman Lu Pingan — an
+  azure disciple who failed breakthrough and stayed; Herbalist Mingzhu;
+  Little Yu with her escaped songbird; Tea-Mother Weiyu of the ledger in
+  two colours of ink; Old Kuo the half-drunk in the corner, one-time
+  master of Drunken Step; Blacksmith Ao and the river-iron trade; Farmer
+  Shen Daiyu and her broom with the nail crosswise; Fisher Ren, who
+  teaches the willow-root stance and will not quite fish). Five mortal-
+  tier quests tuned for the earliest realms: The Wolves at Shen's Farm
+  (auto-accepted from Pingan; clear the pack, slay the alpha with the
+  pale blaze, return; +1 ACS rep, iron cleaver reward); Little Yu's
+  Songbird (fetch Lady Moonbell from the hermit's hut — she escaped
+  toward the kettle); Three Ingots of River-Iron (harvest from the carp
+  spirits of Pale Lake, return to Ao for the River Blade reward); Errand
+  of the Drowned Willow (moonflower bud at the shrine — bow before
+  cutting); A Bottle for the Corner Table (teach-gate: Kuo won't remember
+  Drunken Step sober, the rice wine is on the counter three paces away;
+  reward: Drunken Step Sash). Four mortal-tier enemies: grey_forest_wolf,
+  grey_pack_alpha (Qi-Condensation boss), pale_lake_carp_spirit,
+  drowned_willow_revenant. Three new techniques, all learnable by mortal-
+  tier players: Drunken Step (stun 1), Willow-Root Stance (buff_def 2),
+  Farmhand's Cleave (honest damage). Fifteen new items: iron cleaver, wide-
+  brim hat, Willowmere cordial (village-tier heal), moonflower tonic,
+  tea-mother's warm cup (cheap heal), rice wine, drunken step sash, Ao's
+  River Blade (quest-reward weapon), four materials (grey wolf pelt, alpha
+  heart, carp scale, river-iron ingot, drowned silk scrap), moonflower
+  bud, and Lady Moonbell herself. Four lore entries: Why Willowmere
+  Forgot Its Name, The Drowning of the Willow, The Tune with the Last
+  Note Different, Tea-Mother Weiyu's Ledger. Eight events — cricket song
+  at dusk, laundry-gossip at the well, teahouse rumour of a thrice-
+  rejected disciple, Kuo ringing his empty cup (+qi), the three-howl
+  count on the ridge, the lake surface shivering, a moon-face in the
+  water, the willow remembering (lore grant). Region is connected west
+  from Verdant Bamboo Sea; Lady Moonbell is placed on the ground at
+  Old Hermit's Hut. Validator + 8-scenario smoke test
+  (tools/smoke_willowmere.py) all green. Save-compat preserved — zero
+  new Player fields.
 - **2026-04-23 (session 11)** — "The Chronicler's Eye." Lore finally
   became an earned reward, not just library flavor. Three new data-
   driven grant channels: `enemy.on_defeat_lore` (victory-paid), 

@@ -1,0 +1,61 @@
+[
+  {
+    "id": "grey_forest_wolf",
+    "name": "Grey Forest Wolf",
+    "description": "A rangy wolf of the southern ridges, coat the colour of wet granite. It runs on three legs half the time, favouring a forepaw it took a chicken-hatchet to somewhere in its past. Its breath is hot and smells of goat.",
+    "realm": "mortal",
+    "hp": 22, "atk": 6, "def": 1, "spd": 7,
+    "techniques": [],
+    "drops": [
+      { "item": "grey_wolf_pelt", "chance": 0.6 },
+      { "item": "wolf_fang", "chance": 0.25 }
+    ],
+    "xp": 14,
+    "tags": ["beast", "village"]
+  },
+  {
+    "id": "grey_pack_alpha",
+    "name": "Grey Pack Alpha",
+    "description": "A great wolf a head taller than the others, with a pale blaze down its chest like a priest's stole. It does not waste a breath on snarling. It watches the Shen gate the way a patient man watches a wound. The fur around its neck is thick with old scars where smaller wolves have tried to take the pack from it.",
+    "realm": "qi_condensation",
+    "hp": 62, "atk": 9, "def": 3, "spd": 8,
+    "techniques": ["icy_bite"],
+    "drops": [
+      { "item": "grey_wolf_pelt", "chance": 1.0 },
+      { "item": "alpha_wolf_heart", "chance": 1.0 },
+      { "item": "spirit_stone_pouch", "chance": 0.4 }
+    ],
+    "xp": 45,
+    "tags": ["beast", "village", "boss"]
+  },
+  {
+    "id": "pale_lake_carp_spirit",
+    "name": "Pale Lake Carp Spirit",
+    "description": "A carp the length of a tall man, its scales the colour of old mirror-silver. It is not truly attacking when it rises — it is only reminding the shore of its manners. Still, the tail is heavy, and the water it flings off itself is cold enough to hurt.",
+    "realm": "mortal",
+    "hp": 30, "atk": 5, "def": 3, "spd": 5,
+    "techniques": [],
+    "drops": [
+      { "item": "pale_carp_scale", "chance": 0.75 },
+      { "item": "river_iron_ingot", "chance": 0.45 }
+    ],
+    "xp": 18,
+    "tags": ["beast", "water", "village"]
+  },
+  {
+    "id": "drowned_willow_revenant",
+    "name": "Drowned Willow Revenant",
+    "description": "A woman, or the memory of one, in a wet grey shift. Her hair is long and heavy with lake-water and hides her face. She does not move toward you so much as arrive next to you in the interval between one blink and the next. She is not angry. She is patient. That is worse.",
+    "realm": "qi_condensation",
+    "hp": 50, "atk": 8, "def": 2, "spd": 9,
+    "techniques": ["icy_bite"],
+    "drops": [
+      { "item": "drowned_silk_scrap", "chance": 0.8 },
+      { "item": "moonflower_bud", "chance": 0.4 },
+      { "item": "spirit_stone_pouch", "chance": 0.3 }
+    ],
+    "xp": 35,
+    "on_defeat_lore": ["the_drowning_of_the_willow"],
+    "tags": ["spirit", "undead", "village"]
+  }
+]

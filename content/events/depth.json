@@ -1,0 +1,65 @@
+[
+  {
+    "id": "hermit_kettle_whistles",
+    "location": "old_hermits_hut",
+    "chance": 0.3,
+    "text": "The kettle on the cold fire whistles suddenly, clean and clear, the way a kettle only whistles when the water is being watched. Old Yun does not look up. A moment later the whistle softens into silence again, and the tea in your cup is hotter than it was.",
+    "effect": { "qi": 3 }
+  },
+  {
+    "id": "azure_outer_bell_tolls",
+    "location": "azure_cloud_outer_gate",
+    "chance": 0.2,
+    "text": "A bronze bell up in the sect tolls once — not the hour bell, which is larger, and not the warning bell, which is smaller, but the courtesy bell, the one rung when a visitor of unknown rank crosses the threshold. A disciple looks up from his broom, marks your face, and does not quite bow.",
+    "effect": {}
+  },
+  {
+    "id": "azure_courtyard_sword_drills",
+    "location": "azure_cloud_inner_courtyard",
+    "chance": 0.3,
+    "text": "At the far end of the courtyard a class of inner disciples is working through the Eight Basic Cuts. Their instructor corrects one of them — not sharply — and the line of twelve blades all straighten at once, as if remembering together. The qi in the air tightens a quarter-turn; your dantian answers.",
+    "effect": { "qi": 3 }
+  },
+  {
+    "id": "forge_sparks_speak",
+    "location": "azure_cloud_forge",
+    "chance": 0.35,
+    "text": "A shower of sparks leaps from Bo's hammer and, for a breath, hangs in the air in a pattern like writing before breaking up into orange dust. Bo grunts. 'The iron was arguing. I have told it who is the smith. Again.' He resumes the rhythm.",
+    "effect": {}
+  },
+  {
+    "id": "baixu_wind_chimes_sing",
+    "location": "elder_baixus_pavilion",
+    "chance": 0.25,
+    "text": "The wind-chimes on Baixu's eaves change key, all at once, to a minor scale that feels older than the sect. The old man's eyes stay closed; the chimes hold the key for four breaths, then relent. Something in your meridians has been shown a door it did not know was there.",
+    "effect": { "qi": 6 }
+  },
+  {
+    "id": "hall_of_poisons_incense",
+    "location": "five_poisons_hall",
+    "chance": 0.3,
+    "text": "The grey incense in the hall's three bronze censers shifts, as if a door has been opened somewhere you cannot see. The smoke is briefly greener than it was, and then is grey again. A small scorpion walks along the lip of the furthest censer without hurry.",
+    "effect": {}
+  },
+  {
+    "id": "skyweaver_wall_scar_hums",
+    "location": "skyweavers_cloister",
+    "chance": 0.3,
+    "text": "The tenth scar on the Skyweaver's wall — the half-finished one — hums, faintly, the way a struck bronze bell hums a long minute after the striker has gone. The Old Dog raises an eyebrow without looking. 'It remembers you,' he says, 'or it has mistaken you for someone it remembers. Either way, do not lean on it.'",
+    "effect": { "qi": 4 }
+  },
+  {
+    "id": "spirit_gale_four_eyes_open",
+    "location": "spirit_gale_plateau",
+    "chance": 0.35,
+    "text": "The wind dies for a heartbeat. In the middle of the plateau, four yellow eyes open, regard you, and close. The wind resumes. If the tiger is here, it has decided you are here too — and it is not yet ready.",
+    "effect": {}
+  },
+  {
+    "id": "smithy_hammer_rhythm",
+    "location": "willowmere_smithy",
+    "chance": 0.25,
+    "text": "Ao's hammer changes rhythm — three quick, one slow, three quick — and the forge's heat banks for a breath. You realise, without being told, that you have just watched a forge-prayer. Ao glances at you; if he sees that you saw, he does not say so.",
+    "effect": { "qi": 2 }
+  }
+]

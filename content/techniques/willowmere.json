@@ -1,0 +1,40 @@
+[
+  {
+    "id": "drunken_step",
+    "name": "Drunken Step",
+    "type": "body",
+    "rank": "mortal",
+    "description": "The footwork art Old Kuo will not admit is an art. The stagger is the mask; a straight line hides inside the stagger, and a swordsman looking for a sober opponent will find himself cutting at the place the drunk appeared to be. One short step, one sharp strike, and the body does not quite end up where it began.",
+    "qi_cost": 4,
+    "damage": 8,
+    "effect": "stun",
+    "effect_power": 1,
+    "requires_realm": "mortal",
+    "learn_cost": 30
+  },
+  {
+    "id": "willow_root_stance",
+    "name": "Willow-Root Stance",
+    "type": "body",
+    "rank": "mortal",
+    "description": "A rooted stance taken from the willow that lives with its feet in water and does not fall. The practitioner lowers the hips, softens the shoulders, and allows the coming blow to meet bent wood rather than brittle. Raises defence for a turn without striking.",
+    "qi_cost": 3,
+    "damage": 0,
+    "effect": "buff_def",
+    "effect_power": 2,
+    "requires_realm": "mortal",
+    "learn_cost": 25
+  },
+  {
+    "id": "farmhands_cleave",
+    "name": "Farmhand's Cleave",
+    "type": "martial",
+    "rank": "mortal",
+    "description": "An honest downward blow, from the shoulder, with the weight of the hip. It was not taught in any sect. It was taught, in Willowmere, to every child who ever had to split firewood. In a pinch it splits other things.",
+    "qi_cost": 2,
+    "damage": 9,
+    "effect": null,
+    "requires_realm": "mortal",
+    "learn_cost": 15
+  }
+]

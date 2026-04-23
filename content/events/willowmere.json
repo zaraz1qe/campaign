@@ -1,0 +1,58 @@
+[
+  {
+    "id": "willowmere_cricket_song",
+    "location": "willowmere_village_square",
+    "chance": 0.25,
+    "text": "A cricket starts up from somewhere under the willow, and the evening seems to arrive a little earlier for it. A woman on a porch calls her son in for supper; he does not come. She does not call again.",
+    "effect": {}
+  },
+  {
+    "id": "willowmere_laundry_gossip",
+    "location": "willowmere_village_square",
+    "chance": 0.25,
+    "text": "Two aunties at the well are speaking too loudly to be gossiping. '…and then she told the Headman she would take the broom to him herself.' They catch sight of you and lower their voices. A moment later a half-copper drops from one of their baskets, rolls, and comes to rest at your foot.",
+    "effect": { "spirit_stones": 2 }
+  },
+  {
+    "id": "teahouse_gossip_drifts",
+    "location": "willow_and_moon_teahouse",
+    "chance": 0.3,
+    "text": "At the table nearest the brazier, a pedlar is saying, quietly: '…and the Azure Cloud turned him away at the gate. That was the *second* time. A man cannot be turned away three times and remain, you understand?' His companion nods, stares at his cup, says nothing.",
+    "effect": {}
+  },
+  {
+    "id": "kuos_cup_rings",
+    "location": "willow_and_moon_teahouse",
+    "chance": 0.2,
+    "text": "Old Kuo lifts his cup without opening his eyes, studies the empty inside of it for a long moment, and rings the rim once with his fingernail. The note hangs, then fades. 'Still empty,' he says, to no one. 'The cup and the man both.'",
+    "effect": { "qi": 2 }
+  },
+  {
+    "id": "wolf_howl_from_the_ridge",
+    "location": "shen_homestead",
+    "chance": 0.4,
+    "text": "A long, thin howl slides down the ridge — answered almost at once, from the west, by a deeper one. Then a third, very close. Shen Daiyu's voice comes sharp from the house: 'Do not stand in the yard. That was a count. They do it before they come down.'",
+    "effect": {}
+  },
+  {
+    "id": "lake_surface_shivers",
+    "location": "pale_lake_shore",
+    "chance": 0.3,
+    "text": "The lake surface shivers, once, though no wind has touched it. Your qi, for a heartbeat, does the same. When you breathe out, your dantian is a little more full than it was.",
+    "effect": { "qi": 4 }
+  },
+  {
+    "id": "moon_face_in_the_water",
+    "location": "drowned_willow_shrine",
+    "chance": 0.3,
+    "text": "In the water at the willow's feet, a woman's face looks up at you — not at the surface, at you, through the surface. Her expression is neither hostile nor welcoming; it is the patient expression of someone who has been waiting. Then the water ripples and she is only a trick of moonlight on weed. Your spine knows she wasn't.",
+    "effect": { "qi": 6 }
+  },
+  {
+    "id": "the_willow_remembers",
+    "location": "drowned_willow_shrine",
+    "chance": 0.35,
+    "text": "The willow leaves rustle once — a long, deliberate rustle that isn't quite wind — and for an instant you understand a sentence in a language you do not know: *this was her favourite bank.* The meaning holds for a breath and then is gone, and only the leaves are left.",
+    "effect": { "lore": "the_drowning_of_the_willow" }
+  }
+]

@@ -10,7 +10,7 @@
       "Before I open the pass, bring me proof that you have not come here only to die. A storm-crow's feather, say. Survive the ridge, and we will speak of the peak.",
       "The Sky-Spire is not a mountain you climb. It is a mountain that climbs you. Forget this, and every step is your last."
     ],
-    "teaches": ["ironbark_stance"],
+    "teaches": ["ironbark_stance", "stormwarden_mantle"],
     "sells": ["thundergold_pill", "storm_warded_talisman"],
     "gives_quest": "the_stormwardens_test",
     "faction": "azure_cloud_sect",

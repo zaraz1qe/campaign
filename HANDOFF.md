@@ -124,6 +124,251 @@ validated, committed.
 
 # Session log
 
+## Session 12 — 2026-04-23 — "The Willow at the Gate" + Technique Deepening
+
+### What I built
+- **Two things this session**, both in service of the same complaint:
+  the game was a puddle in the early and mid game. First a proper
+  starter village (Willowmere — 6 locations, 8 NPCs, 5 quests).
+  Then a combat-roster deepening pass: 15 new learnable techniques,
+  filling an audit-exposed palette gap (zero buff_atk techniques
+  existed before this session; only one bleed).
+- **Willowmere**, a village hanging west of Verdant Bamboo Sea —
+  the game's first real mortal-tier hub.
+  - Six locations: Village Square, Willow-and-Moon Teahouse,
+    Willowmere Smithy, Shen Homestead, Pale Lake Shore, Drowned
+    Willow Shrine. Connected via a new `west` exit on
+    verdant_bamboo_sea.
+  - Eight NPCs, each with a voice: Headman Lu Pingan (a failed
+    Azure disciple, wears a patched azure robe, gives the wolves
+    quest, teaches farmhands_cleave), Herbalist Mingzhu (sells
+    pills, gives the moonflower errand, her son sleeps under the
+    counter), Little Yu (the child whose songbird escaped),
+    Tea-Mother Weiyu (keeper of the ledger in two colours — red
+    ink when a customer dies), Old Kuo (half-drunk, one-time
+    sword-master of the Drunken Step, will not teach sober —
+    hence the bottle quest), Blacksmith Ao (the sword in the
+    stone is his father's; he will not finish it and will not
+    put it away; gives the river-iron quest, teaches iron_ox_shrug
+    + mountain_root_stance), Farmer Shen Daiyu (a widow with a
+    broom whose handle has a nail crosswise), Fisher Ren (quiet
+    lakeside teacher, teaches willow_root_stance).
+  - Five mortal-tier quests: **Wolves at Shen's Farm** (kill the
+    alpha with the pale blaze — grants +1 ACS, iron cleaver, lore);
+    **Little Yu's Songbird** (Lady Moonbell was placed at Old
+    Hermit's Hut — she escaped toward the kettle); **Three
+    Ingots of River-Iron** (carp spirits drop them; three make a
+    blade; reward: Ao's River Blade, ATK +5 with +4 HP, the best
+    mortal-tier weapon in the game); **Errand of the Drowned
+    Willow** (moonflower bud at the haunted shrine; reward: 2
+    tonics + 1 cordial + 25 XP + lore); **A Bottle for the Corner
+    Table** (buy wine from Weiyu, take to Kuo; reward: Drunken
+    Step Sash — SPD +2, HP +4).
+  - Four mortal-tier enemies: grey_forest_wolf (mortal, 22 HP),
+    grey_pack_alpha (Qi Cond boss, 62 HP, drops the heart),
+    pale_lake_carp_spirit (mortal water, drops river-iron),
+    drowned_willow_revenant (spirit, 50 HP, grants
+    the_drowning_of_the_willow lore on defeat).
+  - 15 new items across mortal-tier gear, pills, materials, and
+    quest items. Four new lore entries (village history, revenant
+    backstory, tune-with-last-note-different, tea-mother's ledger).
+    Eight new events for ambient flavor.
+  - Smoke test `tools/smoke_willowmere.py` — 8 scenarios including
+    full wolves-quest combat flow, songbird collect-return, all
+    five quests end-to-end, and save-compat. All green.
+- **Technique expansion** (the deepening). Audit revealed 20
+  learnable techniques with **zero buff_atk**, only **one** bleed,
+  and thin Mortal/Foundation rosters. Shipped 15 new in
+  `content/techniques/depth.json`:
+  - Mortal (4): silent_bell_strike (Huilin, 0-qi pure strike),
+    settling_stone_sit (Yun, cheap heal), viper_sting (Wuwei, the
+    Five Poisons mortal intro), iron_ox_shrug (Bo, the *first*
+    buff_atk in the game, mortal-tier).
+  - Qi Condensation (6): azure_cloud_sword_arc (Meilin, buff_atk
+    sword), crane_wing_parry (Baixu, sword buff_def),
+    flashing_willow_leaf (Meilin, bleed sword — "the thing Baixu
+    does not like me teaching"), black_lattice_palm (Apothecary
+    Qi, palm bleed — fills the righteous/neutral bleed gap),
+    mountain_root_stance (Bo, heavy buff_def), crimson_hand_of_silence
+    (Red Feather, stun palm at SL 2).
+  - Foundation (5): nine_cloud_cranes_flight (Baixu, ACS 4 sword
+    capstone at dmg 20 + buff_atk 3), five_venoms_brocade_palm
+    (Shan, FPS 4 poison capstone at power 7), heart_boiling_technique
+    (Red Feather, SL 3 foundation-tier life-steal), stormwarden_mantle
+    (Gao, ACS 3 pure buff_atk), brass_bell_sutra (Huilin, monk
+    high-tier heal).
+  - Final counts: **35 learnable techniques** (was 20). Mortal 5→9,
+    Qi-Condensation 9→15, Foundation 6→11. **Every effect type has
+    ≥3 learnable options**. buff_atk: 0→4. bleed: 1→3. This is the
+    session where the tactical palette became actually interesting.
+  - Wired teaches onto: Huilin (+silent_bell_strike, brass_bell_sutra),
+    Yun (+settling_stone_sit), Wuwei (+viper_sting — he had no
+    teach list before), Bo (+iron_ox_shrug, mountain_root_stance —
+    first teaches ever), Meilin (+azure_cloud_sword_arc,
+    flashing_willow_leaf), Baixu (+crane_wing_parry,
+    nine_cloud_cranes_flight), Qi (+black_lattice_palm), Shan
+    (+five_venoms_brocade_palm), Red Feather (+crimson_hand_of_silence,
+    heart_boiling_technique), Gao (+stormwarden_mantle).
+  - Smoke test `tools/smoke_techniques.py` — 7 scenarios covering
+    loads, teacher wiring (no orphans), ungated mortal learn from
+    correct NPC, rep-gate refusal at -1 and success at threshold,
+    realm-gate refusal at wrong realm, palette coverage assertion
+    (every effect ≥3), and mortal+foundation buff_atk availability.
+    All green.
+- **NPC dialogue depth.** Expanded four thin NPCs: **Gatekeeper
+  Chen** (a young man practising his sash-knot alone, counting the
+  six weeks to his trial, senses Meilin beat him three times;
+  added rep_dialogue for ACS ±2), **Librarian Zhao** (the
+  committee of 1184, the locked shelves that check names, the
+  library that has on three occasions found things he was going to
+  turn away — plus rep_dialogue), **Raftsman Qiu** (his son, his
+  lost sword, the box with nine carved fish — one per passenger
+  lost; rep_dialogue for ACS and SL), **Cloth Merchant Mei**
+  (added rep_dialogue across ACS / SL / FPS — three different
+  kinds of quiet handling). Added rep_dialogue to **Wandering Monk
+  Huilin** for all three sects — the monk finally reacts to the
+  player's standing. Expanded **Forge-Master Bo** and **Gatekeeper
+  Wuwei** with extra dialogue lines to match their new teach
+  roles.
+- **Event depth.** 9 new events in `content/events/depth.json`
+  filling locations that had zero: Old Hermit's Hut, Azure Cloud
+  Outer Gate, Azure Cloud Inner Courtyard, Azure Cloud Forge,
+  Elder Baixu's Pavilion, Hall of Five Poisons, Skyweaver's
+  Cloister, Spirit-Gale Plateau, Willowmere Smithy. **Every
+  location in the game now has ≥1 event.**
+
+### Current state
+- Validator: **29 loc / 30 npc / 21 enemy / 43 tech / 70 item / 4
+  sect / 14 quest / 33 event / 24 lore / 15 recipe.** From session
+  11's 23/22/17/25/55/4/9/16/20/15: this session added +6 loc, +8
+  npc, +4 enemy, +18 tech, +15 item, +5 quest, +17 event, +4 lore.
+- All prior smoke tests (affinity, companion, companion_downed,
+  lore, red_ledger) remain green. New smoke tests (willowmere,
+  techniques) also green.
+- `python3 play.py` boots cleanly. Fresh player sees the west
+  exit from Verdant Bamboo Sea on first `look`. The teach roster
+  of every major NPC is now 2+ techniques.
+- Save compat preserved. Zero new Player fields this session.
+- Starting mortal-tier player now has a real choice: walk north
+  to the Azure Cloud, east to the river and market, or **west to
+  a village with three quests and multiple teachers** (Pingan,
+  Bo, Fisher Ren, Kuo, Huilin-adjacent via the bamboo). The early
+  game has actual content.
+
+### What I'd do next if I had another hour
+1. **Expand the Azure Cloud Library.** Zhao now has better
+   dialogue but the library still has only the Sutra of Empty
+   Sleeves. A `manual` item type already exists on the sutra —
+   stocking five or six more manuals (each granting lore on read,
+   or teaching a technique if the player is at the right realm)
+   would make the Library a real resource. Right now it's one
+   quest and one scroll.
+2. **An actual Huilin quest.** He has a staff, a bell he won't
+   ring, a monk's history, three rep_dialogue keys, two teach
+   options, one sell list — and no quest. A Shaolin-flavored
+   errand (maybe "accompany him to ring the bell at the drowned
+   willow shrine") would complete his NPC.
+3. **Equipment variety.** There's now ample technique variety but
+   weapons/robes/accessories are still fairly uniform in effect.
+   Things like "on_hit_heal" or "on_crit stun" would need engine
+   work, but new tiers within the existing `on_hit_effect` palette
+   (poison/bleed/stun) are pure content. A mortal-tier bleed
+   dagger. A Qi-Condensation stun mace. Etc.
+4. **Weilan teaches more than crimson_tide_fist.** The Apothecary
+   has one teach; she could have 2-3 to match her siblings in
+   scope (she's the approachable Pavilion face). Perhaps
+   crimson_hand_of_silence as an alternative to Red Feather.
+5. **Fill out Bandit Road.** It has enemies, Rulan, and no quest
+   content of its own. The bandit threat is established but there
+   is no "deal with the Black Banner" errand. The Cloth Merchant
+   Mei already has the hook in her dialogue. Classic escort quest.
+6. **Two more early-game lore entries.** Willowmere has 4 new lore
+   entries but the game's oldest lore file (`core.json`) has only
+   5. The southern wilds have at most one or two legends — a
+   proper per-location legend pass (as flagged in session 11) is
+   still waiting.
+7. **Endgame is still open.** Nascent Soul remains empty in
+   practice. Do not lose sight of this; the early game is fat
+   now, the late game is still bone.
+
+### Things I noticed but didn't fix
+- **The bottle-for-kuo quest keeps the rice wine.** Like other
+  collect-type quests in this engine, the item is checked, not
+  consumed. Player finishes with both the wine and the sash.
+  Lean into it — "you drink the jar together", narratively — or
+  add a per-quest consumes list (engine touch) later.
+- **The River Blade is better than most Qi-Condensation weapons**
+  at 5 ATK + 4 HP for 180 stones. That's Willowmere's early
+  reward; it also means a smart player will skip several
+  Foothills vendors. Probably fine — the River Blade is the
+  capstone of a quest gated behind grinding river-iron drops, so
+  it earns its power. But it does make the smithy on the Azure
+  Cloud a harder sell for mid-tier players.
+- **iron_ox_shrug costs 5 qi for buff_atk 2**, while the existing
+  buff_def chain (willow_root_stance) costs 3 qi for buff_def 2.
+  buff_atk feels pricier than buff_def. That's intentional — atk
+  buffs stack with weapon damage and therefore compound harder —
+  but it's a bit awkward in the lowest realm. I left it. A mortal
+  player should not be spamming buff_atk every round.
+- **five_venoms_brocade_palm overlaps five_poisons_palm.** The
+  existing palm is dmg 20 poison 6 at Foundation + FPS 0; the new
+  one is dmg 18 poison 7 at Foundation + FPS 4. The new one is
+  weaker on raw damage but stronger on DOT. A player with FPS 4
+  will have both and will pick the right one per fight. I think
+  this is correct — the new palm is "Shan's own refinement", not
+  a straight replacement — but a future balance pass might prune
+  one.
+- **flashing_willow_leaf is explicitly inside-sect-controversial**
+  ("the thing Baixu does not like me teaching"). Right now the
+  narrative doesn't consequence this. A future hook: learning it
+  could cost 1 ACS rep, reflecting the controversy. Engine doesn't
+  currently support "learning costs rep" — would be a small add.
+- **companion techniques** (the ones on the Player.companion
+  block) were not touched. Meilin's list is still
+  [white_crane_sword, azure_cloud_palm, calming_breath]. She
+  could have azure_cloud_sword_arc. Intentional: the runtime
+  companion dict is snapshotted per-recruit, and editing it
+  requires either a save migration or a soft "on reload, refresh
+  from npc content" path. Flagging for later.
+- **Mingshu's ghost teaches thundering_nine_heavens_palm** but
+  only after The Broken Terrace closes. That quest has a
+  fang-drop step. Should verify the ghost's `teaches` still fires
+  after quest completion — last tested in session 4.
+
+### Don'ts (lessons learned)
+- **Don't write big content before auditing.** My first instinct
+  this session was to build a whole new region. The user
+  correctly pushed back — *refine existing things*. The audit
+  (learnable techniques by realm and effect) surfaced a real
+  palette gap I would have missed if I'd just kept adding.
+  Next session, if the user says "deepen," start with a
+  `by-category, by-attribute` audit before writing anything.
+- **Don't orphan techniques.** The smoke test for "no orphans"
+  is a cheap regression and caught zero issues this time —
+  but only because I hand-checked every new id against a teach
+  list during wiring. The test is now there; trust it next
+  time.
+- **Don't forget to add an NPC's teach block when they get a
+  quest.** Gatekeeper Wuwei had dialogue and a disposition but
+  no `teaches` or `sells` prior; he was narratively dead. Adding
+  viper_sting (plus a new dialogue line tying the teach to the
+  sting) turned him from a checkpoint gate into a person. Thin
+  NPCs do not automatically become thick through being in the
+  game; they need something to *give*.
+- **Don't add `companion_reply` for Huilin's new rep_dialogue
+  cases.** I added rep_dialogue keyed by ACS / SL / FPS, which
+  is a different axis from his existing companion_reply. They
+  layer fine — rep first, then companion. Don't merge them.
+- **Don't balance Foundation techniques against Qi-Condensation
+  baselines.** Foundation techniques should noticeably *feel*
+  more expensive and more powerful than QC ones. Nine-Cloud
+  Cranes at dmg 20 + buff_atk 3 is meant to read as "this is
+  the capstone"; if I had worried about it overshadowing the
+  QC arts, the progression would have felt flat. Trust the
+  realm ladder.
+
+---
+
 ## Session 11 — 2026-04-23 — "The Chronicler's Eye"
 
 ### What I built

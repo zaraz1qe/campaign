@@ -5,7 +5,7 @@
     "region": "Southern Wilds",
     "description": "Endless emerald stalks sway in a perfumed wind. Sunlight falls in green coins, and somewhere a flute is playing — though you cannot find the player. A mossy footpath wends north toward distant peaks; eastward you hear the rush of cold water.",
     "first_visit_text": "This is where your master left you. 'Cultivate well,' he said, 'and do not climb the peak until your qi has condensed.' Then he vanished into the bamboo, and only the flute remained.",
-    "exits": { "north": "azure_cloud_foothills", "east": "river_of_swords", "south": "old_hermits_hut" },
+    "exits": { "north": "azure_cloud_foothills", "east": "river_of_swords", "south": "old_hermits_hut", "west": "willowmere_village_square" },
     "npcs": ["wandering_monk_huilin"],
     "enemies": ["bamboo_viper"],
     "events": ["bamboo_flute_song", "falling_seedpod"],
@@ -22,7 +22,7 @@
     "npcs": ["old_hermit_yun"],
     "enemies": [],
     "events": [],
-    "items_on_ground": ["jade_qi_pendant"],
+    "items_on_ground": ["jade_qi_pendant", "lady_moonbell"],
     "qi_density": 4,
     "tags": ["safe", "elder"]
   },

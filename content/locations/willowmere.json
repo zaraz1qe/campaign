@@ -1,0 +1,95 @@
+[
+  {
+    "id": "willowmere_village_square",
+    "name": "Willowmere Village Square",
+    "region": "Southern Wilds",
+    "description": "A small square of river-stone where six crooked lanes meet. A crippled willow stands at the centre, its branches tied with cloth slips — names of the missing, written by those who still hope. The smell here is woodsmoke and wet millet. Ducks wander. A child chases a cricket. An old blacksmith's hammer rings from the west, steady as a second pulse. Three doors face the square: a teahouse hung with pale blue lanterns, a smithy leaking heat, and a low-roofed herbalist's stall whose awning is a patchwork of dyed rags. Northward, a dirt road climbs toward a farmstead. South, the lane falls to a grey lake.",
+    "first_visit_text": "You step from the bamboo into a place that smells of supper. A woman hanging laundry looks up, taps her daughter's shoulder, and the girl stops singing mid-line to watch you pass. An old man on a bench bows without rising. The bamboo is an hour behind you and already you feel yourself being memorised.",
+    "exits": {
+      "east": "verdant_bamboo_sea",
+      "in": "willow_and_moon_teahouse",
+      "smithy": "willowmere_smithy",
+      "north": "shen_homestead",
+      "south": "pale_lake_shore"
+    },
+    "npcs": ["headman_lu_pingan", "herbalist_mingzhu", "little_yu"],
+    "enemies": [],
+    "events": ["willowmere_cricket_song", "willowmere_laundry_gossip"],
+    "items_on_ground": [],
+    "qi_density": 1,
+    "tags": ["village", "town", "safe", "hub"]
+  },
+  {
+    "id": "willow_and_moon_teahouse",
+    "name": "The Willow-and-Moon Teahouse",
+    "region": "Southern Wilds",
+    "description": "A low-beamed room warm with coal-smoke and the smell of jasmine. Eight low tables, none of them level; three of them taken. A tea-mother with silver at her temples moves between the kettles, and by the far window a man with a half-empty cup sleeps with his head on his forearm — his sword leaning against his knee as if in case the dream demands one. A scroll on the wall, written in a hand far better than this house deserves, reads simply: *He who pours tea, pours time.*",
+    "first_visit_text": "The tea-mother looks up as you cross the threshold. 'A new face,' she says, without surprise. 'Sit where you like — only not the corner seat. That one belongs to the dead, and I will not ask them to share.'",
+    "exits": { "out": "willowmere_village_square" },
+    "npcs": ["matron_weiyu", "drunken_rogue_kuo"],
+    "enemies": [],
+    "events": ["teahouse_gossip_drifts", "kuos_cup_rings"],
+    "items_on_ground": [],
+    "qi_density": 2,
+    "tags": ["village", "interior", "safe", "social"]
+  },
+  {
+    "id": "willowmere_smithy",
+    "name": "Willowmere Smithy",
+    "region": "Southern Wilds",
+    "description": "A lean stone shed built hard against the slope, roofed in river-slate dark with soot. A forge glows orange under a copper hood; the bellows breathe in time with a man who works them with his hip as his hands work the hammer. Finished blades hang from pegs along the back wall — no two alike, none of them sect-work, all of them honest. A broken sword sits upright in a stone on the workbench — point-down, hilt-up, as if the smith were waiting for someone to claim it.",
+    "first_visit_text": "The smith glances over his shoulder at you, grunts once, and does not pause his hammer. After three more strokes he straightens, wipes his hands, and says: 'You came in the door, so you have money, or you have a problem. Say which, or sit until you know.'",
+    "exits": { "out": "willowmere_village_square" },
+    "npcs": ["blacksmith_ao"],
+    "enemies": [],
+    "events": [],
+    "items_on_ground": [],
+    "qi_density": 2,
+    "tags": ["village", "crafter", "safe"]
+  },
+  {
+    "id": "shen_homestead",
+    "name": "Shen Homestead",
+    "region": "Southern Wilds",
+    "description": "A stone-walled farmyard at the end of a rutted track. A thatch-roofed house, a cracked millstone, a pen for goats that no longer holds any goats. Fresh claw-marks score the post of the gate; the wood beneath is pale and raw. A chicken coop has been opened from the outside, its wire-mesh peeled back like a ribbon. Smoke still rises from the house chimney — someone is inside, and still cooking, because the alternative is worse.",
+    "first_visit_text": "The wind carries the smell of iron and wet fur. A woman's voice from inside the house calls: 'If you are another one of them, I have the broom, and the broom has a nail in it. If you are not — please, for Guan Yin's sake, come inside.'",
+    "exits": { "south": "willowmere_village_square" },
+    "npcs": ["farmer_shen_daiyu"],
+    "enemies": ["grey_forest_wolf", "grey_pack_alpha"],
+    "events": ["wolf_howl_from_the_ridge"],
+    "items_on_ground": [],
+    "qi_density": 1,
+    "tags": ["farm", "village", "dangerous"]
+  },
+  {
+    "id": "pale_lake_shore",
+    "name": "Pale Lake Shore",
+    "region": "Southern Wilds",
+    "description": "A curve of grey pebbles at the lake's edge. The lake itself is glass-still and the color of cold iron; the far bank is already disappearing into afternoon mist. A fisherman sits on an upturned bucket, line in the water, patience in the face. Three old sandals of different sizes lie above the tide-line, drying. A reed-lined path follows the shore west, toward a place the locals point at but will not name.",
+    "first_visit_text": "The lake is quieter than any water has a right to be. No birdsong, no frog, no small slap of fish. Only the fisherman's line-tip dipping, and dipping, and dipping. He does not look up as you arrive.",
+    "exits": {
+      "north": "willowmere_village_square",
+      "west": "drowned_willow_shrine"
+    },
+    "npcs": ["fisher_ren"],
+    "enemies": ["pale_lake_carp_spirit"],
+    "events": ["lake_surface_shivers"],
+    "items_on_ground": [],
+    "qi_density": 3,
+    "tags": ["lake", "water", "village"]
+  },
+  {
+    "id": "drowned_willow_shrine",
+    "name": "The Drowned Willow Shrine",
+    "region": "Southern Wilds",
+    "description": "The shore ends at an old shrine — or rather, the shore ends, and the shrine continues into the water. A great willow stands half on the bank and half in the lake, its lower trunk fully submerged. Where the roots disappear beneath the surface, a small stone altar sits with its feet in water. Offerings have been left on the altar and then forgotten: a child's wooden horse, a rice-cake gone grey, a copper coin that the lake keeps trying to take. The qi here is slow, deep, and not unhappy — it moves the way water moves when something is breathing at the bottom.",
+    "first_visit_text": "As you approach the altar the willow's leaves all turn, at once, to face you — although there is no wind. The moment passes. The leaves go back to whatever they were doing. You are not sure you were not just greeted.",
+    "exits": { "east": "pale_lake_shore" },
+    "npcs": [],
+    "enemies": ["drowned_willow_revenant"],
+    "events": ["moon_face_in_the_water", "the_willow_remembers"],
+    "items_on_ground": ["moonflower_bud"],
+    "qi_density": 5,
+    "tags": ["shrine", "haunted", "cultivation_spot", "village"]
+  }
+]
