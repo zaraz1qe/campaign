@@ -24,11 +24,11 @@ A living checklist for what's been done and what to add next.
 - **Companions** (3): Disciple Meilin (Azure Cloud), Venom-Handler Bai
   (Five Poisons), Blood-Sworn Jin (Scarlet Lotus). Affinity/bond system
   active across all three.
-- **Items**: 95 (equipment, pills, materials, treasures, **manuals**,
+- **Items**: 100 (equipment, pills, materials, treasures, **manuals**,
   Silent Bell Charm, Moon-Red Pill, Sister-Spoon, Five-Venoms Sash,
-  Keeper's Brocade Sash)
+  Keeper's Brocade Sash, Outer Disciple's Broom, Chen's Stroke-Pin)
 - **Recipes**: 15 (Forge-Master Bo: 6, Pillmaster Lu: 4, Apothecary Qi: 5)
-- **Quests**: 28. Single-givers: Kettle's Request, Missing Disciple,
+- **Quests**: 31. Single-givers: Kettle's Request, Missing Disciple,
   Envoy's Letter, Oath of Fangs, Stormwarden's Test, Broken Terrace,
   Red Path, and the five Willowmere starters (Wolves at Shen's Farm,
   Little Yu's Songbird, Three Ingots of River-Iron, Errand of the
@@ -43,21 +43,30 @@ A living checklist for what's been done and what to add next.
   Venom → The Sword That Would Not Strike → The Hand That Empties
   the Heart — session 19), **Qi's Four Lesser Basins arc** (The
   Centipede in Its Skin → The Spider Who Will Not Spin → The
-  Scorpion's First Bite — session 20). Five of the game's mid-game
-  NPCs now own a proper three-quest spine; Shan owns four
-  (oath_of_fangs + the Grey arc). Five Poisons Sect ties Azure
-  Cloud as the densest sect after Qi's arc (7 quests each).
+  Scorpion's First Bite — session 20), **Chen's Second-Trial arc**
+  (The Broom and the Blade → The Name That Was Not His → The
+  Courtesy Bell at Dawn — session 21). Six of the game's NPCs now
+  own a proper three-quest spine; Shan owns four (oath_of_fangs +
+  the Grey arc). Azure Cloud Sect regains parity with Five Poisons
+  after Chen's arc (ACS at 8 quests; Five Poisons at 7). Chen is
+  the first "face" NPC — the literal first person the player meets
+  when approaching a sect — to carry an arc.
 - **Techniques**: 43 total, **35 learnable** across all tiers. Every
   combat effect (poison/bleed/stun/heal/buff_def/buff_atk) has ≥3
   learnable options. Mortal 9 / Qi-Condensation 15 / Foundation 11.
-- **Events**: 51 (ambient + qi-grant + lore-grant; every location has
-  at least one. Session 20 additions: centipede_shed_at_the_root +
-  black_pillar_breath at Venom Gorge, qi_kneels_at_the_third_basin
-  at Five Poisons Hall. Session 15: pale_lake_silt_stirs at the
-  lake, sealed_bud_under_the_bell at Crimson Creek,
+- **Events**: 54 (ambient + qi-grant + lore-grant; every location has
+  at least one. Session 21 additions: chen_ties_and_unties_the_sash
+  + register_second_ink_warms at Azure Cloud Outer Gate,
+  foothills_willow_at_the_switchback at the Foothills. Session 20
+  additions: centipede_shed_at_the_root + black_pillar_breath at
+  Venom Gorge, qi_kneels_at_the_third_basin at Five Poisons Hall.
+  Session 15: pale_lake_silt_stirs at the lake,
+  sealed_bud_under_the_bell at Crimson Creek,
   weilan_hums_at_the_pestle at the Scarlet Lotus Shrine).
-- **Lore**: 45 (earnable via boss defeats, quest rewards, high-rep NPC
-  trust, village story, and **manuals**). Session-20 additions:
+- **Lore**: 48 (earnable via boss defeats, quest rewards, high-rep NPC
+  trust, village story, and **manuals**). Session-21 additions:
+  the_broom_and_the_blade, the_first_column_of_the_register,
+  the_courtesy_bell. Session-20 additions:
   the_centipede_in_its_skin, the_spider_who_remembers_silk,
   the_scorpions_first_bite, the_keepers_silence. Session-15
   additions: the_pond_that_sleeps, the_red_that_does_not_clot,
@@ -238,6 +247,76 @@ A living checklist for what's been done and what to add next.
 ---
 
 ## Done Log (most recent first)
+- **2026-04-23 (session 21)** — "The Second Trial" — Gatekeeper
+  Chen's three-quest arc. Audit of NPC density scored Chen dead-
+  last among "face" NPCs (6, vs 11+ for everyone else in a
+  greeting position). Chen is literally the first person every
+  player meets at the Azure Cloud gate — the sect is the first
+  and densest in the game — so his thinness shrinks the whole
+  sect on arrival. His existing 4-line dialogue already seeded
+  the hook: an outer disciple who failed his year-end trial
+  three times against Meilin, counting weeks to his re-trial.
+  The arc is those six weeks played through:
+  - **The Broom and the Blade** (mortal-friendly, no prereq —
+    any player who meets Chen at the gate gets the offer).
+    Chen asks the player to spar with him at the foothills
+    at dawn: no combat, just a talk+visit+return. The
+    seniors correct him out of kindness; the disciple-sisters
+    compete with him and he can't lose in front of them. He
+    needs to work the form against someone with no stake.
+    Player visits the foothills, returns, reports. ACS+1.
+    Lore: the_broom_and_the_blade (the sutra on why outer
+    disciples sweep — the broom teaches the lowering the
+    shoulder will later need for the sword's raising).
+  - **The Name That Was Not His** (QC, ACS+2 gate, prereq Q1).
+    The gate-register's fresh page was copied with a missing
+    stroke in Chen's name, turning *Chen* into *Cheng* — an
+    outer disciple eight winters past who did not complete
+    his second trial. The first column of the register is
+    where unfinished lowerings are kept. The archivist's
+    tools are at the Library; Librarian Zhao is the one who
+    can correct the stroke. Player carries the register-page
+    from gate to library, talks to Zhao, returns to Chen.
+    Zhao knew the living Cheng; the lore arrives through
+    him. ACS+1. Capstone item: Chen's Stroke-Pin (minor
+    accessory, DEF+1, HP+5 — the bronze mark that brought
+    the name back). Lore: the_first_column_of_the_register
+    (on the sect's two-columns-of-the-dead-and-living book).
+  - **The Courtesy Bell at Dawn** (Foundation-ready, ACS+4
+    gate, prereq Q2). Chen's capstone. The second trial is
+    at dawn; he cannot sleep and stand watch both. He asks
+    the player to stand at the gate in his stead — to ring
+    the courtesy bell for the three common visitors of a
+    common night: the pilgrim at second hour, the courier
+    at fourth, the question from the Crossing at sixth.
+    Each visitor leaves a token for the register. Player
+    collects the three tokens at the outer gate
+    (pilgrims_copper_petition, couriers_valley_slip,
+    mothers_unanswered_question), returns to Chen in the
+    morning. He takes the broom from their hand and walks
+    to the trial; the trial happens offstage. He passes.
+    ACS+2. Capstone item: **The Outer Disciple's Broom**
+    (weapon: ATK+3, DEF+2, HP+8, SPD+1, ACS+3 rep-gated —
+    a staff that parries as well as strikes; Chen's
+    six-week watch made into a memento). Lore:
+    the_courtesy_bell (the three bells of the Azure Cloud
+    gate; why the courtesy bell is rung by a substitute on
+    the night of a gatekeeper's second trial).
+  Content: 5 new items (3 night-watch tokens as on-ground
+  items at the outer gate; Chen's Stroke-Pin as Q2 reward;
+  Outer Disciple's Broom as Q3 capstone), 3 new lore entries,
+  3 new quests, 3 new events (chen_ties_and_unties_the_sash
+  + register_second_ink_warms at the outer gate,
+  foothills_willow_at_the_switchback at the foothills).
+  Zero new NPCs, locations, techniques, enemies, recipes —
+  pure deepening of the game's most-trafficked "face" NPC.
+  Chen's voice grew 4 → 8 dialogue lines, ACS rep_dialogue
+  2 → 6 tiers, lore_dialogue 0 → 2 tiers, companion_reply
+  0 → 3 entries. Azure Cloud Outer Gate went from 0 ground-
+  items / 0 location-tied events to 3 + 2, a proper hub.
+  New smoke test: tools/smoke_chen.py (8 scenarios, all
+  green; all 15 prior smoke tests remain green; 16 total).
+
 - **2026-04-23 (session 20)** — "The Four Lesser Basins" —
   Apothecary Qi's three-quest arc. Continuation of session 19's
   Five Poisons deepening. Audit re-confirmed Qi as the cleanest

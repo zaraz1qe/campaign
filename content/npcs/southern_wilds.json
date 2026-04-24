@@ -135,20 +135,44 @@
     "id": "gatekeeper_disciple_chen",
     "name": "Gatekeeper Chen",
     "title": "Outer Disciple of the Azure Cloud",
-    "description": "A young man in azure robes, holding a polished broom as if it were a sword. His sash is tied a little too tightly — he has been practising the knot alone. A small, perfectly-ironed crane is stitched above his heart; he presses it flat whenever a senior passes.",
+    "description": "A young man in azure robes, holding a polished broom as if it were a sword. His sash is tied a little too tightly — he has been practising the knot alone. A small, perfectly-ironed crane is stitched above his heart; he presses it flat whenever a senior passes. A narrow cedar desk beside him holds the gate-register: three ruled columns, two inkstones — one cold, one warm — and a bronze thumb-weight pinning the fresh page down.",
     "dialogue": [
       "Welcome to the Azure Cloud, traveler. Mind the steps; they are slippery with cloud.",
       "Elder Baixu sees few visitors, but he has been... expecting someone today.",
       "Disciple-Sister Meilin is the one who beat me at the year-end trials. Three times, at that. I do not hold it against her. Only against myself, a little.",
-      "Six more weeks and I take my first trial again. Six more weeks. I am counting. I am supposed to not be counting. I am counting."
+      "Six more weeks and I take my first trial again. Six more weeks. I am counting. I am supposed to not be counting. I am counting.",
+      "The broom, they told me, is the sword you are learning to be ready for. A sword knows why it is raised. A broom knows why it is lowered. I am still at work on the second part.",
+      "The crane above my heart was stitched by my mother. She is a fisherwoman; she does not sew cranes. This is the first one she ever tried. The wing is a little wrong. I will not let her redo it.",
+      "A woman came up from the Crossing this winter with a question I could not answer. I put the question in the register's third column — the one few gatekeepers use. The register has three columns, senior. Ask me about the second, and I will read it to you. Ask me about the first, and I will ask you to ask Zhao.",
+      "Senior Ruwen used to untie and re-knot the sash of outer disciples who stood a good watch. He has not done so for me — not yet. The knot I tied this morning is my forty-third try this week. One of them will be the knot; I do not yet know which."
     ],
     "faction": "azure_cloud_sect",
     "disposition": "friendly",
+    "gives_quest": [
+      "the_broom_and_the_blade",
+      "the_name_that_was_not_his",
+      "the_courtesy_bell_at_dawn"
+    ],
     "rep_dialogue": {
       "azure_cloud_sect": {
+        "-3": ["You passed this gate against my register; I did not strike the warning bell because the elders will weigh you, and the warning bell weighs nothing. I have put my back to you. That is my small refusal. Do not mistake it for permission."],
+        "-2": ["Stop. The broom stays across the threshold until someone senior says otherwise. I am sorry; I did not choose the stripe on your name."],
+        "1":  ["Senior. You are expected. I know your face now; I will mark you in the register under the warmer ink, which is the column the sect keeps for those it will see again."],
         "2":  ["Senior. The courtyard sweeps itself today — go in, go in."],
-        "-2": ["Stop. The broom stays across the threshold until someone senior says otherwise. I am sorry; I did not choose the stripe on your name."]
+        "3":  ["Senior. The courtesy bell I rang for you the first time you came — I did not tell you it was a courtesy; I did not yet know your rank. I have rung it again since, and meant it differently. The gate is open. I am glad of it."],
+        "5":  ["Senior. Your name has a line in the register's second column under warm ink in Elder Baixu's own hand. It does not list what you have done; it says only that you were expected, and that the gate will not ask you its question again. Inner Disciple Chen of the gate would like — if you have time — to show you the knot he has finally tied."]
       }
+    },
+    "lore_dialogue": {
+      "azure_cloud_sect": {
+        "3": "the_broom_and_the_blade",
+        "5": "the_first_column_of_the_register"
+      }
+    },
+    "companion_reply": {
+      "disciple_meilin": "Disciple-Sister. You have brought a — you have brought a guest to the gate, and the guest has brought you back. I will put both of you under the warmer ink. I will not look up while you pass. The courtesy bell will ring for both of you in the same stroke; the register can have a long memory, and a short one, and choose.",
+      "venomhand_bai": "A sister of the Black Lattice at the Cloud's gate. It is not uncommon; the archivist's book shows the trip three times a year. I will toll the bell once. Do not linger in the courtyard long — the drill-master is not settled about green sashes this season, and my broom does not reach that far.",
+      "blood_sworn_jin": "A red sleeve at my gate. I should strike the broom across, senior; I am not going to, and I will write the explanation into the register myself. Elder Baixu will read it. The bell I ring will not be the courtesy bell; I do not know which bell it will be. I will find out, and I will stand by what I rang."
     }
   },
   {

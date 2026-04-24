@@ -1,0 +1,59 @@
+[
+  {
+    "id": "pilgrims_copper_petition",
+    "name": "A Pilgrim's Copper Petition",
+    "type": "quest",
+    "description": "An old copper coin, green at the edges, with a folded square of rice-paper tied to it by a waxed thread. The paper, unfolded a finger's width, asks the Founder's Stone for a blessing on the soil of a farm the pilgrim has not returned to in eleven years. The coin is to be set at the stone; the paper is for the register's question-column, which few gatekeepers still keep. The pilgrim walked up from the foothills at second hour, set the coin on the gate-step, bowed, and walked down again without waking anyone. The copper is warm with having been held.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["material", "quest", "azure_cloud"]
+  },
+  {
+    "id": "couriers_valley_slip",
+    "name": "A Courier's Valley Slip",
+    "type": "quest",
+    "description": "A narrow strip of grey silk folded three times and sealed with a single pressed thumbprint in cinnabar — the Thousand Venom Valley's small seal, not the Matriarch's large one. A courier came up from the south at fourth hour wearing a wet gorge-cloak, handed the slip across the register without crossing the threshold, and walked back into the dark. The slip is addressed to Elder Baixu; it is not for reading. Chen left it on the register under a stone weight, for the morning steward to carry in.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["material", "quest", "azure_cloud", "five_poisons"]
+  },
+  {
+    "id": "mothers_unanswered_question",
+    "name": "A Mother's Unanswered Question",
+    "type": "quest",
+    "description": "A piece of paper folded once, and then smoothed flat again, and then folded once more, by a hand that kept forgetting it had already folded it. The question, written in the careful characters of a woman who does not write often, asks whether a man named Shen Rongzhi came up this road eight winters past — thin, left-handed, a scar below the right ear. The paper is to be left in the gate-register's question-column. The woman came up from the Crossing at sixth hour and would not be persuaded to wait for Elder Baixu. She did not give her own name.",
+    "effect": null,
+    "power": 0,
+    "value": 0,
+    "tags": ["material", "quest", "azure_cloud"]
+  },
+  {
+    "id": "chens_stroke_pin",
+    "name": "Chen's Stroke-Pin",
+    "type": "accessory",
+    "slot": "accessory",
+    "atk_bonus": 0,
+    "def_bonus": 1,
+    "hp_bonus": 5,
+    "spd_bonus": 0,
+    "description": "A small bronze pin the length of a thumbnail, shaped like the single brush-stroke a careful archivist uses to distinguish *chen* — the morning — from *cheng* — a name the Azure Cloud no longer reads aloud. Gatekeeper Chen pressed the pin into your hand without meeting your eye, after Librarian Zhao corrected the stroke in the gate-register. 'I cannot wear it,' he said. 'It is mine, and I cannot wear it. The sect will not know why I am wearing what I am. You will know, and that is better.' The pin has the small, unshowy weight of a thing that was not supposed to be given.",
+    "value": 70,
+    "tags": ["accessory", "azure_cloud", "quest_reward"]
+  },
+  {
+    "id": "outer_disciples_broom",
+    "name": "The Outer Disciple's Broom",
+    "type": "weapon",
+    "slot": "weapon",
+    "atk_bonus": 3,
+    "def_bonus": 2,
+    "hp_bonus": 8,
+    "spd_bonus": 1,
+    "requires_rep": { "azure_cloud_sect": 3 },
+    "description": "A pale-straw broom bound to a shaft of worn paulownia, its handle darkened at the grip where a single pair of hands has held it for six weeks of watches. Gatekeeper Chen — Inner Disciple Chen, now, though the courtyard will take a month to say it right — set the broom across both palms and offered it to you at dawn, on the morning of his second trial. He did not say thank you. He said, 'The gate-register's second column has your name under warm ink. This belongs there too, but I am not ready to set it in the rafters yet.' Held right — the way an outer disciple holds a broom, which is to say the way a sword is held before the hand has earned a sword — the paulownia is a staff that parries as well as strikes, and the courtesy of its weight is that it does not ask more of the arm than the arm offers.",
+    "value": 160,
+    "tags": ["weapon", "staff", "azure_cloud", "rare", "quest_reward"]
+  }
+]

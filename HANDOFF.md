@@ -124,6 +124,285 @@ validated, committed.
 
 # Session log
 
+## Session 21 — 2026-04-24 — "The Second Trial"
+
+### What I built
+- **Audit first.** Two prior sessions deepened the Five Poisons
+  Sect (Shan s19, Qi s20) and each named Qi and Bai as next
+  obvious targets. Before defaulting to that list, I re-ran the
+  NPC density audit with a proper location join. The lowest
+  non-companion score in the game is now **Gatekeeper
+  Disciple Chen** at 6 (4 dlg, 1 rep tier, 0 teach, 0 sell,
+  0 quest, 0 comp_reply). Chen is — crucially — the very first
+  person every player meets when they approach a sect: the face
+  of the Azure Cloud outer gate. Azure Cloud is the first, most-
+  quest-dense, most-traversed sect in the game. His thinness
+  meant that, for a fresh mortal, the sect's front door felt
+  like a turnstile. High-leverage deepening target. Score 6 →
+  40 going out (tied third in the game; was dead-last).
+- **Arc: "The Second Trial."** Chen's existing 4-line dialogue
+  already seeded the whole arc — an outer disciple who failed
+  his year-end trial three times against Meilin, who counts
+  weeks obsessively to his re-trial, who ties his sash too
+  tightly because he has been practising the knot alone, whose
+  crane-on-robe was stitched by a fisherwoman mother who does
+  not sew cranes. The arc is those six weeks played *through*.
+- **Q1 — "The Broom and the Blade"** (mortal-friendly, no
+  prereq, no rep gate). Chen asks the player to spar with him
+  at the foothills at dawn: no combat, just visit-foothills +
+  return-talk. The seniors correct him out of kindness; the
+  disciple-sisters compete with him and he can't afford to
+  lose in front of them; he needs to work the form against
+  someone with no stake. Player visits foothills, returns,
+  reports. ACS+1. Lore: `the_broom_and_the_blade` — the sutra
+  on why outer disciples sweep. The broom teaches the lowering
+  the shoulder will later need for the sword's raising.
+  *Side-effect of design:* the player's ACS-approach path goes
+  through the foothills, so Q1 tends to auto-complete on the
+  return-talk (the visit step is trivially satisfied from the
+  approach). Intentional: Q1 is an introductory reward for
+  having met Chen; the beat is his voice, not the errand.
+- **Q2 — "The Name That Was Not His"** (QC, ACS+2 gate,
+  prereq Q1). The register's fresh page was copied with a
+  missing stroke in Chen's name — *Chen* written as *Cheng*,
+  the name of an outer disciple eight winters past who did
+  not complete his second trial. The first column of the
+  register is where unfinished lowerings are kept. The
+  archivist's tools are at the Library; Zhao is the one who
+  can correct the stroke. Player carries the register-page
+  from gate → library → Zhao → back to Chen. Zhao knew the
+  living Cheng; the lore arrives through him. ACS+1. Item:
+  `chens_stroke_pin` — a bronze thumbnail-pin shaped like
+  the missing brush-stroke; Chen gives it back without
+  meeting the player's eye. Lore:
+  `the_first_column_of_the_register`.
+- **Q3 — "The Courtesy Bell at Dawn"** (Foundation-ready,
+  ACS+4 gate, prereq Q2). Chen's capstone. The second trial
+  is at dawn; he can't sleep and stand watch both. He asks
+  the player to stand at the gate in his stead — to ring the
+  courtesy bell for the three common visitors of a common
+  night: the pilgrim from the foothills at second hour, the
+  courier from the valley at fourth, the question from the
+  Crossing at sixth. Each visitor leaves a token for the
+  register's second column. Player collects the three tokens
+  at the outer gate (on-ground ITEMS spawned in
+  locations/southern_wilds.json), returns to Chen in the
+  morning. He takes the broom from their hand and walks to
+  the trial. The trial happens offstage. He passes. ACS+2.
+  Capstone: **The Outer Disciple's Broom** (weapon: ATK+3,
+  DEF+2, HP+8, SPD+1, ACS+3 rep-gated — a staff that parries
+  as well as strikes; the six-week watch made memento).
+  Lore: `the_courtesy_bell` (on the three bells of the Azure
+  Cloud gate and why the courtesy bell is rung by a substitute
+  on the night of a gatekeeper's second trial).
+- **Content totals**: 5 new items (3 night-watch tokens on
+  the ground at the outer gate; Chen's stroke-pin as Q2
+  reward; outer disciple's broom as Q3 capstone), 3 new lore
+  entries, 3 new quests, 3 new events
+  (`chen_ties_and_unties_the_sash` +
+  `register_second_ink_warms` at the outer gate,
+  `foothills_willow_at_the_switchback` at the foothills).
+  **Zero** new NPCs, locations, techniques, enemies, recipes
+  — pure deepening of the game's most-trafficked face NPC.
+- **Gatekeeper Chen's voice.** Dialogue grew 4 → 8 lines —
+  the broom-is-the-sword-you-are-learning-to-be-ready-for
+  line; the "first crane my mother sewed; the wing is a
+  little wrong; I will not let her redo it" beat; the
+  register's three columns (ambient foreshadowing for Q2);
+  the forty-three knots this week (one of them is the knot).
+  ACS rep_dialogue grew 2 → 6 tiers (−3, −2, +1, +2, +3, +5).
+  lore_dialogue added: 2 tiers (+3 →
+  `the_broom_and_the_blade`; +5 →
+  `the_first_column_of_the_register`). companion_reply added:
+  3 entries, one per player-companion (Meilin, Bai, Jin),
+  each with specific institutional response — Chen-as-
+  gatekeeper is most interesting when the player arrives
+  with someone who shouldn't, at the gate the sect explicitly
+  uses to filter who. He does not strike the broom across
+  for Jin; he writes the explanation into the register
+  himself, because the broom doesn't reach that far. He
+  tolls the bell once for Bai and sends her through quickly
+  because the drill-master is not settled about green
+  sashes this season.
+- **Outer Gate description** picked up a new beat: the
+  cedar register-desk itself — three ruled columns, two
+  inkstones (one cold, one warm), a bronze thumb-weight
+  pinning the fresh page down. The desk was implicit before;
+  now it's present in the room and in Chen's voice.
+- **Smoke test.** `tools/smoke_chen.py` — 8 scenarios:
+  content load (items / lore / quests / events); Chen's
+  gives_quest list ordering; voice deepening (>=8 dlg,
+  five named ACS rep tiers, two lore tiers, three
+  companion_replies); outer-gate ground-items intact,
+  Chen still the sole NPC there, pre-existing
+  courtesy-bell event preserved; full three-quest arc
+  end-to-end (from ACS+0 through +6; Q2's ACS+2 gate; Q3's
+  ACS+4 gate); rep-gate regression (Q3 must NOT offer at
+  ACS+3); Outer Disciple's Broom equips as a weapon with
+  claimed bonuses AND outperforms the plain bamboo
+  longstaff; Chen's "register has three columns"
+  foreshadowing line present; save/load round-trip. All
+  green. All 15 prior smoke tests remain green. **16 total.**
+- **Live REPL verification.** Drove the arc through
+  `python3 play.py` with scripted input. Q1 offered on
+  first-talk at the gate, played the seed voice in full,
+  completed when the player's foothills-visit trigger
+  fired on return; Q2 offered once ACS reached +2 ("The
+  courtyard sweeps itself today — go in, go in."); Q2
+  completed on the library-talk (talked_to-is-persistent
+  quirk from prior sessions); rep-gate message on Q2
+  when approached under-rep ("They weigh you, and do not
+  speak of it. Required: Azure Cloud Sect +1."). The arc
+  plays.
+
+### Current state
+- Validator: **29 loc / 30 npc / 22 enemy / 43 tech / 100 item /
+  4 sect / 31 quest / 54 event / 48 lore / 15 recipe.** Deltas
+  from session 20: +5 items, +3 quests, +3 events, +3 lore. No
+  new NPCs / enemies / locations / techniques / recipes.
+- All 15 prior smoke tests remain green; new `smoke_chen.py`
+  green. 16 total.
+- Save-compat preserved. Zero new Player fields. Nothing was
+  removed or renamed; existing saves pick up Chen's new offer
+  the next time they talk to him at the gate.
+- **Quest distribution going in → going out**: Azure Cloud Sect
+  5 → 8 quests (re-takes density lead from Five Poisons' 7).
+  SIX NPCs in the game now own multi-quest arcs (Zhao, Huilin,
+  Weilan, Shan, Qi, Chen). Chen is the first "face" NPC —
+  literal front-of-sect gatekeeper — to carry one.
+- **Azure Cloud Outer Gate** went from a 0-item / 0-listed-
+  event hub to one with three on-ground tokens and two new
+  location-tied events, plus the original courtesy-bell
+  ambient. The door of the sect now *reads* like a door
+  with a person behind it, not a checkpoint graphic.
+
+### What I'd do next if I had another hour
+1. **Yanyu as a recovering NPC at the Inner Courtyard.**
+   Still flagged from s19 and s20. Shan's Q2 delivered her
+   back to Baixu; she has a name and a story but no on-screen
+   presence. The Inner Courtyard has 1 NPC (Meilin) and would
+   be the natural home. A one-quest follow-up to Shan's Q2 —
+   Yanyu asking after who poisoned the hilt-wrap — would
+   close that loop and add Azure Cloud's second missing body.
+2. **Forge Master Bo's arc.** Still one of the lowest-scoring
+   face-NPCs (9). Teaches two recipes, zero quests. Bo is
+   the only other Azure Cloud NPC at a "workplace" location.
+   A 2-quest arc about a sect-sword commission would fill
+   the forge (currently: 1 event, 0 ground items, 0 quests)
+   the way Chen's arc fills the outer gate.
+3. **Gatekeeper Wuwei at the Valley Mouth.** The mirror
+   position to Chen, in the Thousand Venom Valley. Scored
+   9 going into this session. Session 19 foreshadowed him
+   (carried Yanyu in); s20 mentioned him in the basin
+   descriptions. A 2-3 quest arc about who the valley
+   refuses at its gate — a story the valley needs told
+   from its OWN gatekeeper's mouth — would pair beautifully
+   with Chen's arc as a cross-sect set-piece.
+4. **Bai's pre-companion arc.** Still flagged from s19.
+   Bai is now audibly present in Qi's Q2 and Chen's
+   companion_reply, but recruitment is still rep-gated only.
+   A one-or-two quest "prove yourself to the gardener"
+   path would give her the same pre-recruit shape as Jin
+   has (Red Path) and would make Five Poisons' third NPC
+   feel earned rather than unlocked.
+5. **Fisher Ren's small arc.** Scored 5 in the audit. He
+   is at Pale Lake Shore, which is now a proper location
+   after Weilan's arc pulled silt from it. A single
+   mortal-friendly quest ("the old lake was fresher when
+   I was a boy — walk the shore with me") would bring him
+   above the "quest-desk" threshold.
+6. **Apothecary Qi's FPS+5 small-gift micro-arc.** Still
+   flagged from s20. Her lore_dialogue at FPS+5 names
+   "a small grey thread in the second drawer, older than
+   the knot." A one-quest hook — a player at high standing
+   asks for the thread, gets a `keepers_thread` narrative
+   treasure — would close that loop cheaply.
+
+### Things I noticed but didn't fix
+- **Q1's visit step is usually trivially satisfied.** The
+  player's approach path to the outer gate goes through
+  the foothills, so by the time they talk to Chen for the
+  first time they've already satisfied step 1 of Q1. The
+  final return-talk then closes the quest immediately.
+  Narratively this is fine — Q1 is the "here is Chen in
+  full; here is a reward for meeting him" beat, not a
+  real errand — but if a future session wanted a real
+  foothills beat, the step target would need to be a
+  different location (the inner courtyard? a new
+  foothills sub-location?). For this arc: deliberate.
+- **The three night-watch tokens are always on the ground
+  at the outer gate**, not just during Q3. A player can
+  pick them up before ever speaking to Chen — or during
+  Q1 — and the items are narratively scoped to "a night
+  Chen was not at the gate." This is the same pattern as
+  Qi's centipede-shed and black-pillar-leaf; consistent
+  with the codebase, and narratively the tokens just sit
+  on the register-desk as leavings from past nights until
+  someone reads them. Fine, but worth naming.
+- **Chen's post-Q3 title doesn't change.** Narratively he
+  becomes an inner disciple; the title stays "Outer
+  Disciple of the Azure Cloud" because the engine doesn't
+  support quest-gated titles. The broom's description
+  does the work: "Gatekeeper Chen — Inner Disciple Chen,
+  now, though the courtyard will take a month to say it
+  right". The promotion is in the prose, not the data.
+- **Zhao's involvement in Q2 is voiceless on his side.**
+  The player talks to him and Q2 closes; Zhao doesn't get
+  new dialogue for it. He's already a richly-voiced NPC
+  (three arcs' worth of lines from s13), and adding a
+  Chen-specific rep_dialogue tier or lore_dialogue entry
+  felt like it would dilute his own voice. Left alone.
+- **`cheng` as a name-echo** is a narrative beat that
+  relies on the player reading the Q2 description and
+  the `the_first_column_of_the_register` lore. The
+  name-mutation-is-an-omen beat is entirely in the text;
+  there's no mechanical reference to a dead disciple,
+  and adding one (e.g. a ghost_cheng NPC) would pull in
+  the opposite direction — *this is a sect whose dead
+  are kept in a column, not as apparitions.*
+
+### Don'ts (lessons learned)
+- **Don't write a new lore_dialogue format.** My first
+  draft of Chen's lore_dialogue used a richer
+  `{"lore": id, "text": "..."}` shape to bind a speech
+  to the grant. The engine (engine.py:583) expects the
+  value to be a plain string — the lore id — and skips
+  anything else silently. Validator caught NOTHING about
+  this (it only checks that the strings referenced exist).
+  Cut the format to the simple id-string form; the
+  speech moved to rep_dialogue where it belongs. Lesson:
+  check the engine's shape before inventing a new one.
+- **Don't forget `"slot": "weapon"` on a weapon item.**
+  First draft of the outer disciple's broom had `"type":
+  "weapon"` but no `"slot"` field. `cmd_equip` reads
+  `it.get("slot")` and rejects anything not in
+  EQUIP_SLOTS (engine.py:881), producing "cannot be
+  equipped" on a brand-new weapon. Validator also
+  silent on this. Smoke test caught it. Lesson: the
+  `type` field is informational; `slot` is the one the
+  engine actually uses.
+- **Don't treat Q1's rep gate as necessary.** First
+  draft of Q1 required ACS+0 nominally but I considered
+  gating at ACS+1 for "you've earned a quest." That
+  would have made the arc impossible to start — Chen is
+  THE way a player first earns Azure Cloud rep. A face-
+  NPC's entry quest must be givable to a stranger.
+  Lesson: the gatekeeper's first quest is the quest
+  that makes you a not-stranger.
+- **Don't write Chen's trial as a combat scene.** Early
+  thought: put the trial in Q3 as an actual combat (the
+  player fights a senior outer disciple as Chen's
+  stand-in, which determines whether Chen passes). Cut.
+  The arc is about Chen learning to lower his own
+  shoulder; a fight-for-him would be the *opposite* of
+  the lesson his broom has been teaching. The trial
+  happens offstage. The player's role is to ring a
+  courtesy bell for three visitors Chen will not see.
+  The payoff is narrative, not mechanical. Lesson: an
+  arc's capstone should not undo its premise.
+
+---
+
 ## Session 20 — 2026-04-23 — "The Four Lesser Basins"
 
 ### What I built

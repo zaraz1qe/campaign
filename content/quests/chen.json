@@ -1,0 +1,61 @@
+[
+  {
+    "id": "the_broom_and_the_blade",
+    "name": "The Broom and the Blade",
+    "giver": "gatekeeper_disciple_chen",
+    "description": "Chen looks at the courtyard for a long breath before he looks at you, and his thumb is pressed flat against the stitched crane above his heart. 'Senior. I would ask you a — it is not a sect thing. The seniors correct me out of kindness; my disciple-sisters compete with me and I cannot lose in front of them. I need to work the form against someone who has no stake in my trial. At dawn, walk down the foothill path with me. Stand across from me at the old willow at the switchback. I will raise the form. You do not need to parry. You only need to be there — to not correct me, to not let me win, to not remember this after. I will know, from your shoulder, whether my shoulder has learned to lower. Come back and tell me what you saw. Tell me the truth; the senior ink does not reach the foothills.'",
+    "steps": [
+      { "type": "visit", "target": "azure_cloud_foothills" },
+      { "type": "talk",  "target": "gatekeeper_disciple_chen" }
+    ],
+    "reward": {
+      "spirit_stones": 70,
+      "items": ["minor_healing_pill", "jade_qi_pendant"],
+      "xp": 35
+    },
+    "rep_change": { "azure_cloud_sect": 1 },
+    "grants_lore": ["the_broom_and_the_blade"]
+  },
+  {
+    "id": "the_name_that_was_not_his",
+    "name": "The Name That Was Not His",
+    "giver": "gatekeeper_disciple_chen",
+    "description": "Chen has the register-page in both hands and the page is shaking a little, which is to say his hands are. 'Senior. The fresh page of the gate-register, the one the archivist copied out at first-of-month — my name is written with a missing stroke. It reads as Cheng, not Chen. Cheng was an outer disciple of this gate eight winters past; he did not complete his second trial. His name is in the first column of this book, which is a column no outer disciple walks near if he can help it. The mistake is bookkeeping; the mistake is, for me, an omen I cannot carry and stand a watch. Librarian Zhao keeps the register-master's tools at the Library. Take the page. Let him correct the stroke. Bring it back to me. I will try, while you are gone, to untie my sash a little.'",
+    "requires_quest": "the_broom_and_the_blade",
+    "requires_rep": { "azure_cloud_sect": 2 },
+    "steps": [
+      { "type": "visit", "target": "azure_cloud_library" },
+      { "type": "talk",  "target": "librarian_zhao" },
+      { "type": "talk",  "target": "gatekeeper_disciple_chen" }
+    ],
+    "reward": {
+      "spirit_stones": 160,
+      "items": ["chens_stroke_pin", "moonflower_tonic", "spirit_stone_pouch"],
+      "xp": 85
+    },
+    "rep_change": { "azure_cloud_sect": 1 },
+    "grants_lore": ["the_first_column_of_the_register"]
+  },
+  {
+    "id": "the_courtesy_bell_at_dawn",
+    "name": "The Courtesy Bell at Dawn",
+    "giver": "gatekeeper_disciple_chen",
+    "description": "Chen does not invite you to stand beside him this time; he invites you to stand in his place. 'Senior. My second trial is at dawn tomorrow. I will not sleep tonight if I am at the gate; I will not sleep if I am at the courtyard; I will not sleep, and the shoulder I have worked these six weeks to lower will raise itself in the morning out of sheer held breath. Stand at the gate in my stead from dusk until first light. Three visitors come on a common night — a pilgrim from the foothills at second hour, a courier from the valley at fourth, a question from the Crossing at sixth. Ring the courtesy bell once for each. They will leave a token for the register's second column — take the three tokens in the morning. Come to me at the courtyard. I will take the broom from your hand, and I will walk to the trial. I will not say thank you at the door; I am sorry; I will not. At dawn afterwards — if there is an afterwards — we will speak.'",
+    "requires_quest": "the_name_that_was_not_his",
+    "requires_rep": { "azure_cloud_sect": 4 },
+    "steps": [
+      { "type": "visit",   "target": "azure_cloud_outer_gate" },
+      { "type": "collect", "target": "pilgrims_copper_petition" },
+      { "type": "collect", "target": "couriers_valley_slip" },
+      { "type": "collect", "target": "mothers_unanswered_question" },
+      { "type": "talk",    "target": "gatekeeper_disciple_chen" }
+    ],
+    "reward": {
+      "spirit_stones": 320,
+      "items": ["outer_disciples_broom", "spirit_stone_pouch", "iron_skin_pill"],
+      "xp": 150
+    },
+    "rep_change": { "azure_cloud_sect": 2 },
+    "grants_lore": ["the_courtesy_bell"]
+  }
+]

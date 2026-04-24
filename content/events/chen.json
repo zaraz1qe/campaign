@@ -1,0 +1,23 @@
+[
+  {
+    "id": "chen_ties_and_unties_the_sash",
+    "location": "azure_cloud_outer_gate",
+    "chance": 0.2,
+    "text": "Gatekeeper Chen sets the broom against the crane-statue and, without looking at his hands, unties the sash at his waist and begins to tie it again. The knot goes too tight — he pauses, lets the air out of his shoulders in a single held breath, unties it, and retries. The second tie is better. The third would be better still, but a breeze off the cloudline pulls his attention up; he leaves the knot at its second tie, picks up the broom, and resumes the sweep. The knot, this time, does not slip.",
+    "effect": { "qi": 2 }
+  },
+  {
+    "id": "foothills_willow_at_the_switchback",
+    "location": "azure_cloud_foothills",
+    "chance": 0.2,
+    "text": "The old willow at the switchback — the one the outer disciples practise against because its low branch catches a hasty raise — sheds three yellow leaves in a windless moment. One lands on the path at your feet. The branch sways, though the air does not. A long way up the slope the gate's courtesy bell tolls once; a moment later, once more; then stays silent. The willow settles.",
+    "effect": { "qi": 3 }
+  },
+  {
+    "id": "register_second_ink_warms",
+    "location": "azure_cloud_outer_gate",
+    "chance": 0.15,
+    "text": "On the gate-register's low desk, the second inkstone — the warmer ink, used for the column of the living — is open, and the brush rests in the well at an angle a careful archivist would not have left. A line of fresh characters has been added near the page's foot: a visitor, a business, the hour. The hand is Chen's; the second character has been written twice, the first stroke crossed through and drawn again. The stroke that distinguishes *chen* from *cheng* is there both times, firmly, as if the hand had decided to be sure about it twice.",
+    "effect": {}
+  }
+]
